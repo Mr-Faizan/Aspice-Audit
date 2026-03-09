@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300" role="img" aria-label="ASPICE Audit logo">
+  <!-- Colors sampled from your image -->
+  <!-- Circle: #45A495  | Text: #308778  | Icon: white -->
+  
+  <!-- Icon circle -->
+  <circle cx="150" cy="150" r="105" fill="#45A495"/>
+
+  <!-- Magnifier + check -->
+  <g stroke="#FFFFFF" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <!-- Magnifier glass -->
+    <circle cx="140" cy="140" r="55"/>
+    <!-- Handle -->
+    <line x1="178" y1="178" x2="220" y2="220"/>
+    <!-- Check mark -->
+    <polyline points="115,145 135,165 175,120"/>
+  </g>
+
+  <!-- Wordmark -->
+  <text x="300" y="182"
+        font-family="Inter, Segoe UI, Arial, sans-serif"
+        font-size="96"
+        font-weight="600"
+        fill="#308778">
+    ASPICE Audit
+  </text>
+</svg>
