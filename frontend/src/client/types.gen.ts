@@ -9,6 +9,8 @@ export type Body_login_login_access_token = {
     client_secret?: (string | null);
 };
 
+export type DifficultyEnum = 'easy' | 'medium' | 'hard';
+
 export type HTTPValidationError = {
     detail?: Array<ValidationError>;
 };
@@ -45,11 +47,132 @@ export type NewPassword = {
     new_password: string;
 };
 
+export type PopularQuizPublic = {
+    id: string;
+    title: string;
+    attempts: number;
+};
+
 export type PrivateUserCreate = {
     email: string;
     password: string;
     full_name: string;
     is_verified?: boolean;
+};
+
+export type QuestionCreate = {
+    question_text: string;
+    options: Array<(string)>;
+    correct_answer: string;
+    explanation?: (string | null);
+    points?: number;
+};
+
+export type QuestionPublic = {
+    id: string;
+    quiz_id: string;
+    question_text: string;
+    options: Array<(string)>;
+    correct_answer: string;
+    explanation?: (string | null);
+    points: number;
+    order: number;
+};
+
+export type QuizCreate = {
+    title: string;
+    description?: (string | null);
+    difficulty?: DifficultyEnum;
+    category: string;
+    time_limit?: (number | null);
+    passing_score?: number;
+    questions?: Array<QuestionCreate>;
+};
+
+export type QuizPublic = {
+    title: string;
+    description?: (string | null);
+    difficulty?: DifficultyEnum;
+    category: string;
+    time_limit?: (number | null);
+    passing_score?: number;
+    id: string;
+    status: QuizStatusEnum;
+    creator_id: string;
+    created_at?: (string | null);
+    updated_at?: (string | null);
+    question_count?: number;
+};
+
+export type QuizStatisticsPublic = {
+    total_quizzes: number;
+    published_quizzes: number;
+    unpublished_quizzes: number;
+    quizzes_by_category: {
+        [key: string]: (number);
+    };
+    quizzes_by_difficulty: {
+        [key: string]: (number);
+    };
+    average_attempts_per_quiz: number;
+    most_popular_quizzes: Array<PopularQuizPublic>;
+};
+
+export type QuizStatusEnum = 'draft' | 'published' | 'unpublished';
+
+export type QuizUpdate = {
+    title?: (string | null);
+    description?: (string | null);
+    difficulty?: (DifficultyEnum | null);
+    category?: (string | null);
+    time_limit?: (number | null);
+    passing_score?: (number | null);
+    status?: (QuizStatusEnum | null);
+    questions?: (Array<QuestionCreate> | null);
+};
+
+export type QuizWithQuestions = {
+    title: string;
+    description?: (string | null);
+    difficulty?: DifficultyEnum;
+    category: string;
+    time_limit?: (number | null);
+    passing_score?: number;
+    id: string;
+    status: QuizStatusEnum;
+    creator_id: string;
+    created_at?: (string | null);
+    updated_at?: (string | null);
+    question_count?: number;
+    questions?: Array<QuestionPublic>;
+};
+
+export type QuizzesPublic = {
+    data: Array<QuizPublic>;
+    count: number;
+};
+
+export type RecentAttemptPublic = {
+    id: string;
+    quiz_id: string;
+    quiz_title: string;
+    user_id: string;
+    user_full_name?: (string | null);
+    user_email: string;
+    score: number;
+    passed: boolean;
+    completed_at?: (string | null);
+};
+
+export type StatisticsPublic = {
+    total_users: number;
+    active_users: number;
+    total_quizzes: number;
+    published_quizzes: number;
+    unpublished_quizzes: number;
+    total_attempts: number;
+    average_score: number;
+    recent_attempts?: Array<RecentAttemptPublic>;
 };
 
 export type Token = {
@@ -77,6 +200,7 @@ export type UserPublic = {
     full_name?: (string | null);
     id: string;
     created_at?: (string | null);
+    last_login_at?: (string | null);
 };
 
 export type UserRegister = {
@@ -88,6 +212,14 @@ export type UserRegister = {
 export type UsersPublic = {
     data: Array<UserPublic>;
     count: number;
+};
+
+export type UserStatisticsPublic = {
+    total_users: number;
+    active_users: number;
+    new_users_this_month: number;
+    admin_users: number;
+    regular_users: number;
 };
 
 export type UserUpdate = {
@@ -176,6 +308,47 @@ export type PrivateCreateUserData = {
 };
 
 export type PrivateCreateUserResponse = (UserPublic);
+
+export type QuizzesReadQuizzesData = {
+    category?: (string | null);
+    difficulty?: (string | null);
+    limit?: number;
+    search?: (string | null);
+    skip?: number;
+};
+
+export type QuizzesReadQuizzesResponse = (QuizzesPublic);
+
+export type QuizzesCreateQuizData = {
+    requestBody: QuizCreate;
+};
+
+export type QuizzesCreateQuizResponse = (QuizWithQuestions);
+
+export type QuizzesUpdateQuizData = {
+    id: string;
+    requestBody: QuizUpdate;
+};
+
+export type QuizzesUpdateQuizResponse = (QuizWithQuestions);
+
+export type QuizzesDeleteQuizData = {
+    id: string;
+};
+
+export type QuizzesDeleteQuizResponse = (Message);
+
+export type QuizzesTogglePublishQuizData = {
+    id: string;
+};
+
+export type QuizzesTogglePublishQuizResponse = (QuizPublic);
+
+export type StatisticsGetDashboardSummaryResponse = (StatisticsPublic);
+
+export type StatisticsGetUserStatisticsResponse = (UserStatisticsPublic);
+
+export type StatisticsGetQuizStatisticsResponse = (QuizStatisticsPublic);
 
 export type UsersReadUsersData = {
     limit?: number;

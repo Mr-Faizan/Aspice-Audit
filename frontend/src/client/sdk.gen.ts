@@ -3,7 +3,7 @@
 import type { CancelablePromise } from './core/CancelablePromise';
 import { OpenAPI } from './core/OpenAPI';
 import { request as __request } from './core/request';
-import type { ItemsReadItemsData, ItemsReadItemsResponse, ItemsCreateItemData, ItemsCreateItemResponse, ItemsReadItemData, ItemsReadItemResponse, ItemsUpdateItemData, ItemsUpdateItemResponse, ItemsDeleteItemData, ItemsDeleteItemResponse, LoginLoginAccessTokenData, LoginLoginAccessTokenResponse, LoginTestTokenResponse, LoginRecoverPasswordData, LoginRecoverPasswordResponse, LoginResetPasswordData, LoginResetPasswordResponse, LoginRecoverPasswordHtmlContentData, LoginRecoverPasswordHtmlContentResponse, PrivateCreateUserData, PrivateCreateUserResponse, UsersReadUsersData, UsersReadUsersResponse, UsersCreateUserData, UsersCreateUserResponse, UsersReadUserMeResponse, UsersDeleteUserMeResponse, UsersUpdateUserMeData, UsersUpdateUserMeResponse, UsersUpdatePasswordMeData, UsersUpdatePasswordMeResponse, UsersRegisterUserData, UsersRegisterUserResponse, UsersReadUserByIdData, UsersReadUserByIdResponse, UsersUpdateUserData, UsersUpdateUserResponse, UsersDeleteUserData, UsersDeleteUserResponse, UtilsTestEmailData, UtilsTestEmailResponse, UtilsHealthCheckResponse } from './types.gen';
+import type { ItemsReadItemsData, ItemsReadItemsResponse, ItemsCreateItemData, ItemsCreateItemResponse, ItemsReadItemData, ItemsReadItemResponse, ItemsUpdateItemData, ItemsUpdateItemResponse, ItemsDeleteItemData, ItemsDeleteItemResponse, LoginLoginAccessTokenData, LoginLoginAccessTokenResponse, LoginTestTokenResponse, LoginRecoverPasswordData, LoginRecoverPasswordResponse, LoginResetPasswordData, LoginResetPasswordResponse, LoginRecoverPasswordHtmlContentData, LoginRecoverPasswordHtmlContentResponse, PrivateCreateUserData, PrivateCreateUserResponse, QuizzesReadQuizzesData, QuizzesReadQuizzesResponse, QuizzesCreateQuizData, QuizzesCreateQuizResponse, QuizzesUpdateQuizData, QuizzesUpdateQuizResponse, QuizzesDeleteQuizData, QuizzesDeleteQuizResponse, QuizzesTogglePublishQuizData, QuizzesTogglePublishQuizResponse, StatisticsGetDashboardSummaryResponse, StatisticsGetUserStatisticsResponse, StatisticsGetQuizStatisticsResponse, UsersReadUsersData, UsersReadUsersResponse, UsersCreateUserData, UsersCreateUserResponse, UsersReadUserMeResponse, UsersDeleteUserMeResponse, UsersUpdateUserMeData, UsersUpdateUserMeResponse, UsersUpdatePasswordMeData, UsersUpdatePasswordMeResponse, UsersRegisterUserData, UsersRegisterUserResponse, UsersReadUserByIdData, UsersReadUserByIdResponse, UsersUpdateUserData, UsersUpdateUserResponse, UsersDeleteUserData, UsersDeleteUserResponse, UtilsTestEmailData, UtilsTestEmailResponse, UtilsHealthCheckResponse } from './types.gen';
 
 export class ItemsService {
     /**
@@ -231,6 +231,168 @@ export class PrivateService {
             errors: {
                 422: 'Validation Error'
             }
+        });
+    }
+}
+
+export class QuizzesService {
+    /**
+     * Read Quizzes
+     * Retrieve all quizzes. Supports optional search, category and difficulty filters.
+     * Admin only.
+     * @param data The data for the request.
+     * @param data.skip
+     * @param data.limit
+     * @param data.search
+     * @param data.category
+     * @param data.difficulty
+     * @returns QuizzesPublic Successful Response
+     * @throws ApiError
+     */
+    public static readQuizzes(data: QuizzesReadQuizzesData = {}): CancelablePromise<QuizzesReadQuizzesResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/quizzes/',
+            query: {
+                skip: data.skip,
+                limit: data.limit,
+                search: data.search,
+                category: data.category,
+                difficulty: data.difficulty
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Create Quiz
+     * Create a new quiz with its questions. Admin only.
+     * @param data The data for the request.
+     * @param data.requestBody
+     * @returns QuizWithQuestions Successful Response
+     * @throws ApiError
+     */
+    public static createQuiz(data: QuizzesCreateQuizData): CancelablePromise<QuizzesCreateQuizResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/quizzes/',
+            body: data.requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Update Quiz
+     * Update quiz metadata. If `questions` is provided the entire question set
+     * is replaced (delete-all + re-insert). Admin only.
+     * @param data The data for the request.
+     * @param data.id
+     * @param data.requestBody
+     * @returns QuizWithQuestions Successful Response
+     * @throws ApiError
+     */
+    public static updateQuiz(data: QuizzesUpdateQuizData): CancelablePromise<QuizzesUpdateQuizResponse> {
+        return __request(OpenAPI, {
+            method: 'PATCH',
+            url: '/api/v1/quizzes/{id}',
+            path: {
+                id: data.id
+            },
+            body: data.requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Delete Quiz
+     * Delete a quiz (cascades to questions and attempts). Admin only.
+     * @param data The data for the request.
+     * @param data.id
+     * @returns Message Successful Response
+     * @throws ApiError
+     */
+    public static deleteQuiz(data: QuizzesDeleteQuizData): CancelablePromise<QuizzesDeleteQuizResponse> {
+        return __request(OpenAPI, {
+            method: 'DELETE',
+            url: '/api/v1/quizzes/{id}',
+            path: {
+                id: data.id
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Toggle Publish Quiz
+     * Toggle a quiz between `published` and `unpublished` status.
+     * A quiz that is still `draft` will be moved to `published`.
+     * Admin only.
+     * @param data The data for the request.
+     * @param data.id
+     * @returns QuizPublic Successful Response
+     * @throws ApiError
+     */
+    public static togglePublishQuiz(data: QuizzesTogglePublishQuizData): CancelablePromise<QuizzesTogglePublishQuizResponse> {
+        return __request(OpenAPI, {
+            method: 'PATCH',
+            url: '/api/v1/quizzes/{id}/publish',
+            path: {
+                id: data.id
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+}
+
+export class StatisticsService {
+    /**
+     * Get Dashboard Summary
+     * Get general dashboard summary stats.
+     * @returns StatisticsPublic Successful Response
+     * @throws ApiError
+     */
+    public static getDashboardSummary(): CancelablePromise<StatisticsGetDashboardSummaryResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/statistics/'
+        });
+    }
+    
+    /**
+     * Get User Statistics
+     * Get detailed user metrics.
+     * @returns UserStatisticsPublic Successful Response
+     * @throws ApiError
+     */
+    public static getUserStatistics(): CancelablePromise<StatisticsGetUserStatisticsResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/statistics/users'
+        });
+    }
+    
+    /**
+     * Get Quiz Statistics
+     * Get detailed quiz metrics.
+     * @returns QuizStatisticsPublic Successful Response
+     * @throws ApiError
+     */
+    public static getQuizStatistics(): CancelablePromise<StatisticsGetQuizStatisticsResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/statistics/quizzes'
         });
     }
 }

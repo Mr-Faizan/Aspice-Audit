@@ -57,6 +57,12 @@ export const Body_login_login_access_tokenSchema = {
     title: 'Body_login-login_access_token'
 } as const;
 
+export const DifficultyEnumSchema = {
+    type: 'string',
+    enum: ['easy', 'medium', 'hard'],
+    title: 'DifficultyEnum'
+} as const;
+
 export const HTTPValidationErrorSchema = {
     properties: {
         detail: {
@@ -226,6 +232,27 @@ export const NewPasswordSchema = {
     title: 'NewPassword'
 } as const;
 
+export const PopularQuizPublicSchema = {
+    properties: {
+        id: {
+            type: 'string',
+            format: 'uuid',
+            title: 'Id'
+        },
+        title: {
+            type: 'string',
+            title: 'Title'
+        },
+        attempts: {
+            type: 'integer',
+            title: 'Attempts'
+        }
+    },
+    type: 'object',
+    required: ['id', 'title', 'attempts'],
+    title: 'PopularQuizPublic'
+} as const;
+
 export const PrivateUserCreateSchema = {
     properties: {
         email: {
@@ -249,6 +276,624 @@ export const PrivateUserCreateSchema = {
     type: 'object',
     required: ['email', 'password', 'full_name'],
     title: 'PrivateUserCreate'
+} as const;
+
+export const QuestionCreateSchema = {
+    properties: {
+        question_text: {
+            type: 'string',
+            maxLength: 2048,
+            title: 'Question Text'
+        },
+        options: {
+            items: {
+                type: 'string'
+            },
+            type: 'array',
+            title: 'Options'
+        },
+        correct_answer: {
+            type: 'string',
+            maxLength: 500,
+            title: 'Correct Answer'
+        },
+        explanation: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Explanation'
+        },
+        points: {
+            type: 'integer',
+            title: 'Points',
+            default: 1
+        }
+    },
+    type: 'object',
+    required: ['question_text', 'options', 'correct_answer'],
+    title: 'QuestionCreate'
+} as const;
+
+export const QuestionPublicSchema = {
+    properties: {
+        id: {
+            type: 'string',
+            format: 'uuid',
+            title: 'Id'
+        },
+        quiz_id: {
+            type: 'string',
+            format: 'uuid',
+            title: 'Quiz Id'
+        },
+        question_text: {
+            type: 'string',
+            title: 'Question Text'
+        },
+        options: {
+            items: {
+                type: 'string'
+            },
+            type: 'array',
+            title: 'Options'
+        },
+        correct_answer: {
+            type: 'string',
+            title: 'Correct Answer'
+        },
+        explanation: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Explanation'
+        },
+        points: {
+            type: 'integer',
+            title: 'Points'
+        },
+        order: {
+            type: 'integer',
+            title: 'Order'
+        }
+    },
+    type: 'object',
+    required: ['id', 'quiz_id', 'question_text', 'options', 'correct_answer', 'points', 'order'],
+    title: 'QuestionPublic'
+} as const;
+
+export const QuizCreateSchema = {
+    properties: {
+        title: {
+            type: 'string',
+            maxLength: 255,
+            title: 'Title'
+        },
+        description: {
+            anyOf: [
+                {
+                    type: 'string',
+                    maxLength: 1024
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Description'
+        },
+        difficulty: {
+            '$ref': '#/components/schemas/DifficultyEnum',
+            default: 'medium'
+        },
+        category: {
+            type: 'string',
+            maxLength: 100,
+            title: 'Category'
+        },
+        time_limit: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Time Limit'
+        },
+        passing_score: {
+            type: 'integer',
+            title: 'Passing Score',
+            default: 70
+        },
+        questions: {
+            items: {
+                '$ref': '#/components/schemas/QuestionCreate'
+            },
+            type: 'array',
+            title: 'Questions',
+            default: []
+        }
+    },
+    type: 'object',
+    required: ['title', 'category'],
+    title: 'QuizCreate'
+} as const;
+
+export const QuizPublicSchema = {
+    properties: {
+        title: {
+            type: 'string',
+            maxLength: 255,
+            title: 'Title'
+        },
+        description: {
+            anyOf: [
+                {
+                    type: 'string',
+                    maxLength: 1024
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Description'
+        },
+        difficulty: {
+            '$ref': '#/components/schemas/DifficultyEnum',
+            default: 'medium'
+        },
+        category: {
+            type: 'string',
+            maxLength: 100,
+            title: 'Category'
+        },
+        time_limit: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Time Limit'
+        },
+        passing_score: {
+            type: 'integer',
+            title: 'Passing Score',
+            default: 70
+        },
+        id: {
+            type: 'string',
+            format: 'uuid',
+            title: 'Id'
+        },
+        status: {
+            '$ref': '#/components/schemas/QuizStatusEnum'
+        },
+        creator_id: {
+            type: 'string',
+            format: 'uuid',
+            title: 'Creator Id'
+        },
+        created_at: {
+            anyOf: [
+                {
+                    type: 'string',
+                    format: 'date-time'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Created At'
+        },
+        updated_at: {
+            anyOf: [
+                {
+                    type: 'string',
+                    format: 'date-time'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Updated At'
+        },
+        question_count: {
+            type: 'integer',
+            title: 'Question Count',
+            default: 0
+        }
+    },
+    type: 'object',
+    required: ['title', 'category', 'id', 'status', 'creator_id'],
+    title: 'QuizPublic'
+} as const;
+
+export const QuizStatisticsPublicSchema = {
+    properties: {
+        total_quizzes: {
+            type: 'integer',
+            title: 'Total Quizzes'
+        },
+        published_quizzes: {
+            type: 'integer',
+            title: 'Published Quizzes'
+        },
+        unpublished_quizzes: {
+            type: 'integer',
+            title: 'Unpublished Quizzes'
+        },
+        quizzes_by_category: {
+            additionalProperties: {
+                type: 'integer'
+            },
+            type: 'object',
+            title: 'Quizzes By Category'
+        },
+        quizzes_by_difficulty: {
+            additionalProperties: {
+                type: 'integer'
+            },
+            type: 'object',
+            title: 'Quizzes By Difficulty'
+        },
+        average_attempts_per_quiz: {
+            type: 'number',
+            title: 'Average Attempts Per Quiz'
+        },
+        most_popular_quizzes: {
+            items: {
+                '$ref': '#/components/schemas/PopularQuizPublic'
+            },
+            type: 'array',
+            title: 'Most Popular Quizzes'
+        }
+    },
+    type: 'object',
+    required: ['total_quizzes', 'published_quizzes', 'unpublished_quizzes', 'quizzes_by_category', 'quizzes_by_difficulty', 'average_attempts_per_quiz', 'most_popular_quizzes'],
+    title: 'QuizStatisticsPublic'
+} as const;
+
+export const QuizStatusEnumSchema = {
+    type: 'string',
+    enum: ['draft', 'published', 'unpublished'],
+    title: 'QuizStatusEnum'
+} as const;
+
+export const QuizUpdateSchema = {
+    properties: {
+        title: {
+            anyOf: [
+                {
+                    type: 'string',
+                    maxLength: 255
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Title'
+        },
+        description: {
+            anyOf: [
+                {
+                    type: 'string',
+                    maxLength: 1024
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Description'
+        },
+        difficulty: {
+            anyOf: [
+                {
+                    '$ref': '#/components/schemas/DifficultyEnum'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
+        category: {
+            anyOf: [
+                {
+                    type: 'string',
+                    maxLength: 100
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Category'
+        },
+        time_limit: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Time Limit'
+        },
+        passing_score: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Passing Score'
+        },
+        status: {
+            anyOf: [
+                {
+                    '$ref': '#/components/schemas/QuizStatusEnum'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
+        questions: {
+            anyOf: [
+                {
+                    items: {
+                        '$ref': '#/components/schemas/QuestionCreate'
+                    },
+                    type: 'array'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Questions'
+        }
+    },
+    type: 'object',
+    title: 'QuizUpdate'
+} as const;
+
+export const QuizWithQuestionsSchema = {
+    properties: {
+        title: {
+            type: 'string',
+            maxLength: 255,
+            title: 'Title'
+        },
+        description: {
+            anyOf: [
+                {
+                    type: 'string',
+                    maxLength: 1024
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Description'
+        },
+        difficulty: {
+            '$ref': '#/components/schemas/DifficultyEnum',
+            default: 'medium'
+        },
+        category: {
+            type: 'string',
+            maxLength: 100,
+            title: 'Category'
+        },
+        time_limit: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Time Limit'
+        },
+        passing_score: {
+            type: 'integer',
+            title: 'Passing Score',
+            default: 70
+        },
+        id: {
+            type: 'string',
+            format: 'uuid',
+            title: 'Id'
+        },
+        status: {
+            '$ref': '#/components/schemas/QuizStatusEnum'
+        },
+        creator_id: {
+            type: 'string',
+            format: 'uuid',
+            title: 'Creator Id'
+        },
+        created_at: {
+            anyOf: [
+                {
+                    type: 'string',
+                    format: 'date-time'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Created At'
+        },
+        updated_at: {
+            anyOf: [
+                {
+                    type: 'string',
+                    format: 'date-time'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Updated At'
+        },
+        question_count: {
+            type: 'integer',
+            title: 'Question Count',
+            default: 0
+        },
+        questions: {
+            items: {
+                '$ref': '#/components/schemas/QuestionPublic'
+            },
+            type: 'array',
+            title: 'Questions',
+            default: []
+        }
+    },
+    type: 'object',
+    required: ['title', 'category', 'id', 'status', 'creator_id'],
+    title: 'QuizWithQuestions'
+} as const;
+
+export const QuizzesPublicSchema = {
+    properties: {
+        data: {
+            items: {
+                '$ref': '#/components/schemas/QuizPublic'
+            },
+            type: 'array',
+            title: 'Data'
+        },
+        count: {
+            type: 'integer',
+            title: 'Count'
+        }
+    },
+    type: 'object',
+    required: ['data', 'count'],
+    title: 'QuizzesPublic'
+} as const;
+
+export const RecentAttemptPublicSchema = {
+    properties: {
+        id: {
+            type: 'string',
+            format: 'uuid',
+            title: 'Id'
+        },
+        quiz_id: {
+            type: 'string',
+            format: 'uuid',
+            title: 'Quiz Id'
+        },
+        quiz_title: {
+            type: 'string',
+            title: 'Quiz Title'
+        },
+        user_id: {
+            type: 'string',
+            format: 'uuid',
+            title: 'User Id'
+        },
+        user_full_name: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'User Full Name'
+        },
+        user_email: {
+            type: 'string',
+            title: 'User Email'
+        },
+        score: {
+            type: 'integer',
+            title: 'Score'
+        },
+        passed: {
+            type: 'boolean',
+            title: 'Passed'
+        },
+        completed_at: {
+            anyOf: [
+                {
+                    type: 'string',
+                    format: 'date-time'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Completed At'
+        }
+    },
+    type: 'object',
+    required: ['id', 'quiz_id', 'quiz_title', 'user_id', 'user_email', 'score', 'passed'],
+    title: 'RecentAttemptPublic'
+} as const;
+
+export const StatisticsPublicSchema = {
+    properties: {
+        total_users: {
+            type: 'integer',
+            title: 'Total Users'
+        },
+        active_users: {
+            type: 'integer',
+            title: 'Active Users'
+        },
+        total_quizzes: {
+            type: 'integer',
+            title: 'Total Quizzes'
+        },
+        published_quizzes: {
+            type: 'integer',
+            title: 'Published Quizzes'
+        },
+        unpublished_quizzes: {
+            type: 'integer',
+            title: 'Unpublished Quizzes'
+        },
+        total_attempts: {
+            type: 'integer',
+            title: 'Total Attempts'
+        },
+        average_score: {
+            type: 'number',
+            title: 'Average Score'
+        },
+        recent_attempts: {
+            items: {
+                '$ref': '#/components/schemas/RecentAttemptPublic'
+            },
+            type: 'array',
+            title: 'Recent Attempts',
+            default: []
+        }
+    },
+    type: 'object',
+    required: ['total_users', 'active_users', 'total_quizzes', 'published_quizzes', 'unpublished_quizzes', 'total_attempts', 'average_score'],
+    title: 'StatisticsPublic'
 } as const;
 
 export const TokenSchema = {
@@ -376,6 +1021,18 @@ export const UserPublicSchema = {
                 }
             ],
             title: 'Created At'
+        },
+        last_login_at: {
+            anyOf: [
+                {
+                    type: 'string',
+                    format: 'date-time'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Last Login At'
         }
     },
     type: 'object',
@@ -413,6 +1070,34 @@ export const UserRegisterSchema = {
     type: 'object',
     required: ['email', 'password'],
     title: 'UserRegister'
+} as const;
+
+export const UserStatisticsPublicSchema = {
+    properties: {
+        total_users: {
+            type: 'integer',
+            title: 'Total Users'
+        },
+        active_users: {
+            type: 'integer',
+            title: 'Active Users'
+        },
+        new_users_this_month: {
+            type: 'integer',
+            title: 'New Users This Month'
+        },
+        admin_users: {
+            type: 'integer',
+            title: 'Admin Users'
+        },
+        regular_users: {
+            type: 'integer',
+            title: 'Regular Users'
+        }
+    },
+    type: 'object',
+    required: ['total_users', 'active_users', 'new_users_this_month', 'admin_users', 'regular_users'],
+    title: 'UserStatisticsPublic'
 } as const;
 
 export const UserUpdateSchema = {
