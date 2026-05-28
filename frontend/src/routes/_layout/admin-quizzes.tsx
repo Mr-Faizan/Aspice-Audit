@@ -5,7 +5,7 @@ export const Route = createFileRoute("/_layout/admin-quizzes")({
   head: () => ({
     meta: [
       {
-        title: "Quiz Management - Aspice Audit",
+        title: "Audit Management - Aspice Audit",
       },
     ],
   }),
@@ -15,14 +15,14 @@ function AdminQuizzes() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Quiz Management</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Audit Management</h1>
         <p className="text-muted-foreground text-lg">
-          Create, edit, and manage ASPICE audit quizzes.
+          Create, edit, and manage ASPICE audits.
         </p>
       </div>
       <div className="rounded-lg border border-dashed p-8 text-center">
         <p className="text-muted-foreground">
-          Coming soon: Admin quiz management interface
+          Coming soon: Admin audit management interface
         </p>
       </div>
     </div>

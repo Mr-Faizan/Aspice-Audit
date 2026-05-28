@@ -138,6 +138,82 @@ class NewPassword(SQLModel):
 
 
 # ===========================================================================
+# ASPICE Audit — Question & Option Models
+# ===========================================================================
+
+class AspiceLevelEnum(str, enum.Enum):
+    L1 = "L1"  # Performed
+    L2 = "L2"  # Managed
+    L3 = "L3"  # Established
+
+
+class AuditQuestion(SQLModel, table=True):
+    """One assessment question for a specific ASPICE process & level."""
+    __tablename__ = "auditquestion"  # type: ignore
+
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+
+    # Human-readable code, e.g. "SWE1_L1_01"
+    question_code: str = Field(max_length=50, unique=True, index=True)
+
+    process: str = Field(max_length=20)           # e.g. "SWE.1"
+    level: AspiceLevelEnum                         # L1 / L2 / L3
+    criteria: str = Field(max_length=500)          # e.g. "SWE.1.BP1 — ..."
+    identifies: str = Field(max_length=500)        # weakness this question surfaces
+    # Stored as JSON array of stakeholder codes, e.g. ["SA", "SD", "QA"]
+    stakeholders: list = Field(default=[], sa_type=JSON)
+    question_text: str = Field(max_length=2048)
+    recommendation_logic: str | None = Field(default=None, max_length=2048)
+
+    created_at: datetime | None = Field(
+        default_factory=get_datetime_utc,
+        sa_type=DateTime(timezone=True),  # type: ignore
+    )
+
+    options: list["AuditOption"] = Relationship(back_populates="question", cascade_delete=True)
+
+
+class AuditOption(SQLModel, table=True):
+    """One answer option for an AuditQuestion, carrying a risk weight 0–5."""
+    __tablename__ = "auditoption"  # type: ignore
+
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+    question_id: uuid.UUID = Field(
+        foreign_key="auditquestion.id", nullable=False, ondelete="CASCADE"
+    )
+    label: str = Field(max_length=5)              # "A" | "B" | "C" | "D" | "E"
+    option_text: str = Field(max_length=1000)
+    # 0 = best / lowest risk, 5 = worst / highest risk (highest CMAB reward)
+    weight: int = Field(default=0, ge=0, le=5)
+
+    question: AuditQuestion | None = Relationship(back_populates="options")
+
+
+# ---------------------------------------------------------------------------
+# Pydantic schemas — AuditQuestion / AuditOption
+# ---------------------------------------------------------------------------
+
+class AuditOptionPublic(SQLModel):
+    id: uuid.UUID
+    label: str
+    option_text: str
+    weight: int
+
+
+class AuditQuestionPublic(SQLModel):
+    id: uuid.UUID
+    question_code: str
+    process: str
+    level: AspiceLevelEnum
+    criteria: str
+    identifies: str
+    stakeholders: list[str]
+    question_text: str
+    recommendation_logic: str | None = None
+    options: list[AuditOptionPublic] = []
+
+
+# ===========================================================================
 # Quiz Models
 # ===========================================================================
 

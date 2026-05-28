@@ -105,6 +105,8 @@ services:
         - NODE_ENV=development
 
   playwright:
+    profiles:
+      - test
     build:
       context: .
       dockerfile: frontend/Dockerfile.playwright

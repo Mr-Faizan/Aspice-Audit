@@ -52,8 +52,8 @@
    - `GET /api/v1/quizzes/published` — List published quizzes for users (not admin)
    - `GET /api/v1/quizzes/categories` — Get unique quiz categories
    - `GET /api/v1/quizzes/{id}` — Get quiz by ID (sanitized for users, without correct answers until submission)
-   - `POST /api/v1/quizzes/{id}/start` — Start quiz session (time tracking)
-   - `POST /api/v1/quizzes/{id}/submit` — Submit quiz attempt
+   - `POST /api/v1/quizzes/{id}/start` — Start Audit session (time tracking)
+   - `POST /api/v1/quizzes/{id}/submit` — Submit Audit attempt
    - `GET /api/v1/quizzes/attempts/user/{userId}` — List user attempts (history)
    - `GET /api/v1/quizzes/attempt/{attemptId}` — Get specific attempt result
 
@@ -469,13 +469,13 @@ layouts/user/index.tsx          → Already exists via _layout.tsx
 ---
 
 ### **Phase 6: User Quiz List**
-**Goal:** Allow users to browse and start quizzes.
+**Goal:** Allow users to browse and start Audits.
 
 **Components to Port:**
 1. `components/Quiz/User/QuizList/index.tsx` (main wrapper)
 2. `components/Quiz/User/QuizList/QuizList.tsx` (card grid)
 3. `components/Quiz/Shared/QuizFilters.tsx` (reuse from Phase 4)
-4. `components/Quiz/Shared/Modals.tsx` (start quiz modal, max attempts)
+4. `components/Quiz/Shared/Modals.tsx` (start Audit modal, max attempts)
 
 **Hooks:**
 - `hooks/Quiz/useQuizAttempts.ts`
@@ -547,7 +547,7 @@ layouts/user/index.tsx          → Already exists via _layout.tsx
 **Steps:**
 1. Update `components/Sidebar/AppSidebar.tsx`:
    - Add "Quizzes" menu item for all users
-   - Add "Quiz Admin" submenu for superusers (Dashboard, Manage Quizzes, Statistics)
+   - Add "Audit Admin" submenu for superusers (Dashboard, Manage Quizzes, Statistics)
 
 2. Update `routes/_layout.tsx` to include new routes
 
@@ -666,14 +666,14 @@ function AdminQuizzes() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Quiz Management</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Audit Management</h1>
         <p className="text-muted-foreground text-lg">
-          Create, edit, and manage ASPICE audit quizzes
+          Create, edit, and manage ASPICE audits
         </p>
       </div>
       <div className="rounded-lg border border-dashed p-8 text-center">
         <p className="text-muted-foreground">
-          Coming soon: Admin quiz management interface
+          Coming soon: Admin Audit management interface
         </p>
       </div>
     </div>
@@ -694,7 +694,7 @@ Update `baseItems`:
 const baseItems: Item[] = [
   { icon: Home, title: "Dashboard", path: "/dashboard" },
   { icon: Briefcase, title: "Items", path: "/items" },
-  { icon: GraduationCap, title: "Quiz Admin", path: "/admin-quizzes" }, // NEW
+  { icon: GraduationCap, title: "Audit Admin", path: "/admin-quizzes" }, // NEW
 ]
 ```
 
@@ -705,7 +705,7 @@ bun run dev
 ```
 
 **Expected Result:**
-- Sidebar shows "Quiz Admin" link
+- Sidebar shows "Audit Admin" link
 - Clicking it opens `/admin-quizzes` route with placeholder message
 - No errors in console
 - Existing routes (Dashboard, Items, Admin) still work
