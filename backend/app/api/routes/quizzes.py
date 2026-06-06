@@ -113,6 +113,38 @@ def read_quizzes(
 
 
 # ---------------------------------------------------------------------------
+# GET /quizzes/{id}  — retrieve a single quiz with questions (admin only)
+# ---------------------------------------------------------------------------
+
+@router.get("/{id}", response_model=QuizWithQuestions)
+def read_quiz(
+    session: SessionDep,
+    _admin: SuperuserDep,
+    id: uuid.UUID,
+) -> Any:
+    """
+    Retrieve a quiz by ID with all its questions. Admin only.
+    """
+    quiz = _get_quiz_or_404(session, id)
+    return QuizWithQuestions(
+        **_quiz_to_public(quiz).model_dump(),
+        questions=[
+            QuestionPublic(
+                id=q.id,
+                quiz_id=q.quiz_id,
+                question_text=q.question_text,
+                options=q.options,
+                correct_answer=q.correct_answer,
+                explanation=q.explanation,
+                points=q.points,
+                order=q.order,
+            )
+            for q in sorted(quiz.questions, key=lambda x: x.order)
+        ],
+    )
+
+
+# ---------------------------------------------------------------------------
 # POST /quizzes  — create quiz + questions
 # ---------------------------------------------------------------------------
 

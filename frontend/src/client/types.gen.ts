@@ -309,6 +309,12 @@ export type PrivateCreateUserData = {
 
 export type PrivateCreateUserResponse = (UserPublic);
 
+export type QuizzesReadQuizData = {
+    id: string;
+};
+
+export type QuizzesReadQuizResponse = (QuizWithQuestions);
+
 export type QuizzesReadQuizzesData = {
     category?: (string | null);
     difficulty?: (string | null);
