@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router"
+import { AuditManagement } from "@/components/Admin/AuditManagement"
 
 export const Route = createFileRoute("/_layout/admin-quizzes")({
   component: AdminQuizzes,
@@ -12,19 +13,5 @@ export const Route = createFileRoute("/_layout/admin-quizzes")({
 })
 
 function AdminQuizzes() {
-  return (
-    <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Audit Management</h1>
-        <p className="text-muted-foreground text-lg">
-          Create, edit, and manage ASPICE audits.
-        </p>
-      </div>
-      <div className="rounded-lg border border-dashed p-8 text-center">
-        <p className="text-muted-foreground">
-          Coming soon: Admin audit management interface
-        </p>
-      </div>
-    </div>
-  )
+  return <AuditManagement />
 }
