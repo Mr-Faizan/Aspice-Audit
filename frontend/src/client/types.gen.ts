@@ -193,12 +193,15 @@ export type UserCreate = {
     password: string;
 };
 
+export type StakeholderRoleEnum = 'software_developer' | 'software_architect' | 'project_manager' | 'qa_engineer' | 'test_engineer' | 'team_lead' | 'aspice_assessor';
+
 export type UserPublic = {
     email: string;
     is_active?: boolean;
     is_superuser?: boolean;
     full_name?: (string | null);
-    id: string;
+    stakeholder_role?: StakeholderRoleEnum;
+    id: number;
     created_at?: (string | null);
     last_login_at?: (string | null);
 };
@@ -207,6 +210,7 @@ export type UserRegister = {
     email: string;
     password: string;
     full_name?: (string | null);
+    stakeholder_role?: StakeholderRoleEnum;
 };
 
 export type UsersPublic = {

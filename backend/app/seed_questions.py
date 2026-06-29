@@ -3,12 +3,37 @@ Seed script: inserts all ASPICE SWE.1–SWE.6 audit questions and options.
 Run inside the backend container:
   python app/seed_questions.py
 """
-import uuid
 from datetime import datetime, timezone
 
 from sqlmodel import Session, select
 from app.core.db import engine
-from app.models import AuditQuestion, AuditOption
+from app.models import AuditQuestion, AuditOption, ProcessEnum
+
+# Maps old "SWE.N" process strings to ProcessEnum values
+PROCESS_MAP = {
+    "SWE.1": ProcessEnum.SWE1,
+    "SWE.2": ProcessEnum.SWE2,
+    "SWE.3": ProcessEnum.SWE3,
+    "SWE.4": ProcessEnum.SWE4,
+    "SWE.5": ProcessEnum.SWE5,
+    "SWE.6": ProcessEnum.SWE6,
+}
+
+# Maps short stakeholder codes to StakeholderRoleEnum string values
+STAKEHOLDER_MAP = {
+    "SA": "software_architect",
+    "SD": "software_developer",
+    "QA": "qa_engineer",
+    "PM": "project_manager",
+    "TE": "test_engineer",
+    "TL": "team_lead",
+    "ASR": "aspice_assessor",
+}
+
+
+def extract_base_practice_id(criteria: str) -> str:
+    """Pull the BP/GP code from the criteria string, e.g. 'SWE.1.BP1 — ...' → 'SWE.1.BP1'."""
+    return criteria.split(" — ")[0].split(",")[0].strip()
 
 # ---------------------------------------------------------------------------
 # Question data
@@ -757,7 +782,7 @@ def seed():
 
     with Session(engine) as session:
         for q_data in QUESTIONS:
-            # Skip if already seeded
+            # Idempotent: skip if already seeded
             existing = session.exec(
                 select(AuditQuestion).where(AuditQuestion.question_code == q_data["question_code"])
             ).first()
@@ -766,27 +791,24 @@ def seed():
                 continue
 
             question = AuditQuestion(
-                id=uuid.uuid4(),
                 question_code=q_data["question_code"],
-                process=q_data["process"],
+                base_practice_id=extract_base_practice_id(q_data["criteria"]),
+                process=PROCESS_MAP[q_data["process"]],
                 level=q_data["level"],
-                criteria=q_data["criteria"],
-                identifies=q_data["identifies"],
-                stakeholders=q_data["stakeholders"],
+                stakeholders=[STAKEHOLDER_MAP[s] for s in q_data["stakeholders"]],
                 question_text=q_data["question_text"],
                 recommendation_logic=q_data["recommendation_logic"],
                 created_at=datetime.now(timezone.utc),
             )
             session.add(question)
-            session.flush()  # get question.id before inserting options
+            session.flush()  # get auto-assigned question.id before inserting options
 
             for opt in q_data["options"]:
                 option = AuditOption(
-                    id=uuid.uuid4(),
                     question_id=question.id,
                     label=opt["label"],
                     option_text=opt["option_text"],
-                    weight=opt["weight"],
+                    weight=min(opt["weight"], 4),  # clamp legacy weight=5 to 4
                 )
                 session.add(option)
                 inserted_o += 1
