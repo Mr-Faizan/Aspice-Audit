@@ -261,45 +261,41 @@ Reference: [Architecture.md](Architecture.md)
 
 ## Phase 9 — Frontend: Audit Session Flow
 
-- [ ] **9.1** Replace `frontend/src/routes/_layout/quizzes/index.tsx` with Audits list page
+- [x] **9.1** Replace `frontend/src/routes/_layout/quizzes/index.tsx` with Audits list page
   - Fetch user's sessions from `GET /audit/sessions/`
-  - Display: status badge, started date, top weaknesses preview for completed sessions
-  - Prominent "Start New Audit" button → calls `POST /audit/sessions/`
+  - Display: status badge, started date, progress bar for in-progress sessions
+  - "Start New Audit" button → calls `POST /audit/sessions/`, stores first question in sessionStorage, navigates to session page
+  - "Continue" and "View Results" actions per session card
 
-- [ ] **9.2** Create `frontend/src/routes/_layout/audit/$sessionId/index.tsx` — Audit Session page
-  - On load: fetch current session state; if `in_progress`, display last unanswered question
-  - Display question text and options A–E as radio buttons or cards
-  - Show progress bar: "Question N of 12"
-  - On submit: call `POST /audit/sessions/{id}/answer`
-  - If response `status == "in_progress"`: render next question (no page reload)
-  - If response `status == "completed"`: navigate to results page
+- [x] **9.2** Create `frontend/src/routes/_layout/audit/$sessionId/index.tsx` — Audit Session page
+  - Reads current question from sessionStorage (set on start / after each answer)
+  - Displays question text, process/level/BP tags, progress bar, 5 option cards A–E
+  - On submit: calls `POST /audit/sessions/{id}/answer`, updates sessionStorage with next question or navigates to results
 
-- [ ] **9.3** Create `frontend/src/routes/_layout/audit/$sessionId/results.tsx` — Results page
-  - Fetch `GET /audit/sessions/{id}/results`
+- [x] **9.3** Create `frontend/src/routes/_layout/audit/$sessionId/results.tsx` — Results page
+  - Fetches `GET /audit/sessions/{id}/results`
 
-  - [ ] **9.3.1** Implement radar chart (SWE.1–SWE.6 axes, one value per process)
-    - Use `recharts` or `chart.js` (whichever is already in `package.json`)
+  - [x] **9.3.1** Implement radar chart (SWE.1–SWE.6 axes) — pure SVG, no external library
 
-  - [ ] **9.3.2** Implement heatmap table (rows = processes, columns = L1/L2/L3)
-    - Color-code cells: green / yellow / orange / red based on score thresholds
-    - Show `—` for null (not assessed)
+  - [x] **9.3.2** Implement heatmap table (rows = processes, columns = L1/L2/L3)
+    - Color-coded: green / yellow / orange / red with legend
 
-  - [ ] **9.3.3** Implement top weaknesses list
-    - Show top 3 gaps with process name, level, score, and recommendation text
+  - [x] **9.3.3** Implement top weaknesses list
+    - Shows top 3 gaps with process, level, risk score, and classification badge
 
-- [ ] **9.4** Update sidebar navigation
-  - Rename "Quizzes" entry to "Audits"
-  - Update route links to new audit paths
+- [x] **9.4** Update sidebar navigation
+  - Renamed "ASPICE Audits" → "Audits", removed "Items" entry
+  - Removed unused `Briefcase` import
 
 ---
 
 ## Phase 10 — Frontend: History Page
 
-- [ ] **10.1** Update `frontend/src/routes/_layout/history.tsx`
+- [x] **10.1** Update `frontend/src/routes/_layout/history.tsx`
   - Fetch sessions from `GET /audit/sessions/`
-  - Table columns: Date, Status, Questions Answered, Top Weakness, Actions
-  - "View Results" link for completed sessions → navigates to results page
-  - "Continue" link for in-progress sessions → navigates to audit session page
+  - Table columns: Started, Status, Progress (with mini bar), Completed, Action
+  - "View Results" button for completed sessions → navigates to results page
+  - "Continue" button for in-progress sessions → navigates to audit session page
 
 ---
 

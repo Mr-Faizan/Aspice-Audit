@@ -1,4 +1,4 @@
-import { Briefcase, ClipboardList, GraduationCap, History, Home, Users } from "lucide-react"
+import { ClipboardList, GraduationCap, History, Home, Users } from "lucide-react"
 
 import { SidebarAppearance } from "@/components/Common/Appearance"
 import { Logo } from "@/components/Common/Logo"
@@ -14,9 +14,8 @@ import { User } from "./User"
 
 const baseItems: Item[] = [
   { icon: Home, title: "Dashboard", path: "/dashboard" },
-  { icon: ClipboardList, title: "ASPICE Audits", path: "/quizzes" },
+  { icon: ClipboardList, title: "Audits", path: "/quizzes" },
   { icon: History, title: "Audit History", path: "/history" },
-  { icon: Briefcase, title: "Items", path: "/items" },
   { icon: GraduationCap, title: "Audit Admin", path: "/admin-quizzes" },
 ]
 

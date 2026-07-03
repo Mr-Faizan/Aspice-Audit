@@ -23,6 +23,8 @@ import { Route as LayoutAdminQuizzesRouteImport } from './routes/_layout/admin-q
 import { Route as LayoutAdminRouteImport } from './routes/_layout/admin'
 import { Route as LayoutQuizzesIndexRouteImport } from './routes/_layout/quizzes/index'
 import { Route as LayoutQuizzesQuizIdIndexRouteImport } from './routes/_layout/quizzes/$quizId/index'
+import { Route as LayoutAuditSessionIdIndexRouteImport } from './routes/_layout/audit/$sessionId/index'
+import { Route as LayoutAuditSessionIdResultsRouteImport } from './routes/_layout/audit/$sessionId/results'
 import { Route as LayoutQuizzesQuizIdResultResultIdRouteImport } from './routes/_layout/quizzes/$quizId/result/$resultId'
 
 const SignupRoute = SignupRouteImport.update({
@@ -95,6 +97,18 @@ const LayoutQuizzesQuizIdIndexRoute =
     path: '/quizzes/$quizId/',
     getParentRoute: () => LayoutRoute,
   } as any)
+const LayoutAuditSessionIdIndexRoute =
+  LayoutAuditSessionIdIndexRouteImport.update({
+    id: '/audit/$sessionId/',
+    path: '/audit/$sessionId/',
+    getParentRoute: () => LayoutRoute,
+  } as any)
+const LayoutAuditSessionIdResultsRoute =
+  LayoutAuditSessionIdResultsRouteImport.update({
+    id: '/audit/$sessionId/results',
+    path: '/audit/$sessionId/results',
+    getParentRoute: () => LayoutRoute,
+  } as any)
 const LayoutQuizzesQuizIdResultResultIdRoute =
   LayoutQuizzesQuizIdResultResultIdRouteImport.update({
     id: '/quizzes/$quizId/result/$resultId',
@@ -115,6 +129,8 @@ export interface FileRoutesByFullPath {
   '/items': typeof LayoutItemsRoute
   '/settings': typeof LayoutSettingsRoute
   '/quizzes/': typeof LayoutQuizzesIndexRoute
+  '/audit/$sessionId/results': typeof LayoutAuditSessionIdResultsRoute
+  '/audit/$sessionId/': typeof LayoutAuditSessionIdIndexRoute
   '/quizzes/$quizId/': typeof LayoutQuizzesQuizIdIndexRoute
   '/quizzes/$quizId/result/$resultId': typeof LayoutQuizzesQuizIdResultResultIdRoute
 }
@@ -131,6 +147,8 @@ export interface FileRoutesByTo {
   '/settings': typeof LayoutSettingsRoute
   '/': typeof LayoutIndexRoute
   '/quizzes': typeof LayoutQuizzesIndexRoute
+  '/audit/$sessionId/results': typeof LayoutAuditSessionIdResultsRoute
+  '/audit/$sessionId': typeof LayoutAuditSessionIdIndexRoute
   '/quizzes/$quizId': typeof LayoutQuizzesQuizIdIndexRoute
   '/quizzes/$quizId/result/$resultId': typeof LayoutQuizzesQuizIdResultResultIdRoute
 }
@@ -149,6 +167,8 @@ export interface FileRoutesById {
   '/_layout/settings': typeof LayoutSettingsRoute
   '/_layout/': typeof LayoutIndexRoute
   '/_layout/quizzes/': typeof LayoutQuizzesIndexRoute
+  '/_layout/audit/$sessionId/results': typeof LayoutAuditSessionIdResultsRoute
+  '/_layout/audit/$sessionId/': typeof LayoutAuditSessionIdIndexRoute
   '/_layout/quizzes/$quizId/': typeof LayoutQuizzesQuizIdIndexRoute
   '/_layout/quizzes/$quizId/result/$resultId': typeof LayoutQuizzesQuizIdResultResultIdRoute
 }
@@ -167,6 +187,8 @@ export interface FileRouteTypes {
     | '/items'
     | '/settings'
     | '/quizzes/'
+    | '/audit/$sessionId/results'
+    | '/audit/$sessionId/'
     | '/quizzes/$quizId/'
     | '/quizzes/$quizId/result/$resultId'
   fileRoutesByTo: FileRoutesByTo
@@ -183,6 +205,8 @@ export interface FileRouteTypes {
     | '/settings'
     | '/'
     | '/quizzes'
+    | '/audit/$sessionId/results'
+    | '/audit/$sessionId'
     | '/quizzes/$quizId'
     | '/quizzes/$quizId/result/$resultId'
   id:
@@ -200,6 +224,8 @@ export interface FileRouteTypes {
     | '/_layout/settings'
     | '/_layout/'
     | '/_layout/quizzes/'
+    | '/_layout/audit/$sessionId/results'
+    | '/_layout/audit/$sessionId/'
     | '/_layout/quizzes/$quizId/'
     | '/_layout/quizzes/$quizId/result/$resultId'
   fileRoutesById: FileRoutesById
@@ -312,6 +338,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutQuizzesQuizIdIndexRouteImport
       parentRoute: typeof LayoutRoute
     }
+    '/_layout/audit/$sessionId/': {
+      id: '/_layout/audit/$sessionId/'
+      path: '/audit/$sessionId'
+      fullPath: '/audit/$sessionId/'
+      preLoaderRoute: typeof LayoutAuditSessionIdIndexRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/audit/$sessionId/results': {
+      id: '/_layout/audit/$sessionId/results'
+      path: '/audit/$sessionId/results'
+      fullPath: '/audit/$sessionId/results'
+      preLoaderRoute: typeof LayoutAuditSessionIdResultsRouteImport
+      parentRoute: typeof LayoutRoute
+    }
     '/_layout/quizzes/$quizId/result/$resultId': {
       id: '/_layout/quizzes/$quizId/result/$resultId'
       path: '/quizzes/$quizId/result/$resultId'
@@ -331,6 +371,8 @@ interface LayoutRouteChildren {
   LayoutSettingsRoute: typeof LayoutSettingsRoute
   LayoutIndexRoute: typeof LayoutIndexRoute
   LayoutQuizzesIndexRoute: typeof LayoutQuizzesIndexRoute
+  LayoutAuditSessionIdResultsRoute: typeof LayoutAuditSessionIdResultsRoute
+  LayoutAuditSessionIdIndexRoute: typeof LayoutAuditSessionIdIndexRoute
   LayoutQuizzesQuizIdIndexRoute: typeof LayoutQuizzesQuizIdIndexRoute
   LayoutQuizzesQuizIdResultResultIdRoute: typeof LayoutQuizzesQuizIdResultResultIdRoute
 }
@@ -344,6 +386,8 @@ const LayoutRouteChildren: LayoutRouteChildren = {
   LayoutSettingsRoute: LayoutSettingsRoute,
   LayoutIndexRoute: LayoutIndexRoute,
   LayoutQuizzesIndexRoute: LayoutQuizzesIndexRoute,
+  LayoutAuditSessionIdResultsRoute: LayoutAuditSessionIdResultsRoute,
+  LayoutAuditSessionIdIndexRoute: LayoutAuditSessionIdIndexRoute,
   LayoutQuizzesQuizIdIndexRoute: LayoutQuizzesQuizIdIndexRoute,
   LayoutQuizzesQuizIdResultResultIdRoute:
     LayoutQuizzesQuizIdResultResultIdRoute,
