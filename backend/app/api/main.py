@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from app.api.routes import items, login, private, quizzes, statistics, users, utils
+from app.api.routes import analytics, audit, items, login, private, questions, users, utils
 from app.core.config import settings
 
 api_router = APIRouter()
@@ -8,8 +8,9 @@ api_router.include_router(login.router)
 api_router.include_router(users.router)
 api_router.include_router(utils.router)
 api_router.include_router(items.router)
-api_router.include_router(quizzes.router, prefix="/quizzes", tags=["quizzes"])
-api_router.include_router(statistics.router, prefix="/statistics", tags=["statistics"])
+api_router.include_router(audit.router, prefix="/audit/sessions", tags=["audit"])
+api_router.include_router(questions.router, prefix="/questions", tags=["questions"])
+api_router.include_router(analytics.router, prefix="/analytics", tags=["analytics"])
 
 
 if settings.ENVIRONMENT == "local":

@@ -1,10 +1,20 @@
 import uuid
 from typing import Any
 
-from sqlmodel import Session, select
+from sqlmodel import Session, col, select
 
 from app.core.security import get_password_hash, verify_password
-from app.models import Item, ItemCreate, User, UserCreate, UserUpdate
+from app.models import (
+    AuditSession,
+    AuditResponse,
+    BanditArmState,
+    Item,
+    ItemCreate,
+    User,
+    UserCreate,
+    UserUpdate,
+    WeaknessResult,
+)
 
 
 def create_user(*, session: Session, user_create: UserCreate) -> User:
@@ -66,3 +76,61 @@ def create_item(*, session: Session, item_in: ItemCreate, owner_id: uuid.UUID) -
     session.commit()
     session.refresh(db_item)
     return db_item
+
+
+# ---------------------------------------------------------------------------
+# AuditSession
+# ---------------------------------------------------------------------------
+
+def get_audit_session(*, session: Session, session_id: uuid.UUID) -> AuditSession | None:
+    return session.get(AuditSession, session_id)
+
+
+def list_audit_sessions_for_user(
+    *, session: Session, user_id: int, skip: int = 0, limit: int = 20
+) -> list[AuditSession]:
+    return list(
+        session.exec(
+            select(AuditSession)
+            .where(AuditSession.user_id == user_id)
+            .order_by(col(AuditSession.started_at).desc())
+            .offset(skip)
+            .limit(limit)
+        ).all()
+    )
+
+
+# ---------------------------------------------------------------------------
+# AuditResponse
+# ---------------------------------------------------------------------------
+
+def list_responses_for_session(
+    *, session: Session, session_id: uuid.UUID
+) -> list[AuditResponse]:
+    return list(
+        session.exec(
+            select(AuditResponse)
+            .where(AuditResponse.session_id == session_id)
+            .order_by(col(AuditResponse.answered_at))
+        ).all()
+    )
+
+
+# ---------------------------------------------------------------------------
+# WeaknessResult
+# ---------------------------------------------------------------------------
+
+def get_weakness_result(*, session: Session, session_id: uuid.UUID) -> WeaknessResult | None:
+    return session.exec(
+        select(WeaknessResult).where(WeaknessResult.session_id == session_id)
+    ).first()
+
+
+# ---------------------------------------------------------------------------
+# BanditArmState
+# ---------------------------------------------------------------------------
+
+def get_bandit_arm(*, session: Session, question_id: int) -> BanditArmState | None:
+    return session.exec(
+        select(BanditArmState).where(BanditArmState.question_id == question_id)
+    ).first()
