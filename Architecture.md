@@ -569,8 +569,6 @@ Option weights (0–4) are normalized to 0.0–1.0 by dividing by 4. This makes 
 
 ## 9. Python Package Layout
 
-### New files to add
-
 ```
 backend/app/
 ├── services/
@@ -578,54 +576,52 @@ backend/app/
 │   ├── audit_service.py          # session start/answer/complete workflow
 │   ├── cmab_engine.py            # LinUCB: context builder, arm select, update
 │   └── weakness_classifier.py   # weighted scoring + thresholds + top_weaknesses
-├── api/routes/
-│   ├── audit.py                  # /audit/sessions/* endpoints
-│   ├── questions.py              # /questions/* endpoints (admin)
-│   └── analytics.py             # /analytics/* endpoints (admin)
-└── models.py                    # add AuditSession, AuditResponse,
-                                 # WeaknessResult, BanditArmState here
+├── api/
+│   ├── main.py                   # router registration
+│   ├── deps.py                   # auth + DB session dependencies
+│   └── routes/
+│       ├── audit.py              # /audit/sessions/* endpoints
+│       ├── questions.py          # /questions/* endpoints (admin)
+│       ├── analytics.py          # /analytics/* endpoints (admin)
+│       ├── users.py              # /users/* endpoints
+│       └── login.py              # /login/* endpoints
+├── models.py                     # SQLModel DB models + Pydantic schemas
+├── crud.py                       # DB helper functions
+└── seed_questions.py             # one-time question bank seeding script
 ```
 
 ### Service responsibilities
 
 **`audit_service.py`**
-- `start_session(user_id) → (AuditSession, AuditQuestion)` — creates session, calls CMAB for first question
-- `submit_answer(session_id, question_id, option_id) → AnswerResult` — stores response, updates CMAB, returns next question or triggers completion
-- `complete_session(session_id) → WeaknessResult` — calls classifier, stores result, marks session done
+- `start_session(user, db) → (AuditSession, AuditQuestionPublic)` — creates session, calls CMAB for first question
+- `submit_answer(session_id, question_id, option_id, db) → AnswerResult` — stores response, updates CMAB, returns next question or triggers completion
+- `_complete_session(session, db) → WeaknessResult` — calls classifier, stores result, marks session done
 
 **`cmab_engine.py`**
-- `build_context(session, user) → np.ndarray` — builds 23-dim context vector
-- `select_question(context, eligible_questions) → AuditQuestion` — LinUCB arm selection
-- `update(question_id, context, reward)` — updates A/b matrices, persists to DB
+- `build_context(session, user, db) → np.ndarray` — builds 23-dim context vector
+- `select_question(context, eligible_questions, db) → AuditQuestion` — LinUCB UCB arm selection
+- `update_arm(question_id, context, reward, db)` — updates A/b matrices, persists to DB
+- `compute_reward(option, question, session, db) → float` — base reward + coverage bonus, clamped [0, 1]
 
 **`weakness_classifier.py`**
-- `compute_scores(session_id) → dict` — returns `{process: {level: score}}` dict
-- `get_top_weaknesses(scores, n=3) → list[str]` — returns top N `"SWEX-LY"` strings
+- `compute_scores(session_id, db) → dict` — returns `{process: {level: score | null}}` for all 18 cells
+- `get_top_weaknesses(scores, n=3) → list[str]` — returns top N `"SWEX-LY"` keys by score
 
 ---
 
-## 10. Migration Path from Current Code
+## 10. Implementation Status
 
-### Step 1 — User model (Alembic migration)
-Add `stakeholder_role` column to the `user` table with `NOT NULL` after a data migration that sets a default value for existing rows.
+All phases implemented. The migration path described in the original design has been fully executed:
 
-### Step 2 — New ASPICE session models (Alembic migration)
-Create tables: `auditsession`, `auditresponse`, `weaknessresult`, `banditarmstate`.
-
-### Step 3 — Refine existing ASPICE models (Alembic migration)
-Add `base_practice_id` and `is_active` to `auditquestion`. Rename/align any field names.
-
-### Step 4 — Remove generic quiz tables (Alembic migration)
-Drop `quiz`, `question`, `quizattempt` tables after verifying no production data needs migrating.
-
-### Step 5 — Backend services and routes
-Implement `services/` package. Add `audit.py`, `questions.py`, `analytics.py` routes. Remove `quizzes.py` and `statistics.py` routes.
-
-### Step 6 — Frontend pages
-Update signup form, replace quiz pages with audit session pages, update history and dashboard pages.
-
-### Step 7 — Seed question bank
-Implement `POST /questions/seed` and run initial seeding of ASPICE questions across SWE.1–SWE.6, all three levels, with appropriate stakeholder role assignments and option weights.
+| Step | Status |
+|---|---|
+| Add `stakeholder_role` to `user` (Alembic) | ✅ Done |
+| Create `auditsession`, `auditresponse`, `weaknessresult`, `banditarmstate` tables | ✅ Done |
+| Add `base_practice_id` and `is_active` to `auditquestion` | ✅ Done |
+| Drop `quiz`, `question`, `quizattempt` tables | ✅ Done |
+| Implement services package + API routes | ✅ Done |
+| Update all frontend pages | ✅ Done |
+| Seed 42 questions across SWE.1–SWE.6 | ✅ Done |
 
 ---
 

@@ -16,7 +16,6 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as LayoutRouteImport } from './routes/_layout'
 import { Route as LayoutIndexRouteImport } from './routes/_layout/index'
 import { Route as LayoutSettingsRouteImport } from './routes/_layout/settings'
-import { Route as LayoutItemsRouteImport } from './routes/_layout/items'
 import { Route as LayoutHistoryRouteImport } from './routes/_layout/history'
 import { Route as LayoutDashboardRouteImport } from './routes/_layout/dashboard'
 import { Route as LayoutAdminQuizzesRouteImport } from './routes/_layout/admin-quizzes'
@@ -59,11 +58,6 @@ const LayoutIndexRoute = LayoutIndexRouteImport.update({
 const LayoutSettingsRoute = LayoutSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
-  getParentRoute: () => LayoutRoute,
-} as any)
-const LayoutItemsRoute = LayoutItemsRouteImport.update({
-  id: '/items',
-  path: '/items',
   getParentRoute: () => LayoutRoute,
 } as any)
 const LayoutHistoryRoute = LayoutHistoryRouteImport.update({
@@ -126,7 +120,6 @@ export interface FileRoutesByFullPath {
   '/admin-quizzes': typeof LayoutAdminQuizzesRoute
   '/dashboard': typeof LayoutDashboardRoute
   '/history': typeof LayoutHistoryRoute
-  '/items': typeof LayoutItemsRoute
   '/settings': typeof LayoutSettingsRoute
   '/quizzes/': typeof LayoutQuizzesIndexRoute
   '/audit/$sessionId/results': typeof LayoutAuditSessionIdResultsRoute
@@ -143,7 +136,6 @@ export interface FileRoutesByTo {
   '/admin-quizzes': typeof LayoutAdminQuizzesRoute
   '/dashboard': typeof LayoutDashboardRoute
   '/history': typeof LayoutHistoryRoute
-  '/items': typeof LayoutItemsRoute
   '/settings': typeof LayoutSettingsRoute
   '/': typeof LayoutIndexRoute
   '/quizzes': typeof LayoutQuizzesIndexRoute
@@ -163,7 +155,6 @@ export interface FileRoutesById {
   '/_layout/admin-quizzes': typeof LayoutAdminQuizzesRoute
   '/_layout/dashboard': typeof LayoutDashboardRoute
   '/_layout/history': typeof LayoutHistoryRoute
-  '/_layout/items': typeof LayoutItemsRoute
   '/_layout/settings': typeof LayoutSettingsRoute
   '/_layout/': typeof LayoutIndexRoute
   '/_layout/quizzes/': typeof LayoutQuizzesIndexRoute
@@ -184,7 +175,6 @@ export interface FileRouteTypes {
     | '/admin-quizzes'
     | '/dashboard'
     | '/history'
-    | '/items'
     | '/settings'
     | '/quizzes/'
     | '/audit/$sessionId/results'
@@ -201,7 +191,6 @@ export interface FileRouteTypes {
     | '/admin-quizzes'
     | '/dashboard'
     | '/history'
-    | '/items'
     | '/settings'
     | '/'
     | '/quizzes'
@@ -220,7 +209,6 @@ export interface FileRouteTypes {
     | '/_layout/admin-quizzes'
     | '/_layout/dashboard'
     | '/_layout/history'
-    | '/_layout/items'
     | '/_layout/settings'
     | '/_layout/'
     | '/_layout/quizzes/'
@@ -287,13 +275,6 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof LayoutSettingsRouteImport
-      parentRoute: typeof LayoutRoute
-    }
-    '/_layout/items': {
-      id: '/_layout/items'
-      path: '/items'
-      fullPath: '/items'
-      preLoaderRoute: typeof LayoutItemsRouteImport
       parentRoute: typeof LayoutRoute
     }
     '/_layout/history': {
@@ -367,7 +348,6 @@ interface LayoutRouteChildren {
   LayoutAdminQuizzesRoute: typeof LayoutAdminQuizzesRoute
   LayoutDashboardRoute: typeof LayoutDashboardRoute
   LayoutHistoryRoute: typeof LayoutHistoryRoute
-  LayoutItemsRoute: typeof LayoutItemsRoute
   LayoutSettingsRoute: typeof LayoutSettingsRoute
   LayoutIndexRoute: typeof LayoutIndexRoute
   LayoutQuizzesIndexRoute: typeof LayoutQuizzesIndexRoute
@@ -382,7 +362,6 @@ const LayoutRouteChildren: LayoutRouteChildren = {
   LayoutAdminQuizzesRoute: LayoutAdminQuizzesRoute,
   LayoutDashboardRoute: LayoutDashboardRoute,
   LayoutHistoryRoute: LayoutHistoryRoute,
-  LayoutItemsRoute: LayoutItemsRoute,
   LayoutSettingsRoute: LayoutSettingsRoute,
   LayoutIndexRoute: LayoutIndexRoute,
   LayoutQuizzesIndexRoute: LayoutQuizzesIndexRoute,
