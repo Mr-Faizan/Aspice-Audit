@@ -301,13 +301,13 @@ Reference: [Architecture.md](Architecture.md)
 
 ## Phase 11 — Frontend: Admin Pages
 
-- [ ] **11.1** Replace `frontend/src/routes/_layout/admin-quizzes.tsx` with Question Bank Manager
+- [x] **11.1** Replace `frontend/src/routes/_layout/admin-quizzes.tsx` with Question Bank Manager
   - Table: question code, process, level, stakeholders, is_active, actions
   - Filter bar: by process, level, stakeholder role, active/inactive
   - "Add Question" button → opens modal/drawer with form (question + options)
   - "Edit" and "Deactivate" actions per row
 
-- [ ] **11.2** Update `frontend/src/routes/_layout/dashboard.tsx` — Admin Analytics Dashboard
+- [x] **11.2** Update `frontend/src/routes/_layout/dashboard.tsx` — Admin Analytics Dashboard
   - Aggregate weakness heatmap from `GET /analytics/weaknesses`
   - User participation stats from `GET /analytics/users`
   - CMAB arm performance table from `GET /analytics/bandit`
