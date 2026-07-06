@@ -16,8 +16,15 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as LayoutRouteImport } from './routes/_layout'
 import { Route as LayoutIndexRouteImport } from './routes/_layout/index'
 import { Route as LayoutSettingsRouteImport } from './routes/_layout/settings'
-import { Route as LayoutItemsRouteImport } from './routes/_layout/items'
+import { Route as LayoutHistoryRouteImport } from './routes/_layout/history'
+import { Route as LayoutDashboardRouteImport } from './routes/_layout/dashboard'
+import { Route as LayoutAdminQuizzesRouteImport } from './routes/_layout/admin-quizzes'
 import { Route as LayoutAdminRouteImport } from './routes/_layout/admin'
+import { Route as LayoutQuizzesIndexRouteImport } from './routes/_layout/quizzes/index'
+import { Route as LayoutQuizzesQuizIdIndexRouteImport } from './routes/_layout/quizzes/$quizId/index'
+import { Route as LayoutAuditSessionIdIndexRouteImport } from './routes/_layout/audit/$sessionId/index'
+import { Route as LayoutAuditSessionIdResultsRouteImport } from './routes/_layout/audit/$sessionId/results'
+import { Route as LayoutQuizzesQuizIdResultResultIdRouteImport } from './routes/_layout/quizzes/$quizId/result/$resultId'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -53,9 +60,19 @@ const LayoutSettingsRoute = LayoutSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => LayoutRoute,
 } as any)
-const LayoutItemsRoute = LayoutItemsRouteImport.update({
-  id: '/items',
-  path: '/items',
+const LayoutHistoryRoute = LayoutHistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
+  getParentRoute: () => LayoutRoute,
+} as any)
+const LayoutDashboardRoute = LayoutDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => LayoutRoute,
+} as any)
+const LayoutAdminQuizzesRoute = LayoutAdminQuizzesRouteImport.update({
+  id: '/admin-quizzes',
+  path: '/admin-quizzes',
   getParentRoute: () => LayoutRoute,
 } as any)
 const LayoutAdminRoute = LayoutAdminRouteImport.update({
@@ -63,16 +80,52 @@ const LayoutAdminRoute = LayoutAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => LayoutRoute,
 } as any)
+const LayoutQuizzesIndexRoute = LayoutQuizzesIndexRouteImport.update({
+  id: '/quizzes/',
+  path: '/quizzes/',
+  getParentRoute: () => LayoutRoute,
+} as any)
+const LayoutQuizzesQuizIdIndexRoute =
+  LayoutQuizzesQuizIdIndexRouteImport.update({
+    id: '/quizzes/$quizId/',
+    path: '/quizzes/$quizId/',
+    getParentRoute: () => LayoutRoute,
+  } as any)
+const LayoutAuditSessionIdIndexRoute =
+  LayoutAuditSessionIdIndexRouteImport.update({
+    id: '/audit/$sessionId/',
+    path: '/audit/$sessionId/',
+    getParentRoute: () => LayoutRoute,
+  } as any)
+const LayoutAuditSessionIdResultsRoute =
+  LayoutAuditSessionIdResultsRouteImport.update({
+    id: '/audit/$sessionId/results',
+    path: '/audit/$sessionId/results',
+    getParentRoute: () => LayoutRoute,
+  } as any)
+const LayoutQuizzesQuizIdResultResultIdRoute =
+  LayoutQuizzesQuizIdResultResultIdRouteImport.update({
+    id: '/quizzes/$quizId/result/$resultId',
+    path: '/quizzes/$quizId/result/$resultId',
+    getParentRoute: () => LayoutRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof LayoutIndexRoute
   '/login': typeof LoginRoute
   '/recover-password': typeof RecoverPasswordRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
   '/admin': typeof LayoutAdminRoute
-  '/items': typeof LayoutItemsRoute
+  '/admin-quizzes': typeof LayoutAdminQuizzesRoute
+  '/dashboard': typeof LayoutDashboardRoute
+  '/history': typeof LayoutHistoryRoute
   '/settings': typeof LayoutSettingsRoute
-  '/': typeof LayoutIndexRoute
+  '/quizzes/': typeof LayoutQuizzesIndexRoute
+  '/audit/$sessionId/results': typeof LayoutAuditSessionIdResultsRoute
+  '/audit/$sessionId/': typeof LayoutAuditSessionIdIndexRoute
+  '/quizzes/$quizId/': typeof LayoutQuizzesQuizIdIndexRoute
+  '/quizzes/$quizId/result/$resultId': typeof LayoutQuizzesQuizIdResultResultIdRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
@@ -80,9 +133,16 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
   '/admin': typeof LayoutAdminRoute
-  '/items': typeof LayoutItemsRoute
+  '/admin-quizzes': typeof LayoutAdminQuizzesRoute
+  '/dashboard': typeof LayoutDashboardRoute
+  '/history': typeof LayoutHistoryRoute
   '/settings': typeof LayoutSettingsRoute
   '/': typeof LayoutIndexRoute
+  '/quizzes': typeof LayoutQuizzesIndexRoute
+  '/audit/$sessionId/results': typeof LayoutAuditSessionIdResultsRoute
+  '/audit/$sessionId': typeof LayoutAuditSessionIdIndexRoute
+  '/quizzes/$quizId': typeof LayoutQuizzesQuizIdIndexRoute
+  '/quizzes/$quizId/result/$resultId': typeof LayoutQuizzesQuizIdResultResultIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -92,21 +152,35 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
   '/_layout/admin': typeof LayoutAdminRoute
-  '/_layout/items': typeof LayoutItemsRoute
+  '/_layout/admin-quizzes': typeof LayoutAdminQuizzesRoute
+  '/_layout/dashboard': typeof LayoutDashboardRoute
+  '/_layout/history': typeof LayoutHistoryRoute
   '/_layout/settings': typeof LayoutSettingsRoute
   '/_layout/': typeof LayoutIndexRoute
+  '/_layout/quizzes/': typeof LayoutQuizzesIndexRoute
+  '/_layout/audit/$sessionId/results': typeof LayoutAuditSessionIdResultsRoute
+  '/_layout/audit/$sessionId/': typeof LayoutAuditSessionIdIndexRoute
+  '/_layout/quizzes/$quizId/': typeof LayoutQuizzesQuizIdIndexRoute
+  '/_layout/quizzes/$quizId/result/$resultId': typeof LayoutQuizzesQuizIdResultResultIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
     | '/login'
     | '/recover-password'
     | '/reset-password'
     | '/signup'
     | '/admin'
-    | '/items'
+    | '/admin-quizzes'
+    | '/dashboard'
+    | '/history'
     | '/settings'
-    | '/'
+    | '/quizzes/'
+    | '/audit/$sessionId/results'
+    | '/audit/$sessionId/'
+    | '/quizzes/$quizId/'
+    | '/quizzes/$quizId/result/$resultId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/login'
@@ -114,9 +188,16 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/signup'
     | '/admin'
-    | '/items'
+    | '/admin-quizzes'
+    | '/dashboard'
+    | '/history'
     | '/settings'
     | '/'
+    | '/quizzes'
+    | '/audit/$sessionId/results'
+    | '/audit/$sessionId'
+    | '/quizzes/$quizId'
+    | '/quizzes/$quizId/result/$resultId'
   id:
     | '__root__'
     | '/_layout'
@@ -125,9 +206,16 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/signup'
     | '/_layout/admin'
-    | '/_layout/items'
+    | '/_layout/admin-quizzes'
+    | '/_layout/dashboard'
+    | '/_layout/history'
     | '/_layout/settings'
     | '/_layout/'
+    | '/_layout/quizzes/'
+    | '/_layout/audit/$sessionId/results'
+    | '/_layout/audit/$sessionId/'
+    | '/_layout/quizzes/$quizId/'
+    | '/_layout/quizzes/$quizId/result/$resultId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -171,7 +259,7 @@ declare module '@tanstack/react-router' {
     '/_layout': {
       id: '/_layout'
       path: ''
-      fullPath: ''
+      fullPath: '/'
       preLoaderRoute: typeof LayoutRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -189,11 +277,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutSettingsRouteImport
       parentRoute: typeof LayoutRoute
     }
-    '/_layout/items': {
-      id: '/_layout/items'
-      path: '/items'
-      fullPath: '/items'
-      preLoaderRoute: typeof LayoutItemsRouteImport
+    '/_layout/history': {
+      id: '/_layout/history'
+      path: '/history'
+      fullPath: '/history'
+      preLoaderRoute: typeof LayoutHistoryRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/dashboard': {
+      id: '/_layout/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof LayoutDashboardRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/admin-quizzes': {
+      id: '/_layout/admin-quizzes'
+      path: '/admin-quizzes'
+      fullPath: '/admin-quizzes'
+      preLoaderRoute: typeof LayoutAdminQuizzesRouteImport
       parentRoute: typeof LayoutRoute
     }
     '/_layout/admin': {
@@ -203,21 +305,71 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutAdminRouteImport
       parentRoute: typeof LayoutRoute
     }
+    '/_layout/quizzes/': {
+      id: '/_layout/quizzes/'
+      path: '/quizzes'
+      fullPath: '/quizzes/'
+      preLoaderRoute: typeof LayoutQuizzesIndexRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/quizzes/$quizId/': {
+      id: '/_layout/quizzes/$quizId/'
+      path: '/quizzes/$quizId'
+      fullPath: '/quizzes/$quizId/'
+      preLoaderRoute: typeof LayoutQuizzesQuizIdIndexRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/audit/$sessionId/': {
+      id: '/_layout/audit/$sessionId/'
+      path: '/audit/$sessionId'
+      fullPath: '/audit/$sessionId/'
+      preLoaderRoute: typeof LayoutAuditSessionIdIndexRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/audit/$sessionId/results': {
+      id: '/_layout/audit/$sessionId/results'
+      path: '/audit/$sessionId/results'
+      fullPath: '/audit/$sessionId/results'
+      preLoaderRoute: typeof LayoutAuditSessionIdResultsRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/quizzes/$quizId/result/$resultId': {
+      id: '/_layout/quizzes/$quizId/result/$resultId'
+      path: '/quizzes/$quizId/result/$resultId'
+      fullPath: '/quizzes/$quizId/result/$resultId'
+      preLoaderRoute: typeof LayoutQuizzesQuizIdResultResultIdRouteImport
+      parentRoute: typeof LayoutRoute
+    }
   }
 }
 
 interface LayoutRouteChildren {
   LayoutAdminRoute: typeof LayoutAdminRoute
-  LayoutItemsRoute: typeof LayoutItemsRoute
+  LayoutAdminQuizzesRoute: typeof LayoutAdminQuizzesRoute
+  LayoutDashboardRoute: typeof LayoutDashboardRoute
+  LayoutHistoryRoute: typeof LayoutHistoryRoute
   LayoutSettingsRoute: typeof LayoutSettingsRoute
   LayoutIndexRoute: typeof LayoutIndexRoute
+  LayoutQuizzesIndexRoute: typeof LayoutQuizzesIndexRoute
+  LayoutAuditSessionIdResultsRoute: typeof LayoutAuditSessionIdResultsRoute
+  LayoutAuditSessionIdIndexRoute: typeof LayoutAuditSessionIdIndexRoute
+  LayoutQuizzesQuizIdIndexRoute: typeof LayoutQuizzesQuizIdIndexRoute
+  LayoutQuizzesQuizIdResultResultIdRoute: typeof LayoutQuizzesQuizIdResultResultIdRoute
 }
 
 const LayoutRouteChildren: LayoutRouteChildren = {
   LayoutAdminRoute: LayoutAdminRoute,
-  LayoutItemsRoute: LayoutItemsRoute,
+  LayoutAdminQuizzesRoute: LayoutAdminQuizzesRoute,
+  LayoutDashboardRoute: LayoutDashboardRoute,
+  LayoutHistoryRoute: LayoutHistoryRoute,
   LayoutSettingsRoute: LayoutSettingsRoute,
   LayoutIndexRoute: LayoutIndexRoute,
+  LayoutQuizzesIndexRoute: LayoutQuizzesIndexRoute,
+  LayoutAuditSessionIdResultsRoute: LayoutAuditSessionIdResultsRoute,
+  LayoutAuditSessionIdIndexRoute: LayoutAuditSessionIdIndexRoute,
+  LayoutQuizzesQuizIdIndexRoute: LayoutQuizzesQuizIdIndexRoute,
+  LayoutQuizzesQuizIdResultResultIdRoute:
+    LayoutQuizzesQuizIdResultResultIdRoute,
 }
 
 const LayoutRouteWithChildren =

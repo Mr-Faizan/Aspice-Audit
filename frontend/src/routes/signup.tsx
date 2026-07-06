@@ -18,12 +18,38 @@ import {
 import { Input } from "@/components/ui/input"
 import { LoadingButton } from "@/components/ui/loading-button"
 import { PasswordInput } from "@/components/ui/password-input"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import useAuth, { isLoggedIn } from "@/hooks/useAuth"
+
+const STAKEHOLDER_ROLES = [
+  { value: "software_developer", label: "Software Developer" },
+  { value: "software_architect", label: "Software Architect" },
+  { value: "project_manager", label: "Project Manager" },
+  { value: "qa_engineer", label: "QA Engineer" },
+  { value: "test_engineer", label: "Test Engineer" },
+  { value: "team_lead", label: "Team Lead" },
+  { value: "aspice_assessor", label: "ASPICE Assessor" },
+] as const
 
 const formSchema = z
   .object({
     email: z.email(),
     full_name: z.string().min(1, { message: "Full Name is required" }),
+    stakeholder_role: z.enum([
+      "software_developer",
+      "software_architect",
+      "project_manager",
+      "qa_engineer",
+      "test_engineer",
+      "team_lead",
+      "aspice_assessor",
+    ]),
     password: z
       .string()
       .min(1, { message: "Password is required" })
@@ -66,6 +92,7 @@ function SignUp() {
     defaultValues: {
       email: "",
       full_name: "",
+      stakeholder_role: "software_developer",
       password: "",
       confirm_password: "",
     },
@@ -105,6 +132,31 @@ function SignUp() {
                       {...field}
                     />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="stakeholder_role"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Your Role</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger data-testid="role-select" className="w-full">
+                        <SelectValue placeholder="Select your role" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {STAKEHOLDER_ROLES.map((role) => (
+                        <SelectItem key={role.value} value={role.value}>
+                          {role.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}

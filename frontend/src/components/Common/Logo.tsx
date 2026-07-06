@@ -2,10 +2,10 @@ import { Link } from "@tanstack/react-router"
 
 import { useTheme } from "@/components/theme-provider"
 import { cn } from "@/lib/utils"
-import icon from "/assets/images/aspice-icon.svg"
-import iconLight from "/assets/images/aspice-icon-light.svg"
-import logo from "/assets/images/aspice-logo.svg"
-import logoLight from "/assets/images/aspice-logo-light.svg"
+const icon = "/assets/images/aspice-icon.svg"
+const iconLight = "/assets/images/aspice-icon-light.svg"
+const logo = "/assets/images/aspice-logo.svg"
+const logoLight = "/assets/images/aspice-logo-light.svg"
 
 interface LogoProps {
   variant?: "full" | "icon" | "responsive"

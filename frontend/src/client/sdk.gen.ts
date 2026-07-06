@@ -3,7 +3,159 @@
 import type { CancelablePromise } from './core/CancelablePromise';
 import { OpenAPI } from './core/OpenAPI';
 import { request as __request } from './core/request';
-import type { ItemsReadItemsData, ItemsReadItemsResponse, ItemsCreateItemData, ItemsCreateItemResponse, ItemsReadItemData, ItemsReadItemResponse, ItemsUpdateItemData, ItemsUpdateItemResponse, ItemsDeleteItemData, ItemsDeleteItemResponse, LoginLoginAccessTokenData, LoginLoginAccessTokenResponse, LoginTestTokenResponse, LoginRecoverPasswordData, LoginRecoverPasswordResponse, LoginResetPasswordData, LoginResetPasswordResponse, LoginRecoverPasswordHtmlContentData, LoginRecoverPasswordHtmlContentResponse, PrivateCreateUserData, PrivateCreateUserResponse, UsersReadUsersData, UsersReadUsersResponse, UsersCreateUserData, UsersCreateUserResponse, UsersReadUserMeResponse, UsersDeleteUserMeResponse, UsersUpdateUserMeData, UsersUpdateUserMeResponse, UsersUpdatePasswordMeData, UsersUpdatePasswordMeResponse, UsersRegisterUserData, UsersRegisterUserResponse, UsersReadUserByIdData, UsersReadUserByIdResponse, UsersUpdateUserData, UsersUpdateUserResponse, UsersDeleteUserData, UsersDeleteUserResponse, UtilsTestEmailData, UtilsTestEmailResponse, UtilsHealthCheckResponse } from './types.gen';
+import type { AnalyticsAggregateWeaknessesResponse, AnalyticsUserStatsResponse, AnalyticsBanditPerformanceResponse, AuditStartSessionResponse, AuditListSessionsData, AuditListSessionsResponse, AuditGetSessionData, AuditGetSessionResponse, AuditSubmitAnswerData, AuditSubmitAnswerResponse, AuditGetResultsData, AuditGetResultsResponse, ItemsReadItemsData, ItemsReadItemsResponse, ItemsCreateItemData, ItemsCreateItemResponse, ItemsReadItemData, ItemsReadItemResponse, ItemsUpdateItemData, ItemsUpdateItemResponse, ItemsDeleteItemData, ItemsDeleteItemResponse, LoginLoginAccessTokenData, LoginLoginAccessTokenResponse, LoginTestTokenResponse, LoginRecoverPasswordData, LoginRecoverPasswordResponse, LoginResetPasswordData, LoginResetPasswordResponse, LoginRecoverPasswordHtmlContentData, LoginRecoverPasswordHtmlContentResponse, PrivateCreateUserData, PrivateCreateUserResponse, QuestionsListQuestionsData, QuestionsListQuestionsResponse, QuestionsCreateQuestionData, QuestionsCreateQuestionResponse, QuestionsUpdateQuestionData, QuestionsUpdateQuestionResponse, QuestionsDeactivateQuestionData, QuestionsDeactivateQuestionResponse, QuestionsSeedQuestionsData, QuestionsSeedQuestionsResponse, UsersReadUsersData, UsersReadUsersResponse, UsersCreateUserData, UsersCreateUserResponse, UsersReadUserMeResponse, UsersDeleteUserMeResponse, UsersUpdateUserMeData, UsersUpdateUserMeResponse, UsersUpdatePasswordMeData, UsersUpdatePasswordMeResponse, UsersRegisterUserData, UsersRegisterUserResponse, UsersReadUserByIdData, UsersReadUserByIdResponse, UsersUpdateUserData, UsersUpdateUserResponse, UsersDeleteUserData, UsersDeleteUserResponse, UtilsTestEmailData, UtilsTestEmailResponse, UtilsHealthCheckResponse } from './types.gen';
+
+export class AnalyticsService {
+    /**
+     * Aggregate Weaknesses
+     * Average `WeaknessResult.scores` across all completed sessions.
+     * Returns an 18-cell heatmap (SWE1–SWE6 × L1–L3).
+     * Admin only.
+     * @returns WeaknessHeatmap Successful Response
+     * @throws ApiError
+     */
+    public static aggregateWeaknesses(): CancelablePromise<AnalyticsAggregateWeaknessesResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/analytics/weaknesses'
+        });
+    }
+    
+    /**
+     * User Stats
+     * Return participation counts broken down by stakeholder role. Admin only.
+     * @returns UsersAnalytics Successful Response
+     * @throws ApiError
+     */
+    public static userStats(): CancelablePromise<AnalyticsUserStatsResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/analytics/users'
+        });
+    }
+    
+    /**
+     * Bandit Performance
+     * Return per-question CMAB arm statistics (pull count and average reward).
+     * Useful for thesis analysis and debugging. Admin only.
+     * @returns BanditAnalytics Successful Response
+     * @throws ApiError
+     */
+    public static banditPerformance(): CancelablePromise<AnalyticsBanditPerformanceResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/analytics/bandit'
+        });
+    }
+}
+
+export class AuditService {
+    /**
+     * Start Session
+     * Start a new audit session for the authenticated user.
+     * @returns SessionStart Successful Response
+     * @throws ApiError
+     */
+    public static startSession(): CancelablePromise<AuditStartSessionResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/audit/sessions/'
+        });
+    }
+    
+    /**
+     * List Sessions
+     * List the authenticated user's sessions, newest first.
+     * @param data The data for the request.
+     * @param data.skip
+     * @param data.limit
+     * @returns AuditSessionPublic Successful Response
+     * @throws ApiError
+     */
+    public static listSessions(data: AuditListSessionsData = {}): CancelablePromise<AuditListSessionsResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/audit/sessions/',
+            query: {
+                skip: data.skip,
+                limit: data.limit
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Get Session
+     * Retrieve a single session by ID (own session or admin).
+     * @param data The data for the request.
+     * @param data.sessionId
+     * @returns AuditSessionPublic Successful Response
+     * @throws ApiError
+     */
+    public static getSession(data: AuditGetSessionData): CancelablePromise<AuditGetSessionResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/audit/sessions/{session_id}',
+            path: {
+                session_id: data.sessionId
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Submit Answer
+     * Submit an answer for the current question.
+     *
+     * Returns either:
+     * - `{ status: "in_progress", next_question, questions_answered, questions_total }`
+     * - `{ status: "completed", session_id, top_weaknesses }`
+     * @param data The data for the request.
+     * @param data.sessionId
+     * @param data.requestBody
+     * @returns unknown Successful Response
+     * @throws ApiError
+     */
+    public static submitAnswer(data: AuditSubmitAnswerData): CancelablePromise<AuditSubmitAnswerResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/audit/sessions/{session_id}/answer',
+            path: {
+                session_id: data.sessionId
+            },
+            body: data.requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Get Results
+     * Get weakness results for a completed session.
+     * @param data The data for the request.
+     * @param data.sessionId
+     * @returns WeaknessResultPublic Successful Response
+     * @throws ApiError
+     */
+    public static getResults(data: AuditGetResultsData): CancelablePromise<AuditGetResultsResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/audit/sessions/{session_id}/results',
+            path: {
+                session_id: data.sessionId
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+}
 
 export class ItemsService {
     /**
@@ -226,6 +378,123 @@ export class PrivateService {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/private/users/',
+            body: data.requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+}
+
+export class QuestionsService {
+    /**
+     * List Questions
+     * List all questions with optional filters. Admin only.
+     * @param data The data for the request.
+     * @param data.process
+     * @param data.level
+     * @param data.isActive
+     * @param data.skip
+     * @param data.limit
+     * @returns AuditQuestionPublic Successful Response
+     * @throws ApiError
+     */
+    public static listQuestions(data: QuestionsListQuestionsData = {}): CancelablePromise<QuestionsListQuestionsResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/questions/',
+            query: {
+                process: data.process,
+                level: data.level,
+                is_active: data.isActive,
+                skip: data.skip,
+                limit: data.limit
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Create Question
+     * Create a question with its options and initialise its CMAB arm. Admin only.
+     * @param data The data for the request.
+     * @param data.requestBody
+     * @returns AuditQuestionPublic Successful Response
+     * @throws ApiError
+     */
+    public static createQuestion(data: QuestionsCreateQuestionData): CancelablePromise<QuestionsCreateQuestionResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/questions/',
+            body: data.requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Update Question
+     * Update question fields. If `options` is provided, the full option set is replaced. Admin only.
+     * @param data The data for the request.
+     * @param data.questionId
+     * @param data.requestBody
+     * @returns AuditQuestionPublic Successful Response
+     * @throws ApiError
+     */
+    public static updateQuestion(data: QuestionsUpdateQuestionData): CancelablePromise<QuestionsUpdateQuestionResponse> {
+        return __request(OpenAPI, {
+            method: 'PATCH',
+            url: '/api/v1/questions/{question_id}',
+            path: {
+                question_id: data.questionId
+            },
+            body: data.requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Deactivate Question
+     * Soft-delete a question (sets is_active=False). BanditArmState is preserved. Admin only.
+     * @param data The data for the request.
+     * @param data.questionId
+     * @returns Message Successful Response
+     * @throws ApiError
+     */
+    public static deactivateQuestion(data: QuestionsDeactivateQuestionData): CancelablePromise<QuestionsDeactivateQuestionResponse> {
+        return __request(OpenAPI, {
+            method: 'DELETE',
+            url: '/api/v1/questions/{question_id}',
+            path: {
+                question_id: data.questionId
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Seed Questions
+     * Bulk-insert questions. Questions whose `question_code` already exists are
+     * skipped (idempotent). Admin only.
+     * @param data The data for the request.
+     * @param data.requestBody
+     * @returns SeedResult Successful Response
+     * @throws ApiError
+     */
+    public static seedQuestions(data: QuestionsSeedQuestionsData): CancelablePromise<QuestionsSeedQuestionsResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/questions/seed',
             body: data.requestBody,
             mediaType: 'application/json',
             errors: {
