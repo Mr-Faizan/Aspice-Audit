@@ -1,10 +1,12 @@
-import { createFileRoute } from "@tanstack/react-router"
+import { createFileRoute, useNavigate } from "@tanstack/react-router"
 import { useQuery } from "@tanstack/react-query"
+import { useEffect } from "react"
 import { BarChart3, Brain, ClipboardList, Users } from "lucide-react"
 import { AnalyticsService } from "@/client"
 import type { BanditArmStats, RoleStats } from "@/client"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
+import useAuth from "@/hooks/useAuth"
 
 export const Route = createFileRoute("/_layout/dashboard")({
   component: Dashboard,
@@ -239,17 +241,30 @@ function BanditTable({ arms }: { arms: BanditArmStats[] }) {
 // ---------------------------------------------------------------------------
 
 function Dashboard() {
+  const { user } = useAuth()
+  const navigate = useNavigate()
+  const isAdmin = !!user?.is_superuser
+
+  useEffect(() => {
+    if (user && !user.is_superuser) {
+      navigate({ to: "/quizzes", replace: true })
+    }
+  }, [user, navigate])
+
   const weaknessQ = useQuery({
     queryKey: ["analytics", "weaknesses"],
     queryFn: () => AnalyticsService.aggregateWeaknesses(),
+    enabled: isAdmin,
   })
   const usersQ = useQuery({
     queryKey: ["analytics", "users"],
     queryFn: () => AnalyticsService.userStats(),
+    enabled: isAdmin,
   })
   const banditQ = useQuery({
     queryKey: ["analytics", "bandit"],
     queryFn: () => AnalyticsService.banditPerformance(),
+    enabled: isAdmin,
   })
 
   const roles = usersQ.data?.roles ?? []
