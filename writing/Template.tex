@@ -1,0 +1,350 @@
+%--------------------------------------------------------------------------------------%--------------------------------------------------------------------------------------
+%
+%  Global settings, dont change it! (excapt additional \usepackage commands)
+%  Always use PDFLatex!
+%
+%--------------------------------------------------------------------------------------%--------------------------------------------------------------------------------------
+\documentclass[a4paper, 12pt, oneside, BCOR1cm,toc=chapterentrywithdots]{scrbook}
+
+\usepackage{graphicx}           % use for pdfLatex
+\usepackage{makeidx} % f\"{u}r Benutzung des Befehls \printindex
+\usepackage[colorlinks=false]{hyperref}
+\usepackage{tocbibind}
+\usepackage{blindtext}
+\usepackage{subfigure}
+\usepackage{acronym}
+
+\hypersetup{%
+bookmarksnumbered=true, hyperindex=true,
+%
+%Im Acrobat Reader Subtitel 1. Ebene anzeigen
+bookmarksopen=true, bookmarksopenlevel=1,
+%
+pdfborder=0 0 0 % Keine Box um die Links!
+}
+
+% --------------------------------------------------------------
+% Force Tables and List to be added in Table of Content
+% --------------------------------------------------------------
+
+\renewcommand*{\tableofcontents}{%
+  	\begingroup
+  	\tocsection
+  	\tocfile{\contentsname}{toc}
+  	\endgroup
+}
+\renewcommand*{\listoffigures}{%
+  	\begingroup
+  	\tocsection
+  	\tocfile{\listfigurename}{lof}
+  	\endgroup
+}
+\renewcommand{\listoftables}{
+	\begingroup
+	\tocsection
+	\tocfile{\listtablename}{lot}
+	\endgroup
+}
+\begin{document}
+
+%--------------------------------------------------------------------------------------%--------------------------------------------------------------------------------------
+%
+%  Here starts the userspace !
+%
+%--------------------------------------------------------------------------------------%--------------------------------------------------------------------------------------
+
+%--------titlepage
+\begin{titlepage}
+
+{
+    \begin{center}
+        \raisebox{-1ex}{\includegraphics[scale=1.5]{TU_Chemnitz_positiv_gruen.pdf}}\\
+    \end{center}
+    \vspace{0.5cm}
+}
+
+\begin{center}
+
+\LARGE{\textbf{Recommendation System for ASPICE (SWE1-SWE6) Process Assessment}}\\
+\vspace{1cm}
+
+
+\Large{\textbf{Master Thesis}}\\
+\vspace{1cm}
+Submitted in Fulfilment of the\\
+Requirements for the Academic Degree\\
+M.Sc. Automotive Software Engineering\\
+\vspace{0.5cm}
+Dept. of Computer Science\\
+Chair of Computer Engineering
+\end{center}
+\vspace{2cm}
+Submitted by: Faizan Ahmed\\
+Student ID: \\
+Date: 17.09.2026\\
+\vspace{0.3cm}\\
+Supervising tutor: Prof. Dr. W. Hardt \\
+(further supervisors)
+
+\end{titlepage}
+
+%---------------------------------------------------------
+% Abstract
+%---------------------------------------------------------
+
+\addchap*{Abstract}
+\blindtext
+\\\\
+\textbf{Keywords: ASPICE, Recommender Systems, Contextual Multi-Armed Bandit, LinUCB, Process Assessment}
+
+%---------------------------------------------------------
+% Table of Contents, List of figures, List of Tables
+%---------------------------------------------------------
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+%---------------------------------------------------------
+% List of Abbreviations
+%---------------------------------------------------------
+\twocolumn
+\addchap{List of Abbreviations}
+\begin{acronym}[HTTPS]
+ \acro{ASPICE}{Automotive Software Process Improvement and Capability dEtermination}
+ \acro{SPICE}{Software Process Improvement and Capability dEtermination}
+ \acro{PRM}{Process Reference Model}
+ \acro{PAM}{Process Assessment Model}
+ \acro{BP}{Base Practice}
+ \acro{SWE}{Software Engineering (process group)}
+ \acro{MAB}{Multi-Armed Bandit}
+ \acro{CMAB}{Contextual Multi-Armed Bandit}
+ \acro{UCB}{Upper Confidence Bound}
+ \acro{LinUCB}{Linear Upper Confidence Bound}
+ \acro{RL}{Reinforcement Learning}
+ \acro{ER}{Entity-Relationship}
+ \acro{CRUD}{Create, Read, Update, Delete}
+ \acro{ORM}{Object-Relational Mapping}
+ \acro{API}{Application Programming Interface}
+ \acro{REST}{Representational State Transfer}
+ \acro{JWT}{JSON Web Token}
+ \acro{JSON}{JavaScript Object Notation}
+ \acro{SQL}{Structured Query Language}
+ \acro{DB}{Database}
+ \acro{UI}{User Interface}
+ \acro{UX}{User Experience}
+ \acro{HTTP}{Hypertext Transfer Protocol}
+ \acro{HTTPS}{Hypertext Transfer Protocol Secure}
+ \acro{TLS}{Transport Layer Security}
+\end{acronym}
+
+\onecolumn
+%---------------------------------------------------------
+% Here starts the real work
+%---------------------------------------------------------
+
+\chapter{Introduction}
+\label{chap:introduction}
+% \input{src/introduction}
+\section{Problem Statement --- Limitations of Manual ASPICE Assessment}
+\section{Motivation --- From Manual Process to Adaptive Web Application}
+\section{Research Questions}
+\section{Contributions}
+\section{Scope and Limitations}
+\section{Structure of the Thesis}
+
+\chapter{Background and Fundamentals}
+\label{chap:background}
+% \input{src/background}
+\section{Automotive SPICE (ASPICE)}
+\subsection{Process Reference and Assessment Models (PRM/PAM)}
+\subsection{The SWE Process Group: SWE.1--SWE.6}
+\subsection{Capability Levels and Base Practices (L1--L3)}
+\subsection{The Traditional (Manual) Assessment Procedure}
+\subsection{Pain Points of Manual Assessment (Time, Consistency, Continuity)}
+\section{Recommender Systems}
+\subsection{Content-Based and Collaborative Filtering Approaches}
+\subsection{Sequential and Adaptive Recommendation}
+\section{Multi-Armed Bandits}
+\subsection{The Exploration--Exploitation Trade-off}
+\subsection{From Stateless Bandits to Contextual Bandits}
+\subsection{LinUCB --- Mathematical Foundations}
+\section{Chapter Summary}
+
+\chapter{State of the Art}
+\label{chap:sota}
+% \input{src/state_of_the_art}
+\section{Existing ASPICE Assessment Tools and Methods}
+\section{Digital and Semi-Automated Process Assessment Approaches}
+\section{Adaptive Questionnaires and Recommendation in Assessment Contexts}
+\section{Cross-Comparison of Approaches}
+\section{Research Gap and Positioning of This Work}
+\section{Chapter Summary}
+
+\chapter{System Architecture and Design}
+\label{chap:architecture}
+% \input{src/architecture}
+\section{Requirements Analysis}
+\subsection{Functional Requirements}
+\subsection{Non-Functional Requirements}
+\section{High-Level Architecture Overview}
+\subsection{Layered Architecture (Presentation / API / Logic / Data)}
+\subsection{Infrastructure Overview (Docker Compose Topology)}
+\section{Technology Stack}
+\section{Database Schema and Data Model}
+\subsection{Entity-Relationship Overview}
+\subsection{Core Models: User, AuditQuestion, AuditOption}
+\subsection{Session Models: AuditSession, AuditResponse}
+\subsection{Outcome Models: WeaknessResult, BanditArmState}
+\section{The CMAB Recommendation Engine}
+\subsection{Mapping the Manual Interview Process onto a Bandit Problem}
+\subsection{The 23-Dimensional Context Vector}
+\subsection{Arm Eligibility Filtering (Role and History Constraints)}
+\subsection{UCB Arm Selection Rule}
+\subsection{Reward Function Design}
+\subsection{Online Update Rule and State Persistence}
+\subsection{Session Budget as an Operating Constraint}
+\section{The Weakness Classifier}
+\subsection{Scoring Algorithm per (Process $\times$ Level) Cell}
+\subsection{Classification Thresholds and Traffic-Light Mapping}
+\subsection{Top-Weakness Ranking}
+\section{API Design}
+\subsection{Authentication and Authorization (JWT, Roles)}
+\subsection{Audit Session Endpoints}
+\subsection{Question Bank and Analytics Endpoints (Admin)}
+\subsection{Core Answer-Submission Sequence Diagram}
+\section{Frontend Design}
+\subsection{Page and Component Overview}
+\subsection{Audit Session User Flow}
+\subsection{Results Visualization (Radar Chart, Heatmap)}
+\section{Key Design Decisions and Trade-offs}
+\subsection{LinUCB vs.\ Thompson Sampling}
+\subsection{Fixed-Budget Adaptive Selection vs.\ Full Static Questionnaire}
+\subsection{Immediate Weight-Based Reward vs.\ Deferred Expert Labels}
+\subsection{Rule-Based Classifier vs.\ Trained ML Classifier}
+\section{Chapter Summary}
+
+\chapter{Implementation}
+\label{chap:implementation}
+% \input{src/implementation}
+\section{Development Environment and Tooling}
+\subsection{Containerized Development Stack (Docker Compose Watch)}
+\subsection{Backend Toolchain (FastAPI, SQLModel, uv, Alembic)}
+\subsection{Frontend Toolchain (React, TypeScript, Vite, TanStack Router)}
+\section{Backend Implementation}
+\subsection{Project and Package Structure}
+\subsection{Data Models and Database Migrations}
+\subsection{CMAB Engine Implementation (\texttt{cmab\_engine.py})}
+\subsection{Weakness Classifier Implementation (\texttt{weakness\_classifier.py})}
+\subsection{Audit Session Orchestration (\texttt{audit\_service.py})}
+\subsection{API Route Implementation and Dependency Injection}
+\section{Frontend Implementation}
+\subsection{Routing and Page Structure}
+\subsection{Audit Session Flow Screens (Screenshots)}
+\subsection{Results Page: Radar Chart and Heatmap (Screenshots)}
+\subsection{Admin Dashboard and Question Bank Manager (Screenshots)}
+\section{Question Bank Design and Seeding}
+\subsection{Deriving Questions from the ASPICE PAM (Base Practice Traceability)}
+\subsection{Stakeholder Targeting per Question}
+\subsection{Seed Script and Idempotent Seeding Endpoint}
+\section{Deployment Setup}
+\subsection{Docker Compose Services and Networking}
+\subsection{Traefik Reverse Proxy and HTTPS}
+\subsection{Environment Configuration and Secrets}
+\section{Chapter Summary}
+
+\chapter{Evaluation Methodology}
+\label{chap:methodology}
+% \input{src/methodology}
+\section{Evaluation Goals Revisited}
+\section{Software Quality Verification}
+\subsection{Unit Testing Strategy (pytest, Service-Level Tests)}
+\subsection{Test Coverage Summary}
+\section{Functional and Smoke Testing of the Application}
+\subsection{Test Case Design (Signup $\to$ Session $\to$ Answer $\to$ Results)}
+\subsection{Health Check and Environment Verification}
+\section{Pilot Usage Sessions}
+\subsection{Participants and Stakeholder Roles Represented}
+\subsection{Session Protocol (Number of Sessions, Question Budget)}
+\subsection{Data Collected via Existing Analytics Endpoints}
+\section{Metrics Derived from Real Usage}
+\subsection{CMAB Arm Statistics (Pull Count, Average Reward)}
+\subsection{Weakness Score Distributions}
+\section{Chapter Summary}
+
+\chapter{Results and Evaluation}
+\label{chap:results}
+% \input{src/results}
+\section{Software Quality Assurance Results}
+\subsection{Unit Test Outcomes}
+\subsection{Static Analysis / Linting Outcomes}
+\section{Functional Verification Results}
+\subsection{End-to-End Flow Walkthrough (Screenshots)}
+\subsection{Smoke Test Outcomes}
+\section{CMAB Behaviour Observed from Real Pilot Sessions}
+\subsection{Question Selection Patterns per Stakeholder Role}
+\subsection{Bandit Arm Statistics (Real Pull Counts and Rewards)}
+\subsection{Process Coverage Achieved within the 12-Question Budget}
+\section{Weakness Classification Results from Pilot Sessions}
+\subsection{Individual Session Heatmaps and Radar Charts}
+\subsection{Aggregate Weakness Heatmap across All Pilot Sessions}
+\section{System Performance}
+\subsection{API Response Latency}
+\subsection{Session Completion Time vs.\ Manual Assessment Duration}
+\section{Discussion of Results}
+\section{Threats to Validity}
+\section{Chapter Summary}
+
+\chapter{Conclusion and Future Work}
+\label{chap:conclusion}
+% \input{src/conclusion}
+\section{Summary of Contributions}
+\section{Answering the Research Questions}
+\section{Limitations}
+\section{Future Work}
+\subsection{Larger-Scale Pilot with Certified ASPICE Assessors}
+\subsection{Simulation-Based Benchmarking of LinUCB against Baselines}
+\subsection{Supervised Weakness Classifier from Accumulated Sessions}
+\subsection{Expert/Assessor-Validated Reward Signal}
+\subsection{Expansion to Additional ASPICE Process Groups (SYS, MAN, SUP)}
+\section{Final Remarks}
+
+%---------------------------------------------------------
+% bibliography based on Springer Design
+%---------------------------------------------------------
+
+\bibliographystyle{splncs03}
+\bibliography{bibliography}
+
+%---------------------------------------------------------
+% Appendices
+%---------------------------------------------------------
+
+\appendix
+\chapter{ASPICE Question Bank}
+\label{app:questionbank}
+Full list of the 42 questions and 210 options used in the seeded question bank, covering SWE.1--SWE.6.
+
+\chapter{Database Schema}
+\label{app:dbschema}
+Full DDL and entity-relationship diagram.
+
+\chapter{API Reference}
+\label{app:apiref}
+OpenAPI specification excerpt.
+
+\chapter{Pilot Session Raw Data}
+\label{app:pilotdata}
+Raw exports from the \texttt{/analytics/bandit} and \texttt{/analytics/weaknesses} endpoints.
+
+\chapter{Additional Screenshots}
+\label{app:screenshots}
+Admin dashboard, history page, and signup flow.
+
+\chapter{Deployment Configuration Files}
+\label{app:deployment}
+Docker Compose and Traefik configuration listings.
+
+\printindex
+
+\end{document}

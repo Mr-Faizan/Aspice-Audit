@@ -37,6 +37,12 @@ _LEVELS = list(AspiceLevelEnum)      # L1, L2, L3
 # 3.2.1 — build_context
 # ---------------------------------------------------------------------------
 
+# I need to describe the current state of the session as a 23-number vector so the
+# bandit algorithm can work with it mathematically. The vector answers three things:
+# who is this user (role one-hot, slots 0-6), how far are we into the session (slot 7),
+# and what has happened so far — which processes and levels have been covered (slots 8-16)
+# and how risky the answers have been per process (slots 17-22).
+# This gets rebuilt fresh before every question selection so it always reflects the live state.
 def build_context(session: AuditSession, user: User, db: Session) -> np.ndarray:
     """Return a 23-dim feature vector describing the current audit state."""
     ctx = np.zeros(_CONTEXT_DIM, dtype=float)
@@ -88,6 +94,11 @@ def build_context(session: AuditSession, user: User, db: Session) -> np.ndarray:
 # 3.2.2 — select_question
 # ---------------------------------------------------------------------------
 
+# For each eligible question I compute a LinUCB score and pick the highest one.
+# The score has two parts: what I've learned so far (exploitation via theta)
+# and how uncertain I still am about this question in this context (exploration bonus via A_inv).
+# A question that has rarely been asked gets a big exploration bonus, so the system
+# is forced to try it before dismissing it. Once enough data is collected, theta takes over.
 def select_question(
     context: np.ndarray,
     eligible_questions: list[AuditQuestion],
@@ -100,8 +111,8 @@ def select_question(
     for question in eligible_questions:
         A, b = _load_or_init_arm(question.id, db)
         A_inv = np.linalg.inv(A)
-        theta = A_inv @ b
-        score = float(theta @ context + _ALPHA * np.sqrt(context @ A_inv @ context))
+        theta = A_inv @ b  # learned reward estimate for this question
+        score = float(theta @ context + _ALPHA * np.sqrt(context @ A_inv @ context))  # exploit + explore
 
         if score > best_score:
             best_score = score
@@ -114,6 +125,12 @@ def select_question(
 # 3.2.3 — compute_reward
 # ---------------------------------------------------------------------------
 
+# After the user picks an answer I need to tell the bandit how good that question was.
+# The reward has two parts: how risky the answer was (option weight / 4) and
+# a +0.2 bonus if this question introduced a process we haven't touched yet this session.
+# High risk answer = high reward because finding a gap is exactly what the audit is for.
+# The coverage bonus stops the bandit from getting stuck asking the same process repeatedly.
+# I cap it at 1.0 because the LinUCB math assumes rewards stay in a bounded range.
 def compute_reward(
     option: AuditOption,
     question: AuditQuestion,
@@ -141,6 +158,13 @@ def compute_reward(
 # 3.2.4 — update_arm
 # ---------------------------------------------------------------------------
 
+# This is where the actual learning happens. After every answer I update the question's
+# memory (A matrix and b vector) stored in the DB so future sessions benefit from what
+# we just observed. A grows by outer(context, context) — recording what kind of session
+# this question was pulled in. b grows by reward * context — recording how much reward
+# it earned in that context. Together they shape theta = A⁻¹b which is the exploitation
+# score in select_question. If this question has never been asked before, I create a
+# fresh arm with identity A and zero b before applying the update.
 def update_arm(
     question_id: int,
     context: np.ndarray,
