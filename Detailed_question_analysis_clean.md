@@ -44,7 +44,7 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 ## SWE.1 — Software Requirements Analysis
 
-### `SWE1_L1_01` · Level L1 (Performed) · `SWE.1.BP1`
+### `SWE1_L1_01`
 
 **Base practice:** SWE.1.BP1 — Specify SW requirements (verifiability, unambiguity)
 
@@ -60,9 +60,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Weak requirement quality, ambiguity, untestable SW requirements
 - **Stakeholders:** SA, SD, QA
-- **Recommendation logic:** High weight ⇒ recommend a requirement-specification template aligned with IEEE 29148 + tooling audit (DOORS/Polarion/Jama).
 
-### `SWE1_L1_02` · Level L1 (Performed) · `SWE.1.BP2`
+### `SWE1_L1_02`
 
 **Base practice:** SWE.1.BP2 — Structure SW requirements
 
@@ -78,9 +77,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Missing prioritisation / categorisation, scope-creep risk
 - **Stakeholders:** PM, SA
-- **Recommendation logic:** Recommend introducing a categorisation scheme + MoSCoW/RICE prioritisation linked to MAN.3 (out of scope but referenced).
 
-### `SWE1_L1_03` · Level L1 (Performed) · `SWE.1.BP3`
+### `SWE1_L1_03`
 
 **Base practice:** SWE.1.BP3 — Analyse SW requirements (correctness, technical feasibility)
 
@@ -96,9 +94,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Latent feasibility risk, late re-work
 - **Stakeholders:** SA, SD
-- **Recommendation logic:** Recommend a feasibility-review checklist gated on requirement baselining.
 
-### `SWE1_L1_04` · Level L1 (Performed) · `SWE.1.BP4`
+### `SWE1_L1_04`
 
 **Base practice:** SWE.1.BP4 — Analyse impact on operating environment
 
@@ -114,9 +111,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Missed timing / ODD / resource impact
 - **Stakeholders:** SA, SD
-- **Recommendation logic:** Recommend introducing impact-analysis fields in the requirement template; cross-link to non-functional verification in SWE.6.
 
-### `SWE1_L1_05` · Level L1 (Performed) · `SWE.1.BP5`
+### `SWE1_L1_05`
 
 **Base practice:** SWE.1.BP5 — Ensure consistency & bidirectional traceability (SYS-req ↔ SW-req ↔ SYS-arch)
 
@@ -132,9 +128,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Broken bidirectional traceability — top assessor finding
 - **Stakeholders:** SA, QA, ASR
-- **Recommendation logic:** High signal: recommend RTM/OSLC tooling audit and a SUP.10 change-impact review procedure (referenced, not in scope).
 
-### `SWE1_L1_06` · Level L1 (Performed) · `SWE.1.BP6`
+### `SWE1_L1_06`
 
 **Base practice:** SWE.1.BP6 — Communicate agreed SW requirements & impact
 
@@ -150,9 +145,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Lack of agreement → late churn
 - **Stakeholders:** PM, SA, TL
-- **Recommendation logic:** Recommend introducing a lightweight "Requirements Agreement Record" gate.
 
-### `SWE1_L1_08` · Level L1 (Performed) · `SWE.1.BP5`
+### `SWE1_L1_08`
 
 **Base practice:** SWE.1.BP5 — Ensure consistency & bidirectional traceability (SW-req ↔ system architecture)
 
@@ -168,9 +162,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Missing allocation of SW requirements to system architecture elements
 - **Stakeholders:** SA, QA, ASR
-- **Recommendation logic:** Distinct from SYS-req↔SW-req traceability (SWE1_L1_05) — BP5 covers two separate outcomes (O5, O6) and only O5 was previously asked. A gap here means SW requirements may not be correctly scoped to their allocated system-architecture element. Recommend extending the RTM with a system-architecture allocation column.
 
-### `SWE1_L1_09` · Level L1 (Performed) · `SWE.1.BP3`
+### `SWE1_L1_09`
 
 **Base practice:** SWE.1.BP3 — Analyse SW requirements (interdependencies)
 
@@ -186,9 +179,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Conflicting or circular requirement dependencies undetected until late
 - **Stakeholders:** SA, SD, QA
-- **Recommendation logic:** BP3 covers correctness, feasibility, and interdependencies; SWE1_L1_03 already covers feasibility, this closes the interdependency sub-aspect. Recommend a dependency/conflict tag in the requirements tool plus a conflict-check step in the review checklist.
 
-### `SWE1_L2_07` · Level L2 (Managed) · `GP 2.1.1, GP 2.1.2`
+### `SWE1_L2_07`
 
 **Base practice:** GP 2.1.1, GP 2.1.2 — Performance objectives & planning for SWE.1
 
@@ -204,9 +196,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Missing/weak strategy for the requirements process
 - **Stakeholders:** PM, QA
-- **Recommendation logic:** Indicates PA 2.1 weakness; recommend a requirements KPI dashboard.
 
-### `SWE1_L2_10` · Level L2 (Managed) · `GP 2.1.6`
+### `SWE1_L2_10`
 
 **Base practice:** GP 2.1.6 — Manage interfaces between involved parties (SWE.1)
 
@@ -222,9 +213,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Poor coordination between requirements engineering and system engineering / other stakeholders
 - **Stakeholders:** SA, PM, TL
-- **Recommendation logic:** Complements SWE1_L1_06 (one-time agreement) and SWE1_L2_07 (planning/KPIs); recommend a stakeholder communication matrix analogous to SWE5_L2_07's interface change board.
 
-### `SWE1_L2_11` · Level L2 (Managed) · `GP 2.2.1–2.2.3`
+### `SWE1_L2_11`
 
 **Base practice:** GP 2.2.1–2.2.3 — Work-product requirements, storage and control (SW requirements)
 
@@ -240,9 +230,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Requirements work products not under configuration/status control
 - **Stakeholders:** QA, ASR
-- **Recommendation logic:** Fills a PA 2.2 gap in SWE.1 — the existing SWE1 L2 question (SWE1_L2_07) only covers PA 2.1 planning. Recommend a CM-controlled requirements repository with baseline/status workflow (cf. SWE4_L2_07 pattern applied to requirements).
 
-### `SWE1_L3_12` · Level L3 (Established) · `GP 3.1.1, GP 3.1.2`
+### `SWE1_L3_12`
 
 **Base practice:** GP 3.1.1, GP 3.1.2 — Standard process & required competencies (SWE.1)
 
@@ -258,13 +247,12 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** No organisation-wide standard for requirements-engineering methodology/roles
 - **Stakeholders:** ASR, PM, SA
-- **Recommendation logic:** SWE.1 had no L3 question in the original 42 or in Batch 1 — this is the sole remaining organisational-maturity gap for the process. PA 3.1 check, paralleling SWE2_L3_10's pattern for the architecture role. Recommend establishing an RE process template + role description at Process Group level.
 
 ---
 
 ## SWE.2 — Software Architectural Design
 
-### `SWE2_L1_01` · Level L1 (Performed) · `SWE.2.BP1`
+### `SWE2_L1_01`
 
 **Base practice:** SWE.2.BP1 — Specify static aspects of architecture
 
@@ -280,9 +268,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Missing decomposition / structural views
 - **Stakeholders:** SA
-- **Recommendation logic:** Recommend a model-based architecture in EA/Cameo; flag tool break to traceability.
 
-### `SWE2_L1_02` · Level L1 (Performed) · `SWE.2.BP2`
+### `SWE2_L1_02`
 
 **Base practice:** SWE.2.BP2 — Specify dynamic aspects (timing, sequences, state)
 
@@ -298,9 +285,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Hidden timing/concurrency defects
 - **Stakeholders:** SA, SD
-- **Recommendation logic:** Recommend timing-budget table; pair with SWE.5 integration tests.
 
-### `SWE2_L1_03` · Level L1 (Performed) · `SWE.2.BP3`
+### `SWE2_L1_03`
 
 **Base practice:** SWE.2.BP3 — Analyse architecture, justify chosen design (PAM 4.0 replaces former "evaluate alternatives" BP)
 
@@ -316,9 +302,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Unjustified architecture, hidden trade-offs
 - **Stakeholders:** SA, ASR
-- **Recommendation logic:** High signal: recommend architecture-decision-record (ADR) practice.
 
-### `SWE2_L1_04` · Level L1 (Performed) · `SWE.2.BP3`
+### `SWE2_L1_04`
 
 **Base practice:** SWE.2.BP3 — interfaces & resource consumption
 
@@ -334,9 +319,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Interface ambiguity, resource overruns at HIL/qualification
 - **Stakeholders:** SA, SD
-- **Recommendation logic:** Recommend interface contracts + per-component budgets; verify with static analysis (SWE.4).
 
-### `SWE2_L1_05` · Level L1 (Performed) · `SWE.2.BP4`
+### `SWE2_L1_05`
 
 **Base practice:** SWE.2.BP4 — Consistency & bidirectional traceability (SW-req ↔ SW-arch)
 
@@ -352,9 +336,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Architecture/requirement drift
 - **Stakeholders:** SA, QA, ASR
-- **Recommendation logic:** Recommend OSLC-style linking; tie to SWE.1 traceability question to detect compounded weakness.
 
-### `SWE2_L1_06` · Level L1 (Performed) · `SWE.2.BP5`
+### `SWE2_L1_06`
 
 **Base practice:** SWE.2.BP5 — Communicate agreed architecture
 
@@ -370,9 +353,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Architecture not internalised by team
 - **Stakeholders:** SA, TL
-- **Recommendation logic:** Recommend onboarding workshop + searchable architecture site.
 
-### `SWE2_L2_07` · Level L2 (Managed) · `GP 2.2.1, GP 2.2.4`
+### `SWE2_L2_07`
 
 **Base practice:** GP 2.2.1, GP 2.2.4 — Work-product requirements & review for architecture artefacts
 
@@ -388,9 +370,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Architecture artefacts not reviewed against criteria
 - **Stakeholders:** QA, ASR
-- **Recommendation logic:** Indicates PA 2.2 weakness; recommend SUP.1-style work-product review template.
 
-### `SWE2_L2_08` · Level L2 (Managed) · `GP 2.1.3, GP 2.1.4`
+### `SWE2_L2_08`
 
 **Base practice:** GP 2.1.3, GP 2.1.4 — Resource needs & qualification (SWE.2)
 
@@ -406,9 +387,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Architects not trained/qualified on modelling method or tool; unavailable licences
 - **Stakeholders:** SA, TL, PM
-- **Recommendation logic:** Fills the PA 2.1 "persons prepared for their responsibilities" achievement (GP 2.1.4), absent everywhere else in the bank; recommend a role-based training plan and licence-tracking process.
 
-### `SWE2_L2_09` · Level L2 (Managed) · `GP 2.1.6`
+### `SWE2_L2_09`
 
 **Base practice:** GP 2.1.6 — Manage interfaces between involved parties (SWE.2)
 
@@ -424,9 +404,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Architecture changes not propagated to detailed-design / integration teams
 - **Stakeholders:** SA, TL, PM
-- **Recommendation logic:** Distinct from the one-time communication event in SWE2_L1_06 — this targets ongoing change coordination once the architecture evolves. Recommend an architecture change board, mirroring SWE5_L2_07's ICB pattern.
 
-### `SWE2_L2_11` · Level L2 (Managed) · `GP 2.1.1, GP 2.1.2`
+### `SWE2_L2_11`
 
 **Base practice:** GP 2.1.1, GP 2.1.2 — Strategy & planning for SWE.2
 
@@ -442,9 +421,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Architecture design activity not planned against objectives/milestones
 - **Stakeholders:** PM, SA
-- **Recommendation logic:** Fills the PA 2.1 "strategy and planning" gap for SWE.2 — existing SWE2 L2 questions cover competency (SWE2_L2_08), interface/change coordination (SWE2_L2_09), and work-product review (SWE2_L2_07), but not planning of the design activity itself. Mirrors the SWE1_L2_07 pattern, applied to the architecture process.
 
-### `SWE2_L3_10` · Level L3 (Established) · `GP 3.1.2, GP 3.1.3`
+### `SWE2_L3_10`
 
 **Base practice:** GP 3.1.2, GP 3.1.3 — Required competencies & resources for the standard process (SWE.2)
 
@@ -460,13 +438,12 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** No organisation-level role/competency definition for the architecture role
 - **Stakeholders:** ASR, PM, SA
-- **Recommendation logic:** PA 3.1 organisational-maturity check — approximated here from a single respondent's session, per the documented tool limitation (Section 7.4 note in concepts doc); recommend establishing a role-description template at Process Group level.
 
 ---
 
 ## SWE.3 — Software Detailed Design and Unit Construction
 
-### `SWE3_L1_01` · Level L1 (Performed) · `SWE.3.BP1`
+### `SWE3_L1_01`
 
 **Base practice:** SWE.3.BP1 — Specify static aspects of detailed design
 
@@ -482,9 +459,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Skipping detailed design, "code-is-design" antipattern
 - **Stakeholders:** SA, SD
-- **Recommendation logic:** Recommend keeping design synchronised via code-from-model or model-from-code.
 
-### `SWE3_L1_02` · Level L1 (Performed) · `SWE.3.BP2`
+### `SWE3_L1_02`
 
 **Base practice:** SWE.3.BP2 — Specify dynamic aspects of detailed design
 
@@ -500,9 +476,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Hidden control-flow / state defects
 - **Stakeholders:** SD, SA
-- **Recommendation logic:** Recommend state-chart coverage for safety-critical paths.
 
-### `SWE3_L1_03` · Level L1 (Performed) · `SWE.3.BP3`
+### `SWE3_L1_03`
 
 **Base practice:** SWE.3.BP3 — Develop software units (coding standard adherence)
 
@@ -518,9 +493,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Coding-standard violations, MISRA gaps
 - **Stakeholders:** SD, QA
-- **Recommendation logic:** High signal: recommend Axivion/Polyspace/Coverity gate; flag SWE.4 static-analysis question for re-check.
 
-### `SWE3_L1_04` · Level L1 (Performed) · `SWE.3.BP4`
+### `SWE3_L1_04`
 
 **Base practice:** SWE.3.BP4 — Consistency & bidirectional traceability (SW-req ↔ arch ↔ detailed design ↔ units)
 
@@ -536,9 +510,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Multi-hop traceability gap
 - **Stakeholders:** SA, QA, ASR
-- **Recommendation logic:** Strongest predictor of CL2 failure across SWE.3; recommend OSLC link consolidation.
 
-### `SWE3_L1_05` · Level L1 (Performed) · `SWE.3.BP5`
+### `SWE3_L1_05`
 
 **Base practice:** SWE.3.BP5 — Communicate agreed detailed design and units
 
@@ -554,9 +527,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Knowledge silo, single-point-of-failure
 - **Stakeholders:** SD, TL
-- **Recommendation logic:** Recommend mandatory peer review and shared design index.
 
-### `SWE3_L2_06` · Level L2 (Managed) · `GP 2.1.5`
+### `SWE3_L2_06`
 
 **Base practice:** GP 2.1.5 — Monitor & adjust process (defect/rework rates per unit)
 
@@ -572,9 +544,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** No control loop for code quality
 - **Stakeholders:** TL, QA, PM
-- **Recommendation logic:** PA 2.1 weakness; recommend defect-density dashboard and threshold-based escalation.
 
-### `SWE3_L2_08` · Level L2 (Managed) · `GP 2.2.2, GP 2.2.3`
+### `SWE3_L2_08`
 
 **Base practice:** GP 2.2.2, GP 2.2.3 — Storage and control of work products (source code & detailed design)
 
@@ -590,9 +561,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Source code / detailed design not under proper configuration control
 - **Stakeholders:** QA, SD, ASR
-- **Recommendation logic:** Distinct from SWE3_L2_06 (defect/rework monitoring, GP 2.1.5) — this fills the PA 2.2 work-product-control gap for SWE.3. Recommend a CM branching/baseline policy covering both code and design artefacts.
 
-### `SWE3_L2_09` · Level L2 (Managed) · `GP 2.1.1, GP 2.1.2`
+### `SWE3_L2_09`
 
 **Base practice:** GP 2.1.1, GP 2.1.2 — Strategy & planning for SWE.3
 
@@ -608,9 +578,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Detailed design & unit construction activity not planned against objectives/staffing
 - **Stakeholders:** PM, TL, SD
-- **Recommendation logic:** Fills the PA 2.1 "strategy and planning" gap for SWE.3 — existing SWE3 L2 questions cover monitoring (SWE3_L2_06, GP 2.1.5) and CM control (SWE3_L2_08, GP 2.2), but not upfront planning of the activity itself.
 
-### `SWE3_L3_07` · Level L3 (Established) · `GP 3.1.1, GP 3.1.4`
+### `SWE3_L3_07`
 
 **Base practice:** GP 3.1.1, GP 3.1.4 — Standard process & tailoring guidelines
 
@@ -626,13 +595,12 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Project-specific drift from organisational standard
 - **Stakeholders:** ASR, QA, PM
-- **Recommendation logic:** Note: option C is mid-risk because lack of tailoring often hides cargo-cult adoption; recommend formal tailoring record.
 
 ---
 
 ## SWE.4 — Software Unit Verification
 
-### `SWE4_L1_01` · Level L1 (Performed) · `SWE.4.BP1`
+### `SWE4_L1_01`
 
 **Base practice:** SWE.4.BP1 — Specify unit-verification measures (tactic)
 
@@ -648,9 +616,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Missing verification tactic
 - **Stakeholders:** TE, SD
-- **Recommendation logic:** Recommend a unit-verification specification template with derivation columns.
 
-### `SWE4_L1_02` · Level L1 (Performed) · `SWE.4.BP2`
+### `SWE4_L1_02`
 
 **Base practice:** SWE.4.BP2 — Select verification measures incl. regression
 
@@ -666,9 +633,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Insufficient regression coverage
 - **Stakeholders:** TE
-- **Recommendation logic:** High signal for late-stage defects; recommend change-impact-driven regression.
 
-### `SWE4_L1_03` · Level L1 (Performed) · `SWE.4.BP3`
+### `SWE4_L1_03`
 
 **Base practice:** SWE.4.BP3 — Verify (static + dynamic)
 
@@ -684,9 +650,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Weak static analysis
 - **Stakeholders:** SD, QA
-- **Recommendation logic:** Reinforces SWE3_L1_03; recommend severity-based blocking gate.
 
-### `SWE4_L1_04` · Level L1 (Performed) · `SWE.4.BP3`
+### `SWE4_L1_04`
 
 **Base practice:** SWE.4.BP3 — Test SW units & record results (coverage)
 
@@ -702,9 +667,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Inadequate structural coverage
 - **Stakeholders:** TE, SD
-- **Recommendation logic:** Recommend MC/DC for ASIL B+ paths; align thresholds with ISO 26262 (referenced).
 
-### `SWE4_L1_05` · Level L1 (Performed) · `SWE.4.BP4`
+### `SWE4_L1_05`
 
 **Base practice:** SWE.4.BP4 — Bidirectional traceability between units, criteria, results
 
@@ -720,9 +684,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Test-result orphaning
 - **Stakeholders:** TE, QA, ASR
-- **Recommendation logic:** Recommend test-management tool integration (e.g., qTest/Jama/Polarion).
 
-### `SWE4_L1_08` · Level L1 (Performed) · `SWE.4.BP5`
+### `SWE4_L1_08`
 
 **Base practice:** SWE.4.BP5 — Summarize and communicate results
 
@@ -738,9 +701,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Unit-verification results not summarised/communicated to affected parties
 - **Stakeholders:** SD, TE, TL
-- **Recommendation logic:** Closes a full outcome gap — BP5/Outcome 5 was previously unassessed for SWE.4 across all 42 questions. Recommend a build-level unit-verification summary report distributed to development and QA.
 
-### `SWE4_L2_06` · Level L2 (Managed) · `GP 2.1.6, GP 2.1.7`
+### `SWE4_L2_06`
 
 **Base practice:** GP 2.1.6, GP 2.1.7 — Resources & stakeholder management for SWE.4
 
@@ -756,9 +718,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Under-resourced verification, late access to HW/test bench
 - **Stakeholders:** PM, TL, TE
-- **Recommendation logic:** Strongest "release-phase" predictor; recommend resource calendar + escalation.
 
-### `SWE4_L2_07` · Level L2 (Managed) · `GP 2.2.3, GP 2.2.4`
+### `SWE4_L2_07`
 
 **Base practice:** GP 2.2.3, GP 2.2.4 — Work-product control & review of unit-verification reports
 
@@ -774,9 +735,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Reports not under configuration control
 - **Stakeholders:** QA
-- **Recommendation logic:** Recommend CM-controlled report storage (referenced SUP.8).
 
-### `SWE4_L3_09` · Level L3 (Established) · `GP 3.1.1, GP 3.1.4`
+### `SWE4_L3_09`
 
 **Base practice:** GP 3.1.1, GP 3.1.4 — Standard process & monitoring (SWE.4)
 
@@ -792,13 +752,12 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Unit-verification approach/tooling not standardised or monitored across projects
 - **Stakeholders:** ASR, QA, PM
-- **Recommendation logic:** SWE.4 previously had no L3 question; parallels SWE6_L3_07's feedback-loop pattern applied to unit verification. Recommend a Process Group review of unit-verification effectiveness metrics.
 
 ---
 
 ## SWE.5 — Software Component Verification and Integration Verification
 
-### `SWE5_L1_01` · Level L1 (Performed) · `SWE.5.BP1`
+### `SWE5_L1_01`
 
 **Base practice:** SWE.5.BP1 — Specify integration-verification measures
 
@@ -814,9 +773,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Missing integration-verification scope
 - **Stakeholders:** TE, SA
-- **Recommendation logic:** Recommend interface-driven integration-verification specs.
 
-### `SWE5_L1_02` · Level L1 (Performed) · `SWE.5.BP2`
+### `SWE5_L1_02`
 
 **Base practice:** SWE.5.BP2 — Specify component-behaviour verification measures (PAM 4.0 novelty)
 
@@ -832,9 +790,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Component-level black-box gaps
 - **Stakeholders:** TE, SA
-- **Recommendation logic:** New PAM 4.0 expectation; high signal of legacy 3.1 process.
 
-### `SWE5_L1_03` · Level L1 (Performed) · `SWE.5.BP3`
+### `SWE5_L1_03`
 
 **Base practice:** SWE.5.BP3 — Select verification measures incl. regression
 
@@ -850,9 +807,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Selection criteria absent
 - **Stakeholders:** TE
-- **Recommendation logic:** Recommend traceable selection rules linked to release scope.
 
-### `SWE5_L1_04` · Level L1 (Performed) · `SWE.5.BP4`
+### `SWE5_L1_04`
 
 **Base practice:** SWE.5.BP4 — Integrate elements & perform integration verification
 
@@ -868,9 +824,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Big-bang integration risk
 - **Stakeholders:** SD, TE, SA
-- **Recommendation logic:** High signal of late defects; recommend stepwise integration plan with CI.
 
-### `SWE5_L1_05` · Level L1 (Performed) · `SWE.5.BP5`
+### `SWE5_L1_05`
 
 **Base practice:** SWE.5.BP5 — Perform component verification & record
 
@@ -886,9 +841,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Result records missing
 - **Stakeholders:** QA, TE
-- **Recommendation logic:** Recommend tool-based recording with environment fingerprint.
 
-### `SWE5_L1_06` · Level L1 (Performed) · `SWE.5.BP6`
+### `SWE5_L1_06`
 
 **Base practice:** SWE.5.BP6 — Consistency & bidirectional traceability (arch / detailed design ↔ verification measures ↔ results)
 
@@ -904,9 +858,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Verification-result orphaning at integration
 - **Stakeholders:** QA, ASR
-- **Recommendation logic:** Compose with SWE2_L1_05 for compounded signal.
 
-### `SWE5_L1_08` · Level L1 (Performed) · `SWE.5.BP7`
+### `SWE5_L1_08`
 
 **Base practice:** SWE.5.BP7 — Summarize and communicate results
 
@@ -922,9 +875,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Component/integration verification results not summarised/communicated
 - **Stakeholders:** TE, SA, PM
-- **Recommendation logic:** Closes a full outcome gap — BP7/Outcome 8 was previously unassessed for SWE.5 across all 42 questions. Recommend an integration-baseline summary report as a release-readiness input to SWE.6.
 
-### `SWE5_L2_07` · Level L2 (Managed) · `GP 2.1.4`
+### `SWE5_L2_07`
 
 **Base practice:** GP 2.1.4 — Adjust process performance (interface management between SD & integration team)
 
@@ -940,9 +892,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Interface miscommunication between teams
 - **Stakeholders:** TL, PM
-- **Recommendation logic:** PA 2.1 / GP 2.1.7 (involved-party management); recommend lightweight ICB.
 
-### `SWE5_L2_09` · Level L2 (Managed) · `GP 2.2.2, GP 2.2.3`
+### `SWE5_L2_09`
 
 **Base practice:** GP 2.2.2, GP 2.2.3 — Storage and control of work products (component/integration verification reports)
 
@@ -958,9 +909,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Integration-verification reports not under configuration control
 - **Stakeholders:** QA
-- **Recommendation logic:** Fills the PA 2.2 gap for SWE.5 — the existing SWE5 GP question (SWE5_L2_07) covers only PA 2.1 interface coordination. Mirrors the SWE4_L2_07 pattern applied to the integration-verification artefact set.
 
-### `SWE5_L3_10` · Level L3 (Established) · `GP 3.1.1`
+### `SWE5_L3_10`
 
 **Base practice:** GP 3.1.1 — Standard process (integration strategy)
 
@@ -976,13 +926,12 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** No organisation-wide standard for integration approach
 - **Stakeholders:** ASR, SA, PM
-- **Recommendation logic:** SWE.5 previously had no L3 question; PA 3.1 organisational-maturity check. Recommend a Process Group-maintained integration-strategy template.
 
 ---
 
 ## SWE.6 — Software Verification
 
-### `SWE6_L1_01` · Level L1 (Performed) · `SWE.6.BP1`
+### `SWE6_L1_01`
 
 **Base practice:** SWE.6.BP1 — Specify verification measures vs. SW requirements
 
@@ -998,9 +947,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Test cases not derived from SW requirements
 - **Stakeholders:** TE
-- **Recommendation logic:** Recommend req-to-test allocation report at each baseline.
 
-### `SWE6_L1_02` · Level L1 (Performed) · `SWE.6.BP2`
+### `SWE6_L1_02`
 
 **Base practice:** SWE.6.BP2 — Select verification measures incl. regression (release scope)
 
@@ -1016,9 +964,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Regression policy weak at qualification
 - **Stakeholders:** TE, PM
-- **Recommendation logic:** High signal pre-release; flag if release phase = late.
 
-### `SWE6_L1_03` · Level L1 (Performed) · `SWE.6.BP3`
+### `SWE6_L1_03`
 
 **Base practice:** SWE.6.BP3 — Verify integrated SW & record (qualification environment)
 
@@ -1034,9 +981,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Wrong target / non-representative env.
 - **Stakeholders:** TE, QA
-- **Recommendation logic:** Recommend escalation to HIL for safety-critical functions.
 
-### `SWE6_L1_04` · Level L1 (Performed) · `SWE.6.BP4`
+### `SWE6_L1_04`
 
 **Base practice:** SWE.6.BP4 — Consistency & bidirectional traceability (SW reqs ↔ test specs ↔ results)
 
@@ -1052,9 +998,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Final-stage traceability gap
 - **Stakeholders:** QA, ASR
-- **Recommendation logic:** Compose with SWE1_L1_05; if both high → critical traceability red flag.
 
-### `SWE6_L1_05` · Level L1 (Performed) · `SWE.6.BP5`
+### `SWE6_L1_05`
 
 **Base practice:** SWE.6.BP5 — Summarise & communicate results
 
@@ -1070,9 +1015,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Defect leakage / no test summary
 - **Stakeholders:** QA, PM
-- **Recommendation logic:** Recommend templated test summary tied to release approval.
 
-### `SWE6_L2_06` · Level L2 (Managed) · `GP 2.2.2`
+### `SWE6_L2_06`
 
 **Base practice:** GP 2.2.2 — Work-product requirements (defect management)
 
@@ -1088,9 +1032,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Defect process weak at qualification
 - **Stakeholders:** QA, TE
-- **Recommendation logic:** Reference SUP.9 (out of scope); recommend root-cause field.
 
-### `SWE6_L2_08` · Level L2 (Managed) · `GP 2.1.1, GP 2.1.2, GP 2.1.3`
+### `SWE6_L2_08`
 
 **Base practice:** GP 2.1.1, GP 2.1.2, GP 2.1.3 — Strategy, planning and resource readiness for SWE.6
 
@@ -1106,9 +1049,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** Qualification-verification activity not planned/resourced ahead of release
 - **Stakeholders:** PM, TE, TL
-- **Recommendation logic:** Fills the PA 2.1 gap for SWE.6 — the existing SWE6 GP questions cover only PA 2.2 (defect management, SWE6_L2_06) and PA 3.2 (feedback loop, SWE6_L3_07), never PA 2.1 planning. Recommend a release-readiness checklist including qualification-environment booking (cf. SWE4_L2_06 pattern applied to the qualification stage).
 
-### `SWE6_L3_07` · Level L3 (Established) · `GP 3.2.4`
+### `SWE6_L3_07`
 
 **Base practice:** GP 3.2.4 — Monitor performance of defined process (information, not data)
 
@@ -1124,9 +1066,8 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** No process-improvement feedback loop
 - **Stakeholders:** ASR, QA, PM
-- **Recommendation logic:** PA 3.2 weakness; recommend a quarterly Process Group review channel.
 
-### `SWE6_L3_09` · Level L3 (Established) · `GP 3.1.1`
+### `SWE6_L3_09`
 
 **Base practice:** GP 3.1.1 — Standard process (qualification-test strategy)
 
@@ -1142,7 +1083,6 @@ A structured, weighted question bank derived from the Automotive SPICE SWE.1–S
 
 - **Identifies:** No organisation-wide standard qualification-test methodology
 - **Stakeholders:** ASR, TE, PM
-- **Recommendation logic:** Distinct from SWE6_L3_07 (GP 3.2.4 — monitoring/feedback loop of the already-deployed process) — this addresses GP 3.1.1, the prior step of establishing a standard process in the first place. Closes the last PA 3.1 gap for SWE.6, paralleling SWE4_L3_09/SWE5_L3_10.
 
 ---
 
