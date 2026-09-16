@@ -56,16 +56,24 @@ Admins can manage the question bank, view aggregate heatmaps across all users, a
 
 ### Prerequisites
 
-- [Docker](https://www.docker.com/) and Docker Compose
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and **running**
 
 ### Run
 
 ```bash
 git clone <repo-url> aspice-audit
 cd aspice-audit
-cp .env.example .env        # edit DB credentials and SECRET_KEY
+cp .env.example .env        # this repo also ships a working .env with test values, so this step is optional
 docker compose watch
 ```
+
+The first startup can take a minute or two while images build and the database becomes ready. Watch progress with:
+
+```bash
+docker compose logs -f
+```
+
+If you edited `.env`, restart the stack for the changes to take effect: `docker compose watch` (Ctrl+C, then re-run).
 
 | Service | URL |
 |---|---|
@@ -82,9 +90,11 @@ docker compose exec backend python app/seed_questions.py
 
 This inserts 42 questions across all SWE processes and levels (idempotent — safe to run multiple times).
 
-### Create an admin user
+### Admin login
 
-Use the API docs at `/docs` to `POST /api/v1/users/` with `is_superuser: true`, or use the Adminer DB UI to set `is_superuser = true` on an existing user.
+An admin user is created automatically on first startup from `FIRST_SUPERUSER` / `FIRST_SUPERUSER_PASSWORD` in `.env`. Log in with those credentials at the frontend, or use the API docs at `/docs`.
+
+To create additional admins, use the API docs at `/docs` to `POST /api/v1/users/` with `is_superuser: true`, or use the Adminer DB UI to set `is_superuser = true` on an existing user.
 
 ---
 
