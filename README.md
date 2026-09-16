@@ -61,7 +61,7 @@ Admins can manage the question bank, view aggregate heatmaps across all users, a
 ### Run
 
 ```bash
-git clone <repo-url> aspice-audit
+git clone https://github.com/Mr-Faizan/Aspice-Audit.git aspice-audit
 cd aspice-audit
 cp .env.example .env        # this repo also ships a working .env with test values, so this step is optional
 docker compose watch
