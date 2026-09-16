@@ -15,8 +15,17 @@
 \usepackage{acronym}
 \usepackage[table]{xcolor}
 \usepackage{pifont}
+\usepackage{booktabs}
 \newcommand{\cmark}{\textcolor{green!45!black}{\ding{51}}}
 \newcommand{\xmark}{\textcolor{red!60!black}{\ding{55}}}
+
+% --------------------------------------------------------------
+% Standard table style: dark green header row with white bold
+% text, zebra-striped body, no vertical rules. Use \thw{...} for
+% each header cell and \rowcolors{2}{green!5}{white} right before
+% \begin{tabular} on every table for a consistent look.
+% --------------------------------------------------------------
+\newcommand{\thw}[1]{\textcolor{white}{\textbf{#1}}}
 
 \hypersetup{%
 bookmarksnumbered=true, hyperindex=true,
@@ -178,6 +187,8 @@ is not only a viable idea but a working one.
 \begin{acronym}[HTTPS]
  \acro{ASPICE}{Automotive Software Process Improvement and Capability dEtermination}
  \acro{SPICE}{Software Process Improvement and Capability dEtermination}
+ \acro{VDA}{Verband der Automobilindustrie (German Association of the Automotive Industry)}
+ \acro{OEM}{Original Equipment Manufacturer}
  \acro{PRM}{Process Reference Model}
  \acro{PAM}{Process Assessment Model}
  \acro{BP}{Base Practice}
@@ -198,6 +209,7 @@ is not only a viable idea but a working one.
  \acro{DB}{Database}
  \acro{UI}{User Interface}
  \acro{UX}{User Experience}
+ \acro{GUI}{Graphical User Interface}
  \acro{HTTP}{Hypertext Transfer Protocol}
  \acro{HTTPS}{Hypertext Transfer Protocol Secure}
  \acro{TLS}{Transport Layer Security}
@@ -411,9 +423,8 @@ each process group having a two-letter code.
 \begin{figure}[h]
   \centering
   \includegraphics[width=\textwidth]{src/aspice_model.png}
-  \caption{The Automotive SPICE process reference model, with the Software Engineering process
-  group (SWE) highlighted in red. Reproduced from the official process reference model published
-  by the VDA Quality Management Center~\cite{vdaqmc_website,vdaqmc2023pam}.}
+  \caption{The Automotive SPICE process reference model, with SWE highlighted in red.
+  Reproduced from the VDA Quality Management Center~\cite{vdaqmc_website,vdaqmc2023pam}.}
   \label{fig:aspice-model}
 \end{figure}
 
@@ -457,17 +468,17 @@ processes~\cite{vmodel_visure}.
 \end{figure}
 
 \begin{description}
-  \item[SWE.1 --- Software Requirements Analysis] Records the software requirements that are
+  \item[SWE.1: Software Requirements Analysis] Records the software requirements that are
   extracted from the System Requirements and System Architecture.
-  \item[SWE.2 --- Software Architectural Design] Describes the software architecture, which is
+  \item[SWE.2: Software Architectural Design] Describes the software architecture, which is
   the division of software into components and the interactions between the components.
-  \item[SWE.3 --- Software Detailed Design and Unit Construction] Specifies each software unit in
+  \item[SWE.3: Software Detailed Design and Unit Construction] Specifies each software unit in
   detail and constructs it.
-  \item[SWE.4 --- Software Unit Verification] Verifies that each implemented unit meets its
+  \item[SWE.4: Software Unit Verification] Verifies that each implemented unit meets its
   detailed design.
-  \item[SWE.5 --- Software Integration and Integration Test] Integrates verified units into
+  \item[SWE.5: Software Integration and Integration Test] Integrates verified units into
   larger components and the complete software build, and tests if this integration is correct.
-  \item[SWE.6 --- Software Qualification Test] Tests the fully integrated software against the
+  \item[SWE.6: Software Qualification Test] Tests the fully integrated software against the
   original software requirements.
 \end{description}
 
@@ -487,7 +498,7 @@ all the levels on its way to the specified level.
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.45\textwidth]{src/levels.jpg}
+  \includegraphics[width=0.6\textwidth]{src/levels.png}
   \caption{The six ASPICE capability levels, from Level~0 (Incomplete) to Level~5 (Innovating).
   Adapted from the official Automotive SPICE process model~\cite{vdaqmc_website}.}
   \label{fig:capability-levels}
@@ -525,10 +536,6 @@ This procedure is performed once or twice in a project, at a specific time and r
 judgment~\cite{vdaqmc2023pam,murphy_aspice_0to60}. There is, however, no inbuilt process to
 ensure that the processes that have been assessed continue to be followed between assessments.
 
-% TODO(figure): ASPICE PAM v4.0 Fig. 5 (p.28) -- "Performing a process assessment for
-% determining process capability" (Execution -> Methods -> PAM, 3-step diagram). Redraw
-% cleanly rather than screenshotting the PDF. Source: vdaqmc2023pam.
-
 \subsection{Pain Points of Manual Assessment (Time, Consistency, Continuity)}
 
 This is a procedure that has three main consequences. First, feedback is only given when an
@@ -540,17 +547,14 @@ the time the problem is discovered. Third, an assessor's depth of a manual asses
 by the amount of time that he or she has. An assessor does not have a lot of time to spend onsite
 so a sample of evidence must be examined instead of all evidence; thus, the extent of the sample
 of evidence examined during a particular audit is dependent on the questions the assessor decides
-to ask. Dimitrios recognizes the same gap first, which is that once a supplier is certified,
+to ask.
+
+Dimitrios recognizes the same gap first, which is that once a supplier is certified,
 there is no way to directly monitor the supplier's process to ensure that it continues to meet
 the requirements, and therefore organizations often use generic project management or
 defect-tracking systems, which were not designed to perform process
 assessment~\cite{datsogiannis2024early}. This is the particular issue that will be tackled in the
 rest of this thesis.
-
-% TODO(figure): 2025 supervisor paper, Fig. 1 -- "Process of bug finding and fixing in relation
-% to time" (swimlane, bugfixing feedback loop). Illustrates the defect-cost-over-time point in
-% the sentence above. Source: datsogiannis2025recommender. (Also usable in Ch.1 Motivation --
-% place it in whichever section ends up needing the visual more.)
 
 \section{Recommender Systems}
 
@@ -630,7 +634,7 @@ algorithm learns what questions are relevant for what context, and not all
 users~\cite{gutowski2018contextenhancement}.
 
 
-\subsection{LinUCB --- Mathematical Foundations}
+\subsection{LinUCB: Mathematical Foundations}
 
 In this thesis, a contextual bandit algorithm called LinUCB has been assumed in which the
 expected reward for each arm can be modeled as a linear function of the context
@@ -719,7 +723,7 @@ across processes~\cite{vectorconsulting_aspice}.
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.7\textwidth]{src/Soa_Aspice_1.png}
+  \includegraphics[width=0.8\textwidth]{src/Soa_Aspice_1.png}
   \caption{How PRM and PAM indicators relate to capability levels: base practices and work
   products evidence Capability Level~1, while generic practices and generic resources evidence
   every level above it. Adapted from Vector Consulting~\cite{vectorconsulting_aspice}.}
@@ -735,7 +739,7 @@ example of comparing bandit algorithms with simulated data~\cite{datsogiannis202
 The two papers are the closest prior art to this thesis and the design described in
 Chapter~\ref{chap:architecture} is a development of those two papers.
 
-\subsection{2024 --- A Dynamic Survey Model for Automotive Process Evaluation}
+\subsection{2024: A Dynamic Survey Model for Automotive Process Evaluation}
 
 Dimitrios recommends a system that handles a dynamic questionnaire, instead of a fixed
 one~\cite{datsogiannis2024early}. The questions are based on the literature search on automotive
@@ -785,7 +789,7 @@ reveal a genuine weakness and not just a question that is easy to answer. Unlike
 three-band classifier is extended to a four-band classifier
 (Chapter~\ref{chap:architecture}), and the resulting system is implemented and tested.
 
-\subsection{2025 --- Algorithm Benchmarking on Simulated Data}
+\subsection{2025: Algorithm Benchmarking on Simulated Data}
 
 In a similar fashion, Dimitrios extends the concept with a pool of 137 questions and compares
 three bandit algorithms directly: $\epsilon$-greedy, LinUCB and Thompson
@@ -810,7 +814,7 @@ cases with the best tuning for each algorithm.
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.5\textwidth]{src/Soa_5.png}
+  \includegraphics[width=0.7\textwidth]{src/Soa_5.png}
   \caption{Distribution of $\epsilon$-greedy's rewards at 0\% deficiency change, across four
   score bands. Reproduced from~\cite{datsogiannis2025recommender}.}
   \label{fig:soa-reward-distribution}
@@ -818,23 +822,25 @@ cases with the best tuning for each algorithm.
 
 \begin{table}[h]
 \centering
+\rowcolors{2}{green!5}{white}
+\begin{tabular}{l l c c}
+\toprule
+\rowcolor{green!55!black}
+\thw{Scenario} & \thw{Algorithm} & \thw{Tuning} & \thw{Rewards $>$ 0.75} \\
+\midrule
+0\% change  & $\epsilon$-greedy & $\epsilon=0.5$ & 47.2\% \\
+            & LinUCB            & $\alpha=0.1$   & 34.4\% \\
+            & Thompson Sampling & $\alpha=0.5$   & 36.7\% \\
+\midrule
+50\% change & $\epsilon$-greedy & $\epsilon=0.5$ & 25.3\% \\
+            & LinUCB            & $\alpha=0.1$   & 24.3\% \\
+            & Thompson Sampling & $\alpha=5.0$   & 23.9\% \\
+\bottomrule
+\end{tabular}
 \caption{Simulated algorithm comparison at 0\% and 50\% deficiency-change rate, reproduced
 from~\cite{datsogiannis2025recommender}. The right-hand column is the share of rewards that fell
 above 0.75, the band representing the most important questions paired with the worst answers.}
 \label{tab:recommender-results}
-\begin{tabular}{|l|l|c|c|}
-\hline
-\textbf{Scenario} & \textbf{Algorithm} & \textbf{Tuning} & \textbf{Rewards $>$ 0.75} \\
-\hline
-0\% change  & $\epsilon$-greedy & $\epsilon=0.5$ & 47.2\% \\
-            & LinUCB            & $\alpha=0.1$   & 34.4\% \\
-            & Thompson Sampling & $\alpha=0.5$   & 36.7\% \\
-\hline
-50\% change & $\epsilon$-greedy & $\epsilon=0.5$ & 25.3\% \\
-            & LinUCB            & $\alpha=0.1$   & 24.3\% \\
-            & Thompson Sampling & $\alpha=5.0$   & 23.9\% \\
-\hline
-\end{tabular}
 \end{table}
 
 The share of high-reward outcomes is the same across all four scenarios with $\epsilon$-greedy:
@@ -866,38 +872,32 @@ while still being implemented and evaluated.
 
 \begin{table}[h]
 \centering
-\caption{Manual ASPICE practice, prior CMAB-based work, and this thesis, compared.}
-\label{tab:cross-comparison}
 \rowcolors{2}{green!5}{white}
-\begin{tabular}{|p{2.7cm}|p{3.0cm}|p{3.6cm}|p{3.6cm}|}
-\hline
+\begin{tabular}{p{2.7cm} p{3.0cm} p{3.6cm} p{3.6cm}}
+\toprule
 \rowcolor{green!55!black}
-\textcolor{white}{\textbf{Aspect}} & \textcolor{white}{\textbf{ASPICE (current practice)}} &
-\textcolor{white}{\textbf{Prior work~\cite{datsogiannis2024early,datsogiannis2025recommender}}} &
-\textcolor{white}{\textbf{This thesis}} \\
-\hline
+\thw{Aspect} & \thw{ASPICE (current practice)} &
+\thw{Prior work~\cite{datsogiannis2024early,datsogiannis2025recommender}} &
+\thw{This thesis} \\
+\midrule
 Assessment style & Manual, audit-driven & Continuous, question-driven & Continuous,
 ASPICE-aligned, web-based \\
-\hline
 Question-based evaluation & \cmark\ Yes, by auditors & \cmark\ Yes, derived from metrics &
 \cmark\ Yes, ASPICE base practices turned into questions \\
-\hline
 Structured question database & \xmark\ Not a standardized dataset & \cmark\ Generic questions for
 general software & \cmark\ New structured SWE.1--SWE.6 question bank \\
-\hline
 ASPICE scope / focus & \cmark\ Full standard, as needed & \xmark\ SYS.1--SYS.5, SWE.1--SWE.6,
 VAL.1, PIM.3 (not SWE-specific) & \cmark\ Explicit SWE.1--SWE.6 mapping only \\
-\hline
 Automated question selection & \xmark\ Human assessor selects & \cmark\ CMAB agent (three
 algorithms compared) & \cmark\ CMAB agent (LinUCB) \\
-\hline
 Early feedback & \xmark\ Mostly late, at audit time & \cmark\ Early evaluation, in simulation &
 \cmark\ Early SWE weakness visibility \\
-\hline
 Evaluation basis & Not applicable (the standard itself) & \xmark\ Simulated data only & \cmark\
 Real pilot audit sessions \\
-\hline
+\bottomrule
 \end{tabular}
+\caption{Manual ASPICE practice, prior CMAB-based work, and this thesis, compared.}
+\label{tab:cross-comparison}
 \end{table}
 
 There are three conscious decisions made in regards to the previous work in this thesis. First,
@@ -987,26 +987,23 @@ to Chapter~\ref{chap:introduction}'s research questions rather than as free-stan
 
 \begin{table}[h]
 \centering
+\rowcolors{2}{green!5}{white}
+\begin{tabular}{c p{9.5cm} c}
+\toprule
+\rowcolor{green!55!black}
+\thw{Req.} & \thw{Requirement} & \thw{RQ} \\
+\midrule
+FR1 & Continuous, automated, ASPICE-aligned assessment (core objective) & RQ1--RQ4 \\
+FR2 & Stakeholder signup, login, and session participation (supporting infrastructure) & --- \\
+FR3 & Structured SWE.1--SWE.6 question bank & RQ1 \\
+FR4 & Role-targeted question selection & RQ2 \\
+FR5 & Automatic weakness computation & RQ3 \\
+FR6 & Clear presentation of results & RQ4 \\
+\bottomrule
+\end{tabular}
 \caption{Functional requirements mapped to the research questions from
 Chapter~\ref{chap:introduction}.}
 \label{tab:fr-traceability}
-\begin{tabular}{|c|p{9.5cm}|c|}
-\hline
-\textbf{Req.} & \textbf{Requirement} & \textbf{RQ} \\
-\hline
-FR1 & Continuous, automated, ASPICE-aligned assessment (core objective) & RQ1--RQ4 \\
-\hline
-FR2 & Stakeholder signup, login, and session participation (supporting infrastructure) & --- \\
-\hline
-FR3 & Structured SWE.1--SWE.6 question bank & RQ1 \\
-\hline
-FR4 & Role-targeted question selection & RQ2 \\
-\hline
-FR5 & Automatic weakness computation & RQ3 \\
-\hline
-FR6 & Clear presentation of results & RQ4 \\
-\hline
-\end{tabular}
 \end{table}
 
 % Optional (not yet added): a UML use-case diagram (actors: Stakeholder, Administrator; use
@@ -1063,7 +1060,8 @@ system, but rather what each component is responsible for.
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.90\textwidth]{src/Arch_2.png}
-  \caption{System components and their responsibilities.}
+  \caption{System components and their responsibilities. Generated with Claude
+  Design~\cite{anthropic_claude_design}.}
   \label{fig:component-responsibilities}
 \end{figure}
 
@@ -1080,7 +1078,8 @@ when necessary.
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.90\textwidth]{src/Arch_3.png}
-  \caption{Control and data flow for a single answer-submission request.}
+  \caption{Control and data flow for a single answer-submission request. Generated with Claude
+  Design~\cite{anthropic_claude_design}.}
   \label{fig:data-control-flow}
 \end{figure}
 
@@ -1126,23 +1125,21 @@ the process score (Sections~\ref{sec:cmab-engine} and~\ref{sec:weakness-classifi
 
 \begin{table}[h]
 \centering
+\rowcolors{2}{green!5}{white}
+\begin{tabular}{c p{8.5cm} c}
+\toprule
+\rowcolor{green!55!black}
+\thw{Option} & \thw{Answer text} & \thw{Weight} \\
+\midrule
+A & Each requirement is uniquely identified, atomic, verifiable, and references its source & 0 \\
+B & Requirements are uniquely identified but verifiability criteria are missing for some & 2 \\
+C & Requirements exist as free-text paragraphs without unique IDs & 3 \\
+D & Requirements are partially captured in slides or e-mails & 4 \\
+E & No formal software requirements set exists & 5 \\
+\bottomrule
+\end{tabular}
 \caption{Answer options and weights for the worked example question \texttt{SWE1\_L1\_01}.}
 \label{tab:example-question}
-\begin{tabular}{|c|p{8.5cm}|c|}
-\hline
-\textbf{Option} & \textbf{Answer text} & \textbf{Weight} \\
-\hline
-A & Each requirement is uniquely identified, atomic, verifiable, and references its source & 0 \\
-\hline
-B & Requirements are uniquely identified but verifiability criteria are missing for some & 2 \\
-\hline
-C & Requirements exist as free-text paragraphs without unique IDs & 3 \\
-\hline
-D & Requirements are partially captured in slides or e-mails & 4 \\
-\hline
-E & No formal software requirements set exists & 5 \\
-\hline
-\end{tabular}
 \end{table}
 
 \subsection{Stakeholder Role Assignment}
@@ -1180,7 +1177,8 @@ than directly recorded stakeholder input.
 \begin{figure}[h]
   \centering
   \includegraphics[width=\textwidth]{src/Arch_4.png}
-  \caption{Entity-relationship diagram of the database schema.}
+  \caption{Entity-relationship diagram of the database schema. Generated with Claude
+  Design~\cite{anthropic_claude_design}.}
   \label{fig:erd}
 \end{figure}
 
@@ -1380,21 +1378,20 @@ traffic-light classification introduced earlier in Chapter~\ref{chap:sota}.
 
 \begin{table}[h]
 \centering
+\rowcolors{2}{green!5}{white}
+\begin{tabular}{c l c}
+\toprule
+\rowcolor{green!55!black}
+\thw{Score range} & \thw{Classification} & \thw{Colour} \\
+\midrule
+0.00 -- 0.25 & Compliant & Green \\
+0.25 -- 0.50 & Minor Weakness & Yellow \\
+0.50 -- 0.75 & Significant Gap & Orange \\
+0.75 -- 1.00 & Critical Gap & Red \\
+\bottomrule
+\end{tabular}
 \caption{Weakness classification thresholds.}
 \label{tab:classification-thresholds}
-\begin{tabular}{|c|l|c|}
-\hline
-\textbf{Score range} & \textbf{Classification} & \textbf{Colour} \\
-\hline
-0.00 -- 0.25 & Compliant & Green \\
-\hline
-0.25 -- 0.50 & Minor Weakness & Yellow \\
-\hline
-0.50 -- 0.75 & Significant Gap & Orange \\
-\hline
-0.75 -- 1.00 & Critical Gap & Red \\
-\hline
-\end{tabular}
 \end{table}
 
 \subsection{Weakness Ranking}
@@ -1413,7 +1410,8 @@ and the lower row runs once, when the session actually ends.
 \begin{figure}[h]
   \centering
   \includegraphics[width=\textwidth]{src/Arch_5.png}
-  \caption{Question-to-result processing flow, from question selection to a stored result.}
+  \caption{Question-to-result processing flow, from question selection to a stored result.
+  Generated with Claude Design~\cite{anthropic_claude_design}.}
   \label{fig:question-to-result}
 \end{figure}
 
@@ -1455,20 +1453,20 @@ session, before they submit any answer.
 
 \begin{table}[h]
 \centering
-\caption{Assessment session endpoints.}
-\label{tab:session-endpoints}
-\begin{tabular}{|l|p{6.5cm}|}
-\hline
-\textbf{Endpoint} & \textbf{Purpose} \\
-\hline
+\rowcolors{2}{green!5}{white}
+\begin{tabular}{l p{6.5cm}}
+\toprule
+\rowcolor{green!55!black}
+\thw{Endpoint} & \thw{Purpose} \\
+\midrule
 \texttt{POST /audit/sessions/} & Start a new session; returns the first selected question. \\
-\hline
 \texttt{GET /audit/sessions/} & List the current user's own sessions, past and present. \\
-\hline
 \texttt{GET /audit/sessions/\{id\}} & Retrieve one session's detail, including every question
 asked so far. \\
-\hline
+\bottomrule
 \end{tabular}
+\caption{Assessment session endpoints.}
+\label{tab:session-endpoints}
 \end{table}
 
 \subsection{Answer Submission and Result Retrieval}
@@ -1476,7 +1474,8 @@ asked so far. \\
 \begin{figure}[h]
   \centering
   \includegraphics[width=\textwidth]{src/Arch_6_Sequence_diagram.png}
-  \caption{Answer submission and result retrieval sequence.}
+  \caption{Answer submission and result retrieval sequence. Generated with Claude
+  Design~\cite{anthropic_claude_design}.}
   \label{fig:arch-answer-sequence}
 \end{figure}
 
@@ -1565,25 +1564,24 @@ properties relevant to this thesis.
 
 \begin{table}[h]
 \centering
-\caption{Bandit algorithms considered, compared on the properties relevant to this thesis.}
-\label{tab:algorithm-comparison}
-\begin{tabular}{|l|p{4.3cm}|c|c|}
-\hline
-\textbf{Algorithm} & \textbf{Selection rule} & \textbf{Deterministic?} & \textbf{Context-aware?} \\
-\hline
+\rowcolors{2}{green!5}{white}
+\begin{tabular}{l p{4.3cm} c c}
+\toprule
+\rowcolor{green!55!black}
+\thw{Algorithm} & \thw{Selection rule} & \thw{Deterministic?} & \thw{Context-aware?} \\
+\midrule
 Epoch-Greedy~\cite{langford2007epochgreedy} & Alternates fixed explore/exploit
 blocks & Within a block & No \\
-\hline
 $\epsilon$-greedy~\cite{tokic2011valuedifference} & Best known arm, or a
 random arm with probability $\epsilon$ & No & No \\
-\hline
 Thompson Sampling~\cite{agrawal2013thompson} & Samples an arm from a fitted
 reward distribution & No & Contextual only \\
-\hline
 LinUCB~\cite{li2010contextual,huang2016linucb} & $\theta_a^\top x + \alpha
 \sqrt{x^\top A_a^{-1} x}$, highest score wins & Yes & Yes, natively \\
-\hline
+\bottomrule
 \end{tabular}
+\caption{Bandit algorithms considered, compared on the properties relevant to this thesis.}
+\label{tab:algorithm-comparison}
 \end{table}
 
 Three reasons, all visible in that table, drove the final choice. First, \textbf{determinism}.
@@ -1665,12 +1663,12 @@ running \texttt{docker compose watch}, all four will be run with live reloading 
 change in either the backend or the frontend shows up in the browser within a second or two,
 without ever having to restart manually.
 
-\subsection{Backend Development Stack (FastAPI, SQLModel, uv, Alembic)}
+\subsection{Backend Development Stack}
 
 \begin{figure}[h]
   \centering
   \includegraphics[width=\textwidth]{src/Imp_backend_2.png}
-  \caption{Technologies used across the stack.}
+  \caption{Technologies used across the stack. Generated with Claude Design~\cite{anthropic_claude_design}.}
   \label{fig:tech-stack}
 \end{figure}
 
@@ -1689,12 +1687,13 @@ schema migrations: every change to a SQLModel table, such as adding \texttt{stak
 \texttt{User}, or creating the tables described in Chapter~\ref{chap:architecture}, is captured
 as its own A script that can be run in both directions, and is versioned.
 
-\subsection{Frontend Development Stack (React, TypeScript, Vite, TanStack Router)}
+\subsection{Frontend Development Stack}
 
 \begin{figure}[h]
   \centering
   \includegraphics[width=\textwidth]{src/Imp_frontend_3.png}
-  \caption{Frontend development stack and data flow.}
+  \caption{Frontend development stack and data flow. Generated with Claude
+  Design~\cite{anthropic_claude_design}.}
   \label{fig:frontend-stack}
 \end{figure}
 
@@ -1798,23 +1797,22 @@ state persists between requests without a separate numeric store.
 
 \begin{table}[h]
 \centering
-\caption{The 20-dimensional context vector built before each question.}
-\label{tab:context-vector}
-\begin{tabular}{|c|p{4.3cm}|p{6.2cm}|}
-\hline
-\textbf{Dims} & \textbf{Content} & \textbf{How computed} \\
-\hline
+\rowcolors{2}{green!5}{white}
+\begin{tabular}{c p{4.3cm} p{6.2cm}}
+\toprule
+\rowcolor{green!55!black}
+\thw{Dims} & \thw{Content} & \thw{How computed} \\
+\midrule
 0--6 & Stakeholder role (one-hot) & 1.0 at the user's role position, 0 elsewhere \\
-\hline
 7 & Session progress & \texttt{questions\_asked / max\_questions} (0.0 to 1.0) \\
-\hline
 8--13 & Per-process coverage flags (SWE1 to SWE6) & 1.0 if at least one question from that
 process was already asked \\
-\hline
 14--19 & Running mean weakness score per process & Average of normalised answer weights for
 each process so far \\
-\hline
+\bottomrule
 \end{tabular}
+\caption{The 20-dimensional context vector built before each question.}
+\label{tab:context-vector}
 \end{table}
 
 
@@ -1856,29 +1854,24 @@ Table~\ref{tab:admin-endpoints} lists the admin-only ones.
 
 \begin{table}[h]
 \centering
+\rowcolors{2}{green!5}{white}
+\begin{tabular}{l p{6.5cm}}
+\toprule
+\rowcolor{green!55!black}
+\thw{Endpoint} & \thw{Purpose} \\
+\midrule
+\texttt{GET /questions/} & List questions (filters: process, level, role, is\_active) \\
+\texttt{POST /questions/} & Create a question with its options \\
+\texttt{PATCH /questions/\{id\}} & Edit a question or its options \\
+\texttt{DELETE /questions/\{id\}} & Deactivate a question (soft delete) \\
+\texttt{POST /questions/seed} & Bulk-seed questions from a JSON payload \\
+\texttt{GET /analytics/weaknesses} & Aggregate weakness scores across all sessions \\
+\texttt{GET /analytics/users} & Participation stats by stakeholder role \\
+\texttt{GET /analytics/bandit} & CMAB arm stats: pull count, average reward per question \\
+\bottomrule
+\end{tabular}
 \caption{Question bank and analytics endpoints (admin only).}
 \label{tab:admin-endpoints}
-\begin{tabular}{|l|p{6.5cm}|}
-\hline
-\textbf{Endpoint} & \textbf{Purpose} \\
-\hline
-\texttt{GET /questions/} & List questions (filters: process, level, role, is\_active) \\
-\hline
-\texttt{POST /questions/} & Create a question with its options \\
-\hline
-\texttt{PATCH /questions/\{id\}} & Edit a question or its options \\
-\hline
-\texttt{DELETE /questions/\{id\}} & Deactivate a question (soft delete) \\
-\hline
-\texttt{POST /questions/seed} & Bulk-seed questions from a JSON payload \\
-\hline
-\texttt{GET /analytics/weaknesses} & Aggregate weakness scores across all sessions \\
-\hline
-\texttt{GET /analytics/users} & Participation stats by stakeholder role \\
-\hline
-\texttt{GET /analytics/bandit} & CMAB arm stats: pull count, average reward per question \\
-\hline
-\end{tabular}
 \end{table}
 
 \begin{figure}[h]
@@ -1945,23 +1938,21 @@ lists the totals.
 
 \begin{table}[h]
 \centering
+\rowcolors{2}{green!5}{white}
+\begin{tabular}{l c}
+\toprule
+\rowcolor{green!55!black}
+\thw{Item} & \thw{Count} \\
+\midrule
+SWE processes covered (SWE.1--SWE.6) & 6 \\
+Questions per process & 10 \\
+Questions in total & 60 \\
+Answer options per question (A--E) & 5 \\
+Answer options in total & 300 \\
+\bottomrule
+\end{tabular}
 \caption{Seeded question bank totals.}
 \label{tab:qb-counts}
-\begin{tabular}{|l|c|}
-\hline
-\textbf{Item} & \textbf{Count} \\
-\hline
-SWE processes covered (SWE.1--SWE.6) & 6 \\
-\hline
-Questions per process & 10 \\
-\hline
-Questions in total & 60 \\
-\hline
-Answer options per question (A--E) & 5 \\
-\hline
-Answer options in total & 300 \\
-\hline
-\end{tabular}
 \end{table}
 
 \subsection{Seed Script and Idempotent Seeding}
@@ -2019,29 +2010,24 @@ results by editing the URL.
 
 \begin{table}[h]
 \centering
+\rowcolors{2}{green!5}{white}
+\begin{tabular}{l l}
+\toprule
+\rowcolor{green!55!black}
+\thw{Page} & \thw{Access} \\
+\midrule
+Sign-up and login & Public \\
+Audit list and assessment home & Authenticated \\
+Audit session (one question at a time) & Session owner \\
+Audit results & Session owner \\
+Audit history & Authenticated \\
+Question bank manager & Administrator \\
+Analytics dashboard & Administrator \\
+User administration & Administrator \\
+\bottomrule
+\end{tabular}
 \caption{Main frontend pages and who can reach them.}
 \label{tab:frontend-routes}
-\begin{tabular}{|l|l|}
-\hline
-\textbf{Page} & \textbf{Access} \\
-\hline
-Sign-up and login & Public \\
-\hline
-Audit list and assessment home & Authenticated \\
-\hline
-Audit session (one question at a time) & Session owner \\
-\hline
-Audit results & Session owner \\
-\hline
-Audit history & Authenticated \\
-\hline
-Question bank manager & Administrator \\
-\hline
-Analytics dashboard & Administrator \\
-\hline
-User administration & Administrator \\
-\hline
-\end{tabular}
 \end{table}
 
 \subsection{Authentication and User Management}
@@ -2249,10 +2235,11 @@ state as JSON sufficient statistics so no history is ever replayed, drawing a tr
 boundary around a single answer, treating pool exhaustion as a normal end of session, and
 keeping the frontend types generated from the backend schema. Whether the system behaves as
 intended, and whether contextual selection measurably helps, is the subject of the evaluation in
-Chapter~\ref{chap:results}.\footnote{I use AI tool in this Chapter as a verification aid to compare the
+Chapter~\ref{chap:results}.\footnote{I used AI tool in this Chapter as a verification aid to compare the
 described implementation with the functionality actually developed in the web application. The
 purpose was to ensure consistency between the concepts presented in this chapter and the
-implemented functionality, and to avoid claiming behaviour that was not implemented.}
+implemented functionality, and to avoid claiming behaviour that was not implemented. See the AI
+Referencing section on page~\pageref{app:ai-referencing} for full details.}
 
 \chapter{Results and Evaluation}
 \label{chap:results}
@@ -2292,7 +2279,7 @@ account for 56 of the 105 tests.
 
 The three service-level files are pure unit tests: every database call is replaced with
 \texttt{unittest.mock.MagicMock}. This is demonstrated by
-\texttt{TestBuildContext.test\_one\_hot\_role\_encoding}, which checks the actual array
+\texttt{TestBuildContext}, which checks the actual array
 \texttt{build\_context} produces for each of the seven stakeholder roles, against known inputs.
 This is especially relevant for this thesis, since the CMAB calculations -- the UCB score in
 \texttt{TestSelectQuestion}, the $A \leftarrow A + xx^\top$ update in \texttt{TestUpdateArm}, and
@@ -2308,33 +2295,27 @@ test functions and outcome.
 
 \begin{table}[h]
 \centering
+\rowcolors{2}{green!5}{white}
+\begin{tabular}{l c l}
+\toprule
+\rowcolor{green!55!black}
+\thw{Test file} & \thw{Tests} & \thw{Outcome} \\
+\midrule
+\texttt{test\_cmab\_engine.py} & 19 & Passing \\
+\texttt{test\_weakness\_classifier.py} & 23 & Passing \\
+\texttt{test\_audit\_service.py} & 14 & Passing \\
+\texttt{test\_users.py} & 27 & Passing \\
+\texttt{test\_user.py} & 10 & Passing \\
+\texttt{test\_login.py} & 9 & Passing \\
+\texttt{test\_backend\_pre\_start.py} & 1 & Passing \\
+\texttt{test\_test\_pre\_start.py} & 1 & Passing \\
+\texttt{test\_private.py} & 1 & Passing \\
+\midrule
+\textbf{Total} & \textbf{105} & \\
+\bottomrule
+\end{tabular}
 \caption{Backend test files and outcomes.}
 \label{tab:test-outcomes}
-\begin{tabular}{|l|c|l|}
-\hline
-\textbf{Test file} & \textbf{Tests} & \textbf{Outcome} \\
-\hline
-\texttt{test\_cmab\_engine.py} & 19 & Passing \\
-\hline
-\texttt{test\_weakness\_classifier.py} & 23 & Passing \\
-\hline
-\texttt{test\_audit\_service.py} & 14 & Passing \\
-\hline
-\texttt{test\_users.py} & 27 & Passing \\
-\hline
-\texttt{test\_user.py} & 10 & Passing \\
-\hline
-\texttt{test\_login.py} & 9 & Passing \\
-\hline
-\texttt{test\_backend\_pre\_start.py} & 1 & Passing \\
-\hline
-\texttt{test\_test\_pre\_start.py} & 1 & Passing \\
-\hline
-\texttt{test\_private.py} & 1 & Passing \\
-\hline
-\textbf{Total} & \textbf{105} & \\
-\hline
-\end{tabular}
 \end{table}
 
 All 105 tests pass.
@@ -2767,7 +2748,9 @@ moment a real session finished.
 None of this is presented as final. The pilot is real but modest, the algorithm comparison
 remains to be done, and the threats named above are stated rather than resolved.
 Chapter~\ref{chap:conclusion} takes up exactly that: what these results answer, what they leave
-open, and where the system goes from here.
+open, and where the system goes from here.\footnote{I used AI tool in this Chapter as a
+verification aid, in the same way and for the same purpose as in Chapter~\ref{chap:implementation}.
+See the AI Referencing section on page~\pageref{app:ai-referencing} for full details.}
 
 \chapter{Conclusion and Future Work}
 \label{chap:conclusion}
@@ -2958,7 +2941,7 @@ had been validated through expert interviews. The weights used here would need t
 with automotive ASPICE experts, as was done in that prior work, to determine whether they
 actually reflect real-world severity.
 
-\subsection{Expansion to Additional ASPICE Process Groups (SYS, MAN, SUP)}
+\subsection{Expansion to Additional ASPICE Process Groups}
 
 This thesis deals only with the Software Engineering process group. The same technique, base
 practices turned into weighted questions, selection by a CMAB engine, and scoring by a
@@ -3036,1072 +3019,172 @@ about where it still falls short, is a reasonable place to start.
 \bibliography{bibliography}
 
 %---------------------------------------------------------
+% AI Referencing
+%---------------------------------------------------------
+
+\addchap*{AI Referencing}
+\label{app:ai-referencing}
+
+This thesis made limited use of AI tools. Where used, this is documented below: which tool, where
+in the thesis, and for what purpose.
+
+\begin{description}
+  \item[Claude (Anthropic)] Used in Chapter~\ref{chap:implementation} and
+  Chapter~\ref{chap:results} as a verification aid, to compare the implementation and evaluation
+  described in the text against the actual functionality of the deployed system.
+  \item[Claude Design (Anthropic)~\cite{anthropic_claude_design}] Used to generate diagrams
+  referenced throughout Chapter~\ref{chap:architecture} and Chapter~\ref{chap:implementation};
+  see each diagram's caption for the individual citation.
+\end{description}
+
+%---------------------------------------------------------
 % Appendices
 %---------------------------------------------------------
 
 \appendix
+\part*{Appendix}
+
 \chapter{ASPICE Question Bank}
 \label{app:questionbank}
-Full list of the 60 questions and 300 options used in the seeded question bank, covering SWE.1--SWE.6.
+Full list of the 60 questions and 300 options used in the seeded question bank, covering
+SWE.1--SWE.6. The full bank is reproduced here as screenshots of the source question-bank
+document (\texttt{Detailed\_question\_analysis\_clean.md}), one figure per SWE process.
 
 \section*{Legend}
-\begin{description}
-\item[Weights] 0 = Best / lowest risk; 5 = Worst / highest risk (highest CMAB reward).
-\item[Stakeholders] SD = Software Developer; SA = Software Architect; PM = Project Manager; QA = QA Engineer; TE = Test Engineer; TL = Team Lead; ASR = ASPICE Assessor.
-\item[Levels] L1 = Performed; L2 = Managed; L3 = Established.
-\end{description}
 
-\section*{SWE.1 --- Software Requirements Analysis}
-
-\subsection*{SWE1\_L1\_01}
-\begin{description}
-\item[ID] SWE1\_L1\_01
-\item[Level] L1
-\item[Criteria] SWE.1.BP1 --- Specify SW requirements (verifiability, unambiguity)
-\item[Identifies] Weak requirement quality, ambiguity, untestable SW requirements
-\item[Stakeholder] SA, SD, QA
-\item[Question] How are software requirements specified for the current release?
-\item[Options] ~\\
-A) Each requirement is uniquely identified, atomic, verifiable and references its source\\
-B) Requirements are uniquely identified but verifiability criteria are missing for some\\
-C) Requirements exist as free-text paragraphs without unique IDs\\
-D) Requirements are partially captured in slides/e-mails\\
-E) No formal SW requirements set exists
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE1\_L1\_02}
-\begin{description}
-\item[ID] SWE1\_L1\_02
-\item[Level] L1
-\item[Criteria] SWE.1.BP2 --- Structure SW requirements
-\item[Identifies] Missing prioritisation / categorisation, scope-creep risk
-\item[Stakeholder] PM, SA
-\item[Question] How are SW requirements categorised and prioritised?
-\item[Options] ~\\
-A) Categorised (functional/non-functional/safety/security) and prioritised against release plan\\
-B) Categorised only\\
-C) Prioritised only\\
-D) Done ad-hoc per request\\
-E) Not categorised or prioritised
-\item[Weights] 0, 2, 2, 4, 5
-\end{description}
-
-\subsection*{SWE1\_L1\_03}
-\begin{description}
-\item[ID] SWE1\_L1\_03
-\item[Level] L1
-\item[Criteria] SWE.1.BP3 --- Analyse SW requirements (correctness, technical feasibility)
-\item[Identifies] Latent feasibility risk, late re-work
-\item[Stakeholder] SA, SD
-\item[Question] How is the technical feasibility of new SW requirements analysed before they are baselined?
-\item[Options] ~\\
-A) Formal feasibility review with architect \& developer sign-off\\
-B) Informal feasibility check by architect only\\
-C) Feasibility judged during implementation\\
-D) Feasibility never explicitly checked\\
-E) Unknown / no defined approach
-\item[Weights] 0, 2, 4, 5, 5
-\end{description}
-
-\subsection*{SWE1\_L1\_04}
-\begin{description}
-\item[ID] SWE1\_L1\_04
-\item[Level] L1
-\item[Criteria] SWE.1.BP4 --- Analyse impact on operating environment
-\item[Identifies] Missed timing / ODD / resource impact
-\item[Stakeholder] SA, SD
-\item[Question] When SW requirements affect timing, memory, or operating-environment behaviour, how is the impact captured?
-\item[Options] ~\\
-A) Documented impact analysis linked to each affected requirement\\
-B) Captured in design notes only\\
-C) Discussed verbally in reviews\\
-D) Not analysed unless a defect is found\\
-E) No process
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE1\_L1\_05}
-\begin{description}
-\item[ID] SWE1\_L1\_05
-\item[Level] L1
-\item[Criteria] SWE.1.BP5 --- Ensure consistency \& bidirectional traceability (SYS-req $\leftrightarrow$ SW-req $\leftrightarrow$ SYS-arch)
-\item[Identifies] Broken bidirectional traceability --- top assessor finding
-\item[Stakeholder] SA, QA, ASR
-\item[Question] What is the current state of bidirectional traceability between system requirements and software requirements?
-\item[Options] ~\\
-A) Tool-enforced bidirectional links, audited every release\\
-B) Bidirectional links exist but coverage is partial\\
-C) Only forward links (SYS$\rightarrow$SW) exist\\
-D) Traceability is maintained in spreadsheets\\
-E) No traceability data
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE1\_L1\_06}
-\begin{description}
-\item[ID] SWE1\_L1\_06
-\item[Level] L1
-\item[Criteria] SWE.1.BP6 --- Communicate agreed SW requirements \& impact
-\item[Identifies] Lack of agreement $\rightarrow$ late churn
-\item[Stakeholder] PM, SA, TL
-\item[Question] How is agreement on the SW requirements baseline reached and recorded?
-\item[Options] ~\\
-A) Formal review meeting with signed-off minutes per release\\
-B) Review meeting without recorded sign-off\\
-C) E-mail confirmation only\\
-D) Implicit agreement, no record\\
-E) No agreement step
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE1\_L1\_08}
-\begin{description}
-\item[ID] SWE1\_L1\_08
-\item[Level] L1
-\item[Criteria] SWE.1.BP5 --- Ensure consistency \& bidirectional traceability (SW-req $\leftrightarrow$ system architecture)
-\item[Identifies] Missing allocation of SW requirements to system architecture elements
-\item[Stakeholder] SA, QA, ASR
-\item[Question] How is bidirectional traceability maintained between software requirements and the system architecture (i.e., allocation of SW requirements to system architecture elements)?
-\item[Options] ~\\
-A) Tool-enforced allocation links, reviewed and audited each baseline\\
-B) Allocation links exist but are not audited\\
-C) Allocation documented in a spreadsheet, maintained manually\\
-D) Allocation implicit / known only to individual engineers\\
-E) No traceability to system architecture exists
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE1\_L1\_09}
-\begin{description}
-\item[ID] SWE1\_L1\_09
-\item[Level] L1
-\item[Criteria] SWE.1.BP3 --- Analyse SW requirements (interdependencies)
-\item[Identifies] Conflicting or circular requirement dependencies undetected until late
-\item[Stakeholder] SA, SD, QA
-\item[Question] How are dependencies and potential conflicts between software requirements identified and managed?
-\item[Options] ~\\
-A) Dependencies explicitly modelled/tagged and conflict-checked at each baseline review\\
-B) Dependencies documented but not systematically conflict-checked\\
-C) Dependencies identified informally during design\\
-D) Dependencies surface only when a defect/integration issue occurs\\
-E) Not analysed
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE1\_L2\_07}
-\begin{description}
-\item[ID] SWE1\_L2\_07
-\item[Level] L2
-\item[Criteria] GP 2.1.1, GP 2.1.2 --- Performance objectives \& planning for SWE.1
-\item[Identifies] Missing/weak strategy for the requirements process
-\item[Stakeholder] PM, QA
-\item[Question] How is the SWE.1 process planned and monitored at project level?
-\item[Options] ~\\
-A) Documented requirements-engineering plan with KPIs (e.g., review backlog, churn) reviewed monthly\\
-B) Plan exists but KPIs are not tracked\\
-C) Activities scheduled in MS-Project only\\
-D) Planned ad-hoc per sprint\\
-E) No plan
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE1\_L2\_10}
-\begin{description}
-\item[ID] SWE1\_L2\_10
-\item[Level] L2
-\item[Criteria] GP 2.1.6 --- Manage interfaces between involved parties (SWE.1)
-\item[Identifies] Poor coordination between requirements engineering and system engineering / other stakeholders
-\item[Stakeholder] SA, PM, TL
-\item[Question] How are interfaces between software requirements engineers and other involved parties (system engineering, safety, customer) coordinated for requirement changes?
-\item[Options] ~\\
-A) Defined communication mechanism with assigned responsibilities and change-notification SLA\\
-B) Communication mechanism exists but responsibilities not assigned\\
-C) Coordination happens through periodic status meetings only\\
-D) Coordination happens only when a conflict is discovered\\
-E) No defined coordination mechanism
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE1\_L2\_11}
-\begin{description}
-\item[ID] SWE1\_L2\_11
-\item[Level] L2
-\item[Criteria] GP 2.2.1--2.2.3 --- Work-product requirements, storage and control (SW requirements)
-\item[Identifies] Requirements work products not under configuration/status control
-\item[Stakeholder] QA, ASR
-\item[Question] How are the software requirement work products stored, versioned, and status-controlled (e.g., Under Work / Reviewed / Released)?
-\item[Options] ~\\
-A) Versioned in requirements-management tool with a defined status workflow and baseline history\\
-B) Versioned in tool but no formal status workflow\\
-C) Stored in a shared drive/document, manually versioned\\
-D) Stored locally by individual engineers\\
-E) Not under any storage/version control
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE1\_L3\_12}
-\begin{description}
-\item[ID] SWE1\_L3\_12
-\item[Level] L3
-\item[Criteria] GP 3.1.1, GP 3.1.2 --- Standard process \& required competencies (SWE.1)
-\item[Identifies] No organisation-wide standard for requirements-engineering methodology/roles
-\item[Stakeholder] ASR, PM, SA
-\item[Question] Does the organisation maintain a standard requirements-engineering process (templates, tailoring guideline) and a defined role/competency description for the requirements-engineer role?
-\item[Options] ~\\
-A) Documented standard RE process + tailoring guideline + role/competency description, maintained and referenced by projects\\
-B) Standard process exists, but role/competency description is missing\\
-C) A requirements template exists informally, not maintained centrally\\
-D) Each project defines its own RE approach independently\\
-E) No organisational standard or role description exists
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\section*{SWE.2 --- Software Architectural Design}
-
-\subsection*{SWE2\_L1\_01}
-\begin{description}
-\item[ID] SWE2\_L1\_01
-\item[Level] L1
-\item[Criteria] SWE.2.BP1 --- Specify static aspects of architecture
-\item[Identifies] Missing decomposition / structural views
-\item[Stakeholder] SA
-\item[Question] How is the static structure of the SW architecture documented?
-\item[Options] ~\\
-A) Hierarchical component model with explicit interfaces, in a modelling tool (UML/SysML/EA)\\
-B) Block diagrams in modelling tool, no interface model\\
-C) PowerPoint diagrams\\
-D) Textual description only\\
-E) Not documented
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE2\_L1\_02}
-\begin{description}
-\item[ID] SWE2\_L1\_02
-\item[Level] L1
-\item[Criteria] SWE.2.BP2 --- Specify dynamic aspects (timing, sequences, state)
-\item[Identifies] Hidden timing/concurrency defects
-\item[Stakeholder] SA, SD
-\item[Question] How are dynamic aspects (timing, sequencing, state) specified for the architecture?
-\item[Options] ~\\
-A) Sequence + state diagrams + timing budgets per component\\
-B) Sequence diagrams only\\
-C) Narrative timing notes\\
-D) Implicit, decided during coding\\
-E) Not specified
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE2\_L1\_03}
-\begin{description}
-\item[ID] SWE2\_L1\_03
-\item[Level] L1
-\item[Criteria] SWE.2.BP3 --- Analyse architecture, justify chosen design (PAM 4.0 replaces former ``evaluate alternatives'' BP)
-\item[Identifies] Unjustified architecture, hidden trade-offs
-\item[Stakeholder] SA, ASR
-\item[Question] How is the chosen architecture justified against alternatives and quality criteria (modularity, reliability, security)?
-\item[Options] ~\\
-A) Documented trade-off analysis with rationale recorded per decision\\
-B) Decision log with brief rationale\\
-C) Verbal discussion in design review\\
-D) Not justified, ``as-is''\\
-E) Decision-maker unknown
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE2\_L1\_04}
-\begin{description}
-\item[ID] SWE2\_L1\_04
-\item[Level] L1
-\item[Criteria] SWE.2.BP3 --- interfaces \& resource consumption
-\item[Identifies] Interface ambiguity, resource overruns at HIL/qualification
-\item[Stakeholder] SA, SD
-\item[Question] How are interfaces and resource-consumption objectives (RAM/ROM/CPU/bandwidth) defined for SW components?
-\item[Options] ~\\
-A) Each interface fully typed; RAM/ROM/CPU budgets per component\\
-B) Interfaces typed; no resource budgets\\
-C) Resource budgets only at SW level (not per component)\\
-D) Defined only when problems arise\\
-E) Not defined
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE2\_L1\_05}
-\begin{description}
-\item[ID] SWE2\_L1\_05
-\item[Level] L1
-\item[Criteria] SWE.2.BP4 --- Consistency \& bidirectional traceability (SW-req $\leftrightarrow$ SW-arch)
-\item[Identifies] Architecture/requirement drift
-\item[Stakeholder] SA, QA, ASR
-\item[Question] How is bidirectional traceability maintained between SW requirements and architectural elements?
-\item[Options] ~\\
-A) Tool-enforced (allocation column / OSLC link) and reviewed each baseline\\
-B) Maintained but not periodically audited\\
-C) Manual matrix in spreadsheet\\
-D) Allocation is implicit\\
-E) No traceability
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE2\_L1\_06}
-\begin{description}
-\item[ID] SWE2\_L1\_06
-\item[Level] L1
-\item[Criteria] SWE.2.BP5 --- Communicate agreed architecture
-\item[Identifies] Architecture not internalised by team
-\item[Stakeholder] SA, TL
-\item[Question] How is the agreed architecture communicated and made available to development and test teams?
-\item[Options] ~\\
-A) Published in the team wiki + walk-through workshop with attendance log\\
-B) Published in wiki only\\
-C) Sent by e-mail\\
-D) Available on request\\
-E) Not communicated
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE2\_L2\_07}
-\begin{description}
-\item[ID] SWE2\_L2\_07
-\item[Level] L2
-\item[Criteria] GP 2.2.1, GP 2.2.4 --- Work-product requirements \& review for architecture artefacts
-\item[Identifies] Architecture artefacts not reviewed against criteria
-\item[Stakeholder] QA, ASR
-\item[Question] How are architecture work products (model, ADRs, interface specs) reviewed and approved?
-\item[Options] ~\\
-A) Defined review checklist + approver role + review record per baseline\\
-B) Review checklist but no approver role\\
-C) Reviews held without checklist\\
-D) Reviews held only when issues escalate\\
-E) No reviews
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE2\_L2\_08}
-\begin{description}
-\item[ID] SWE2\_L2\_08
-\item[Level] L2
-\item[Criteria] GP 2.1.3, GP 2.1.4 --- Resource needs \& qualification (SWE.2)
-\item[Identifies] Architects not trained/qualified on modelling method or tool; unavailable licences
-\item[Stakeholder] SA, TL, PM
-\item[Question] How is the competency of software architects (modelling method/tool skills) and the availability of architecture tooling (e.g., EA/Cameo licences) ensured?
-\item[Options] ~\\
-A) Defined competency requirement, training/mentoring plan, and licence/tool availability tracked\\
-B) Training available but not tracked; tool availability assumed\\
-C) New architects learn on the job, no formal plan\\
-D) Competency/tooling addressed only when a problem arises\\
-E) No defined approach
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE2\_L2\_09}
-\begin{description}
-\item[ID] SWE2\_L2\_09
-\item[Level] L2
-\item[Criteria] GP 2.1.6 --- Manage interfaces between involved parties (SWE.2)
-\item[Identifies] Architecture changes not propagated to detailed-design / integration teams
-\item[Stakeholder] SA, TL, PM
-\item[Question] When the software architecture changes after initial communication, how are affected detailed-design and integration teams notified and re-aligned?
-\item[Options] ~\\
-A) Change-notification mechanism with defined recipients and acknowledgement tracking\\
-B) Notification sent, but acknowledgement not tracked\\
-C) Announced only in the next regular meeting\\
-D) Discovered by affected teams when inconsistencies appear\\
-E) No mechanism
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE2\_L2\_11}
-\begin{description}
-\item[ID] SWE2\_L2\_11
-\item[Level] L2
-\item[Criteria] GP 2.1.1, GP 2.1.2 --- Strategy \& planning for SWE.2
-\item[Identifies] Architecture design activity not planned against objectives/milestones
-\item[Stakeholder] PM, SA
-\item[Question] How is the SWE.2 architecture design activity planned and monitored at project level (objectives, milestones, schedule)?
-\item[Options] ~\\
-A) Documented architecture design plan with objectives/milestones, reviewed and adjusted regularly\\
-B) Plan exists but not actively monitored/adjusted\\
-C) Milestones exist only in the overall project schedule, not architecture-specific\\
-D) Planned ad-hoc per sprint\\
-E) No plan for the architecture design activity
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE2\_L3\_10}
-\begin{description}
-\item[ID] SWE2\_L3\_10
-\item[Level] L3
-\item[Criteria] GP 3.1.2, GP 3.1.3 --- Required competencies \& resources for the standard process (SWE.2)
-\item[Identifies] No organisation-level role/competency definition for the architecture role
-\item[Stakeholder] ASR, PM, SA
-\item[Question] Does the organisation maintain a defined role description (required competencies, responsibilities) and standard tooling/infrastructure for the software architect role?
-\item[Options] ~\\
-A) Documented role description and standard tooling maintained and referenced by projects\\
-B) Role description exists but tooling/infrastructure not standardised\\
-C) Informal, unwritten expectations for the role\\
-D) Role description exists only for other roles (not architect)\\
-E) No role description or standard infrastructure defined
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\section*{SWE.3 --- Software Detailed Design and Unit Construction}
-
-\subsection*{SWE3\_L1\_01}
-\begin{description}
-\item[ID] SWE3\_L1\_01
-\item[Level] L1
-\item[Criteria] SWE.3.BP1 --- Specify static aspects of detailed design
-\item[Identifies] Skipping detailed design, ``code-is-design'' antipattern
-\item[Stakeholder] SA, SD
-\item[Question] How is the static detailed design of software units captured?
-\item[Options] ~\\
-A) Class/data structure model in tool, generated from architecture\\
-B) Diagrams in modelling tool, manually maintained\\
-C) Text-and-code-comments only\\
-D) Comments in source code\\
-E) No detailed design
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE3\_L1\_02}
-\begin{description}
-\item[ID] SWE3\_L1\_02
-\item[Level] L1
-\item[Criteria] SWE.3.BP2 --- Specify dynamic aspects of detailed design
-\item[Identifies] Hidden control-flow / state defects
-\item[Stakeholder] SD, SA
-\item[Question] How are state machines, control flows, and unit interactions described?
-\item[Options] ~\\
-A) State/sequence diagrams per non-trivial unit\\
-B) Diagrams only for safety-critical units\\
-C) Narrative description\\
-D) Discovered during coding\\
-E) Not described
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE3\_L1\_03}
-\begin{description}
-\item[ID] SWE3\_L1\_03
-\item[Level] L1
-\item[Criteria] SWE.3.BP3 --- Develop software units (coding standard adherence)
-\item[Identifies] Coding-standard violations, MISRA gaps
-\item[Stakeholder] SD, QA
-\item[Question] How are coding standards (e.g., MISRA C/C++, AUTOSAR C++14) enforced during unit construction?
-\item[Options] ~\\
-A) Pre-commit check + CI gate blocks merges on standard violations\\
-B) CI gate runs but does not block merges\\
-C) Periodic audit by QA\\
-D) Standard exists but is not enforced\\
-E) No coding standard adopted
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE3\_L1\_04}
-\begin{description}
-\item[ID] SWE3\_L1\_04
-\item[Level] L1
-\item[Criteria] SWE.3.BP4 --- Consistency \& bidirectional traceability (SW-req $\leftrightarrow$ arch $\leftrightarrow$ detailed design $\leftrightarrow$ units)
-\item[Identifies] Multi-hop traceability gap
-\item[Stakeholder] SA, QA, ASR
-\item[Question] What is the state of traceability from architecture $\rightarrow$ detailed design $\rightarrow$ source units?
-\item[Options] ~\\
-A) End-to-end tool-enforced, audited each release\\
-B) Forward links complete; reverse links partial\\
-C) Spreadsheet only\\
-D) Traceability stops at design level\\
-E) No links
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE3\_L1\_05}
-\begin{description}
-\item[ID] SWE3\_L1\_05
-\item[Level] L1
-\item[Criteria] SWE.3.BP5 --- Communicate agreed detailed design and units
-\item[Identifies] Knowledge silo, single-point-of-failure
-\item[Stakeholder] SD, TL
-\item[Question] How are agreed detailed design and developed units made available to peers and testers?
-\item[Options] ~\\
-A) Reviewed pull requests + design documented in shared repo\\
-B) Code committed, design in shared repo\\
-C) Code only, design private to developer\\
-D) Code on local branches, no design\\
-E) Knowledge held by one developer
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE3\_L2\_06}
-\begin{description}
-\item[ID] SWE3\_L2\_06
-\item[Level] L2
-\item[Criteria] GP 2.1.5 --- Monitor \& adjust process (defect/rework rates per unit)
-\item[Identifies] No control loop for code quality
-\item[Stakeholder] TL, QA, PM
-\item[Question] How is the SWE.3 process monitored at project level (e.g., rework, defect density per unit)?
-\item[Options] ~\\
-A) Defect-density and rework metrics tracked weekly with thresholds\\
-B) Metrics tracked monthly, no thresholds\\
-C) Metrics gathered only for assessments\\
-D) No monitoring beyond burndown\\
-E) Not monitored
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE3\_L2\_08}
-\begin{description}
-\item[ID] SWE3\_L2\_08
-\item[Level] L2
-\item[Criteria] GP 2.2.2, GP 2.2.3 --- Storage and control of work products (source code \& detailed design)
-\item[Identifies] Source code / detailed design not under proper configuration control
-\item[Stakeholder] QA, SD, ASR
-\item[Question] How are source code and detailed-design work products identified, versioned, and controlled during development?
-\item[Options] ~\\
-A) Version-controlled with branching/baseline policy and a defined status model (e.g., Under Work/Reviewed/Released)\\
-B) Version-controlled, but no defined status model\\
-C) Version-controlled only for source code, not detailed design\\
-D) Ad-hoc use of version control, no policy\\
-E) Not under version/configuration control
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE3\_L2\_09}
-\begin{description}
-\item[ID] SWE3\_L2\_09
-\item[Level] L2
-\item[Criteria] GP 2.1.1, GP 2.1.2 --- Strategy \& planning for SWE.3
-\item[Identifies] Detailed design \& unit construction activity not planned against objectives/staffing
-\item[Stakeholder] PM, TL, SD
-\item[Question] How is the SWE.3 detailed design and unit construction activity planned (staffing, schedule, objectives per component)?
-\item[Options] ~\\
-A) Documented plan with per-component staffing/schedule, objectives tracked and adjusted\\
-B) Plan exists but not tracked against actuals\\
-C) Only covered by the general sprint backlog, no dedicated plan\\
-D) Planned informally by the team lead\\
-E) No planning for the detailed design/construction activity
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE3\_L3\_07}
-\begin{description}
-\item[ID] SWE3\_L3\_07
-\item[Level] L3
-\item[Criteria] GP 3.1.1, GP 3.1.4 --- Standard process \& tailoring guidelines
-\item[Identifies] Project-specific drift from organisational standard
-\item[Stakeholder] ASR, QA, PM
-\item[Question] How is the organisation's standard SWE.3 process tailored for this project?
-\item[Options] ~\\
-A) Tailoring documented against tailoring guidelines, reviewed by Process Group\\
-B) Tailoring documented, not reviewed\\
-C) Project follows standard process verbatim, no tailoring\\
-D) Tailoring done informally\\
-E) No standard process exists
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\section*{SWE.4 --- Software Unit Verification}
-
-\subsection*{SWE4\_L1\_01}
-\begin{description}
-\item[ID] SWE4\_L1\_01
-\item[Level] L1
-\item[Criteria] SWE.4.BP1 --- Specify unit-verification measures (tactic)
-\item[Identifies] Missing verification tactic
-\item[Stakeholder] TE, SD
-\item[Question] How are unit-verification measures (test cases, static analysis, coverage goals) specified?
-\item[Options] ~\\
-A) Documented per component, derived from detailed design and non-functional reqs\\
-B) Documented but not derived from non-functional reqs\\
-C) Test cases only, no static-analysis measures\\
-D) Specified ad-hoc\\
-E) Not specified
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE4\_L1\_02}
-\begin{description}
-\item[ID] SWE4\_L1\_02
-\item[Level] L1
-\item[Criteria] SWE.4.BP2 --- Select verification measures incl. regression
-\item[Identifies] Insufficient regression coverage
-\item[Stakeholder] TE
-\item[Question] How are verification measures selected per release, including regression?
-\item[Options] ~\\
-A) Selection rules documented and applied per release; regression set auto-derived from change-impact\\
-B) Regression decided manually each release\\
-C) Always run all unit tests\\
-D) Regression decided only when defects appear\\
-E) No selection mechanism
-\item[Weights] 0, 2, 2, 4, 5
-\end{description}
-
-\subsection*{SWE4\_L1\_03}
-\begin{description}
-\item[ID] SWE4\_L1\_03
-\item[Level] L1
-\item[Criteria] SWE.4.BP3 --- Verify (static + dynamic)
-\item[Identifies] Weak static analysis
-\item[Stakeholder] SD, QA
-\item[Question] How is static analysis performed on software units?
-\item[Options] ~\\
-A) Tool integrated in CI; zero high-severity findings policy\\
-B) Tool integrated in CI; findings tracked but not blocking\\
-C) Manual code reviews only\\
-D) Static analysis runs only before milestones\\
-E) Not performed
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE4\_L1\_04}
-\begin{description}
-\item[ID] SWE4\_L1\_04
-\item[Level] L1
-\item[Criteria] SWE.4.BP3 --- Test SW units \& record results (coverage)
-\item[Identifies] Inadequate structural coverage
-\item[Stakeholder] TE, SD
-\item[Question] What unit-test coverage criteria are applied for non-safety code?
-\item[Options] ~\\
-A) Statement + branch coverage with documented threshold (e.g., $\geq$ 90\% branch)\\
-B) Statement coverage threshold only\\
-C) Coverage measured but no threshold\\
-D) Coverage measured ad-hoc\\
-E) Not measured
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE4\_L1\_05}
-\begin{description}
-\item[ID] SWE4\_L1\_05
-\item[Level] L1
-\item[Criteria] SWE.4.BP4 --- Bidirectional traceability between units, criteria, results
-\item[Identifies] Test-result orphaning
-\item[Stakeholder] TE, QA, ASR
-\item[Question] How are unit-test results linked to verification criteria and units?
-\item[Options] ~\\
-A) Tool-enforced bidirectional links; audited each release\\
-B) Manual matrix maintained\\
-C) Links exist for failed tests only\\
-D) Linked only when assessor asks\\
-E) Not linked
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE4\_L1\_08}
-\begin{description}
-\item[ID] SWE4\_L1\_08
-\item[Level] L1
-\item[Criteria] SWE.4.BP5 --- Summarize and communicate results
-\item[Identifies] Unit-verification results not summarised/communicated to affected parties
-\item[Stakeholder] SD, TE, TL
-\item[Question] How are software unit-verification results (pass/fail, coverage, static-analysis findings) summarised and communicated to affected parties?
-\item[Options] ~\\
-A) Automated summary report generated per build/release and distributed to affected parties\\
-B) Summary report generated but only on request\\
-C) Results visible only inside the test-management tool, not actively communicated\\
-D) Communicated verbally / informally\\
-E) Not summarised or communicated
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE4\_L2\_06}
-\begin{description}
-\item[ID] SWE4\_L2\_06
-\item[Level] L2
-\item[Criteria] GP 2.1.6, GP 2.1.7 --- Resources \& stakeholder management for SWE.4
-\item[Identifies] Under-resourced verification, late access to HW/test bench
-\item[Stakeholder] PM, TL, TE
-\item[Question] How is access to test infrastructure (HIL/SIL, test benches, target boards) planned and assured for unit verification?
-\item[Options] ~\\
-A) Infrastructure capacity planned per release; bottleneck escalation defined\\
-B) Plan exists but no escalation path\\
-C) Access requested per sprint\\
-D) Access negotiated when needed\\
-E) Frequent blocking due to unavailable HW
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE4\_L2\_07}
-\begin{description}
-\item[ID] SWE4\_L2\_07
-\item[Level] L2
-\item[Criteria] GP 2.2.3, GP 2.2.4 --- Work-product control \& review of unit-verification reports
-\item[Identifies] Reports not under configuration control
-\item[Stakeholder] QA
-\item[Question] How are unit-verification reports stored, versioned, and reviewed?
-\item[Options] ~\\
-A) Versioned in CM with status workflow + reviewer sign-off\\
-B) Versioned only\\
-C) Stored on shared drive, no versioning\\
-D) Stored locally\\
-E) Not formally stored
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE4\_L3\_09}
-\begin{description}
-\item[ID] SWE4\_L3\_09
-\item[Level] L3
-\item[Criteria] GP 3.1.1, GP 3.1.4 --- Standard process \& monitoring (SWE.4)
-\item[Identifies] Unit-verification approach/tooling not standardised or monitored across projects
-\item[Stakeholder] ASR, QA, PM
-\item[Question] Is there an organisation-wide standard for unit-verification methods/tooling (static-analysis rulesets, coverage thresholds), and is its effectiveness monitored?
-\item[Options] ~\\
-A) Standard method/tooling defined, tailoring guideline available, effectiveness monitored and fed back\\
-B) Standard defined, but effectiveness not monitored\\
-C) Each project chooses its own tooling/thresholds independently\\
-D) Standard exists informally, not documented\\
-E) No organisational standard for unit verification
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\section*{SWE.5 --- Software Component Verification and Integration Verification}
-
-\subsection*{SWE5\_L1\_01}
-\begin{description}
-\item[ID] SWE5\_L1\_01
-\item[Level] L1
-\item[Criteria] SWE.5.BP1 --- Specify integration-verification measures
-\item[Identifies] Missing integration-verification scope
-\item[Stakeholder] TE, SA
-\item[Question] How are integration-verification measures defined for the integrated software?
-\item[Options] ~\\
-A) Per-component and per-interface measures derived from architecture\\
-B) Per-component only\\
-C) End-to-end tests only\\
-D) Defined as needed\\
-E) Not defined
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE5\_L1\_02}
-\begin{description}
-\item[ID] SWE5\_L1\_02
-\item[Level] L1
-\item[Criteria] SWE.5.BP2 --- Specify component-behaviour verification measures (PAM 4.0 novelty)
-\item[Identifies] Component-level black-box gaps
-\item[Stakeholder] TE, SA
-\item[Question] How is software-component behaviour verified before integration?
-\item[Options] ~\\
-A) Component contract tests run against published interfaces in CI\\
-B) Component tests exist but run manually\\
-C) Verified only as part of integration\\
-D) Verified only at qualification\\
-E) Not verified at component level
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE5\_L1\_03}
-\begin{description}
-\item[ID] SWE5\_L1\_03
-\item[Level] L1
-\item[Criteria] SWE.5.BP3 --- Select verification measures incl. regression
-\item[Identifies] Selection criteria absent
-\item[Stakeholder] TE
-\item[Question] How are integration-test cases selected per release (including regression)?
-\item[Options] ~\\
-A) Selection rules + change-impact-driven regression set documented\\
-B) Regression rules only\\
-C) ``Run everything''\\
-D) Selected ad-hoc\\
-E) No selection criteria
-\item[Weights] 0, 2, 2, 4, 5
-\end{description}
-
-\subsection*{SWE5\_L1\_04}
-\begin{description}
-\item[ID] SWE5\_L1\_04
-\item[Level] L1
-\item[Criteria] SWE.5.BP4 --- Integrate elements \& perform integration verification
-\item[Identifies] Big-bang integration risk
-\item[Stakeholder] SD, TE, SA
-\item[Question] How are software elements integrated and verified?
-\item[Options] ~\\
-A) Continuous integration with stepwise integration plan and per-step verification\\
-B) Stepwise integration but verification batched\\
-C) Daily integration without integration plan\\
-D) Big-bang integration at end of sprint\\
-E) Big-bang integration at end of release
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE5\_L1\_05}
-\begin{description}
-\item[ID] SWE5\_L1\_05
-\item[Level] L1
-\item[Criteria] SWE.5.BP5 --- Perform component verification \& record
-\item[Identifies] Result records missing
-\item[Stakeholder] QA, TE
-\item[Question] How are component-verification and integration-verification results recorded?
-\item[Options] ~\\
-A) Recorded automatically in test-management tool with status, evidence, environment metadata\\
-B) Recorded in test tool, no environment metadata\\
-C) Captured in spreadsheets\\
-D) Captured in e-mail/chat\\
-E) Not recorded
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE5\_L1\_06}
-\begin{description}
-\item[ID] SWE5\_L1\_06
-\item[Level] L1
-\item[Criteria] SWE.5.BP6 --- Consistency \& bidirectional traceability (arch / detailed design $\leftrightarrow$ verification measures $\leftrightarrow$ results)
-\item[Identifies] Verification-result orphaning at integration
-\item[Stakeholder] QA, ASR
-\item[Question] What is the state of bidirectional traceability between architecture/design, integration verification measures, and results?
-\item[Options] ~\\
-A) Tool-enforced bidirectional links with periodic audits\\
-B) Forward only\\
-C) Spreadsheet matrix\\
-D) Implicit\\
-E) None
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE5\_L1\_08}
-\begin{description}
-\item[ID] SWE5\_L1\_08
-\item[Level] L1
-\item[Criteria] SWE.5.BP7 --- Summarize and communicate results
-\item[Identifies] Component/integration verification results not summarised/communicated
-\item[Stakeholder] TE, SA, PM
-\item[Question] How are software component-verification and integration-verification results summarised and communicated to affected parties?
-\item[Options] ~\\
-A) Versioned summary report per integration baseline with pass/fail overview, distributed to affected parties\\
-B) Summary report exists, distributed only on request\\
-C) Results visible in test tool only, not actively communicated\\
-D) Communicated verbally in status meetings\\
-E) Not summarised or communicated
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE5\_L2\_07}
-\begin{description}
-\item[ID] SWE5\_L2\_07
-\item[Level] L2
-\item[Criteria] GP 2.1.4 --- Adjust process performance (interface management between SD \& integration team)
-\item[Identifies] Interface miscommunication between teams
-\item[Stakeholder] TL, PM
-\item[Question] How are interface changes coordinated between development and integration teams?
-\item[Options] ~\\
-A) Interface change board with affected-party notification SLA\\
-B) E-mail notification policy in place\\
-C) Notified during integration only\\
-D) Discovered during failure\\
-E) No coordination mechanism
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE5\_L2\_09}
-\begin{description}
-\item[ID] SWE5\_L2\_09
-\item[Level] L2
-\item[Criteria] GP 2.2.2, GP 2.2.3 --- Storage and control of work products (component/integration verification reports)
-\item[Identifies] Integration-verification reports not under configuration control
-\item[Stakeholder] QA
-\item[Question] How are component-verification and integration-verification reports stored, versioned, and controlled?
-\item[Options] ~\\
-A) Versioned in CM with a defined status workflow and reviewer sign-off\\
-B) Versioned only, no status workflow\\
-C) Stored on a shared drive, no versioning\\
-D) Stored locally by individual testers\\
-E) Not formally stored
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE5\_L3\_10}
-\begin{description}
-\item[ID] SWE5\_L3\_10
-\item[Level] L3
-\item[Criteria] GP 3.1.1 --- Standard process (integration strategy)
-\item[Identifies] No organisation-wide standard for integration approach
-\item[Stakeholder] ASR, SA, PM
-\item[Question] Does the organisation define a standard integration strategy (e.g., stepwise vs. continuous integration, environments to be used) that projects tailor from?
-\item[Options] ~\\
-A) Documented standard integration strategy with tailoring guideline, applied and reviewed\\
-B) Standard exists but tailoring is undocumented\\
-C) Each project defines its own integration strategy independently\\
-D) Informal convention, not documented\\
-E) No organisational standard
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\section*{SWE.6 --- Software Verification}
-
-\subsection*{SWE6\_L1\_01}
-\begin{description}
-\item[ID] SWE6\_L1\_01
-\item[Level] L1
-\item[Criteria] SWE.6.BP1 --- Specify verification measures vs. SW requirements
-\item[Identifies] Test cases not derived from SW requirements
-\item[Stakeholder] TE
-\item[Question] How are software-verification measures derived from SW requirements?
-\item[Options] ~\\
-A) Each SW requirement has at least one verification measure recorded with technique justification\\
-B) Coverage exists but technique not justified\\
-C) Coverage is partial\\
-D) Tests written from intuition\\
-E) Not derived from SW requirements
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE6\_L1\_02}
-\begin{description}
-\item[ID] SWE6\_L1\_02
-\item[Level] L1
-\item[Criteria] SWE.6.BP2 --- Select verification measures incl. regression (release scope)
-\item[Identifies] Regression policy weak at qualification
-\item[Stakeholder] TE, PM
-\item[Question] How are SWE.6 verification measures selected for the release, including regression?
-\item[Options] ~\\
-A) Documented selection per release with risk-based regression set\\
-B) Selection per release without risk weighting\\
-C) Always full re-run\\
-D) Selected verbally per stand-up\\
-E) No selection process
-\item[Weights] 0, 2, 2, 4, 5
-\end{description}
-
-\subsection*{SWE6\_L1\_03}
-\begin{description}
-\item[ID] SWE6\_L1\_03
-\item[Level] L1
-\item[Criteria] SWE.6.BP3 --- Verify integrated SW \& record (qualification environment)
-\item[Identifies] Wrong target / non-representative env.
-\item[Stakeholder] TE, QA
-\item[Question] What environment is used for SWE.6 qualification verification?
-\item[Options] ~\\
-A) Representative target HW (HIL/real ECU) with calibrated parameters\\
-B) HIL only\\
-C) SIL/MIL with HW abstraction\\
-D) PC simulation\\
-E) Developer machine
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE6\_L1\_04}
-\begin{description}
-\item[ID] SWE6\_L1\_04
-\item[Level] L1
-\item[Criteria] SWE.6.BP4 --- Consistency \& bidirectional traceability (SW reqs $\leftrightarrow$ test specs $\leftrightarrow$ results)
-\item[Identifies] Final-stage traceability gap
-\item[Stakeholder] QA, ASR
-\item[Question] How is bidirectional traceability maintained between SW requirements, qualification test specs, and results?
-\item[Options] ~\\
-A) Tool-enforced and audited each release\\
-B) Maintained but not audited\\
-C) Spreadsheet\\
-D) Manual when needed\\
-E) None
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE6\_L1\_05}
-\begin{description}
-\item[ID] SWE6\_L1\_05
-\item[Level] L1
-\item[Criteria] SWE.6.BP5 --- Summarise \& communicate results
-\item[Identifies] Defect leakage / no test summary
-\item[Stakeholder] QA, PM
-\item[Question] How are qualification-test results summarised and communicated to affected parties?
-\item[Options] ~\\
-A) Versioned test-summary report per release with go/no-go criteria\\
-B) Report exists but no go/no-go criteria\\
-C) Slide summary at release meeting\\
-D) Verbal summary\\
-E) Not communicated
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE6\_L2\_06}
-\begin{description}
-\item[ID] SWE6\_L2\_06
-\item[Level] L2
-\item[Criteria] GP 2.2.2 --- Work-product requirements (defect management)
-\item[Identifies] Defect process weak at qualification
-\item[Stakeholder] QA, TE
-\item[Question] How are qualification-test defects managed and triaged?
-\item[Options] ~\\
-A) Defects in tracker with severity, owner, SLA, root-cause field; weekly triage\\
-B) Tracker used; no triage cadence\\
-C) Defects in spreadsheet\\
-D) Verbally tracked\\
-E) No defect tracking
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE6\_L2\_08}
-\begin{description}
-\item[ID] SWE6\_L2\_08
-\item[Level] L2
-\item[Criteria] GP 2.1.1, GP 2.1.2, GP 2.1.3 --- Strategy, planning and resource readiness for SWE.6
-\item[Identifies] Qualification-verification activity not planned/resourced ahead of release
-\item[Stakeholder] PM, TE, TL
-\item[Question] How is the SWE.6 qualification-verification activity planned and resourced ahead of a release (schedule, staffing, target-environment availability)?
-\item[Options] ~\\
-A) Documented plan with milestones, staffing, and environment booking confirmed ahead of release\\
-B) Plan exists but staffing/environment not confirmed in advance\\
-C) Planned informally per release, no documented milestones\\
-D) Planned reactively once development is ``done''\\
-E) No planning for qualification verification
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE6\_L3\_07}
-\begin{description}
-\item[ID] SWE6\_L3\_07
-\item[Level] L3
-\item[Criteria] GP 3.2.4 --- Monitor performance of defined process (information, not data)
-\item[Identifies] No process-improvement feedback loop
-\item[Stakeholder] ASR, QA, PM
-\item[Question] How is information from SWE.6 fed back into the organisational standard process?
-\item[Options] ~\\
-A) Lessons-learned + KPIs reported to Process Group; standard process updated\\
-B) Lessons-learned written, no link to standard process\\
-C) Discussed in retro only\\
-D) Captured in private notes\\
-E) No feedback loop
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\subsection*{SWE6\_L3\_09}
-\begin{description}
-\item[ID] SWE6\_L3\_09
-\item[Level] L3
-\item[Criteria] GP 3.1.1 --- Standard process (qualification-test strategy)
-\item[Identifies] No organisation-wide standard qualification-test methodology
-\item[Stakeholder] ASR, TE, PM
-\item[Question] Does the organisation maintain a standard qualification-test methodology/template (e.g., technique-selection guideline, standard test-environment setup) that projects tailor from?
-\item[Options] ~\\
-A) Documented standard methodology/template with tailoring guideline, applied and reviewed across projects\\
-B) Standard exists but the tailoring guideline is missing\\
-C) Each project defines its own qualification-test methodology independently\\
-D) Informal convention, not documented\\
-E) No organisational standard
-\item[Weights] 0, 2, 3, 4, 5
-\end{description}
-
-\chapter{Database Schema}
-\label{app:dbschema}
-Full DDL and entity-relationship diagram.
-
-\chapter{API Reference}
-\label{app:apiref}
-OpenAPI specification excerpt.
-
-\chapter{Pilot Session Raw Data}
-\label{app:pilotdata}
-Raw exports from the \texttt{/analytics/bandit} and \texttt{/analytics/weaknesses} endpoints.
-
-\chapter{Additional Screenshots}
-\label{app:screenshots}
-Admin dashboard, history page, and signup flow.
-
-\chapter{Deployment Configuration Files}
-\label{app:deployment}
-Docker Compose and Traefik configuration listings.
+\begin{center}
+\rowcolors{2}{green!5}{white}
+\begin{tabular}{c l}
+\toprule
+\rowcolor{green!55!black}
+\thw{Weight} & \thw{Meaning} \\
+\midrule
+0 & Best / lowest risk \\
+5 & Worst / highest risk (highest CMAB reward) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{center}
+\rowcolors{2}{green!5}{white}
+\begin{tabular}{c l}
+\toprule
+\rowcolor{green!55!black}
+\thw{Code} & \thw{Stakeholder} \\
+\midrule
+SD  & Software Developer \\
+SA  & Software Architect \\
+PM  & Project Manager \\
+QA  & QA Engineer \\
+TE  & Test Engineer \\
+TL  & Team Lead \\
+ASR & ASPICE Assessor \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{center}
+\rowcolors{2}{green!5}{white}
+\begin{tabular}{c l}
+\toprule
+\rowcolor{green!55!black}
+\thw{Level} & \thw{Meaning} \\
+\midrule
+L1 & Performed \\
+L2 & Managed \\
+L3 & Established \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section*{SWE.1: Software Requirements Analysis}
+
+\begin{center}
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q1.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q2.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q3.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q4.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q5.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q6.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q7.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q8.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q9.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q10.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q11.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q12.png}
+\end{center}
+
+\section*{SWE.2: Software Architectural Design}
+
+\begin{center}
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q13.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q14.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q15.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q16.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q17.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q18.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q19.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q20.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q21.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q22.png}
+\end{center}
+
+\section*{SWE.3: Software Detailed Design and Unit Construction}
+
+\begin{center}
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q23.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q24.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q25.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q26.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q27.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q28.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q29.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q30.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q31.png}
+\end{center}
+
+\section*{SWE.4: Software Unit Verification}
+
+\begin{center}
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q32.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q33.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q34.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q35.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q36.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q37.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q38.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q39.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q40.png}
+\end{center}
+
+\section*{SWE.5: Software Component Verification and Integration Verification}
+
+\begin{center}
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q41.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q42.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q43.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q44.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q45.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q46.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q47.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q48.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q49.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q50.png}
+\end{center}
+
+\section*{SWE.6: Software Verification}
+
+\begin{center}
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q51.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q52.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q53.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q54.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q55.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q56.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q57.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q58.png}\\[0.3cm]
+  \includegraphics[width=0.95\textwidth,height=0.3\textheight,keepaspectratio]{src/Q59.png}
+\end{center}
 
 \printindex
 
