@@ -140,7 +140,7 @@ this thesis to their enduring support.
 
 \addchap*{Abstract}
 
-Automotive SPICE (ASPICE) assessment provides automotive software suppliers with a capability
+Automotive Software Process Improvement and Capability dEtermination (ASPICE) assessment provides automotive software suppliers with a capability
 rating, but at audit time only; there is no mechanism to determine whether a process is still
 being followed correctly between audits. A weakness introduced right after an audit may go
 undetected, and become much more costly to fix, by the time it is eventually discovered. Prior
@@ -150,24 +150,27 @@ has not yet been evaluated in a real-world deployment.
 
 In this research, a real, deployed system for continuous ASPICE assessment of the Software
 Engineering process group (SWE.1 to SWE.6) at capability levels L1 to L3 is developed and
-evaluated. A 60-question, weighted question bank is derived directly from the ASPICE base
-practices and targeted at specific stakeholder roles. A small number of well-targeted questions
-is recommended for each session, depending on the stakeholder's role and the session's progress,
-instead of asking every question in the bank. A rule-based classifier then scores and ranks
-process weaknesses automatically, without needing a labelled training set or a human assessor's
-judgement. These weaknesses are made visible on a results dashboard as soon as a session is
-completed. The system is implemented end to end with FastAPI, React, and PostgreSQL.
+evaluated. A 60-question bank is derived directly from the ASPICE base practices and targeted at
+specific stakeholder roles, with each question's answer options weighted from 0 (practice fully
+in place) to 5 (practice effectively absent). Rather than asking every question in the bank, a
+CMAB-based recommendation engine selects a small number of questions for each session, chosen
+according to the stakeholder's role and the session's progress so far. A rule-based classifier
+then scores and ranks process weaknesses automatically, without needing a labelled training set
+or a human assessor's judgement. These weaknesses are made visible on a results dashboard as
+soon as a session is completed. The system is implemented end to end with FastAPI, React, and
+PostgreSQL.
 
-Unlike the prior simulation-based work, this research evaluates the system on real sessions: the
-pilot was self-administered, with all seven stakeholder roles represented, and seventeen
-sessions started and fifteen completed. The processes the recommendation engine asks about most
-often are the same ones the classifier independently scores as the weakest across the pilot, an
-indication that the mechanism behaves sensibly on real data, not only on simulated data. A
-single session's result can also differ sharply from the overall result for that process,
-underscoring the need for early, per-session visibility. The pilot is real, but limited, and the
-weights in the question bank have not yet been checked by a certified assessor; both are stated
-explicitly as limitations. Overall, the results show that adaptive, continuous ASPICE assessment
-is not only a viable idea but a working one.
+Unlike the prior simulation-based work, this research evaluates the system in a live pilot
+rather than in simulation: the pilot was self-administered by the author across all seven
+stakeholder roles, with seventeen sessions started and fifteen completed. The processes the
+recommendation engine asks about most often are the same ones the classifier independently
+scores as the weakest across the pilot, an indication that the mechanism behaves sensibly on
+real data, not only on simulated data. A single session's result can also differ sharply from
+the overall result for that process, underscoring the need for early, per-session visibility.
+The pilot reflects real usage, but is limited in scale and self-administered rather than run
+with independent participants, and the weights in the question bank have not yet been checked
+by a certified assessor; both points are stated explicitly as limitations. Overall, the results
+show that adaptive, continuous ASPICE assessment is not only a viable idea but a working one.
 \\\\
 \textbf{Keywords: ASPICE, Recommender Systems, Contextual Multi-Armed Bandit, LinUCB, Process Assessment}
 
@@ -226,9 +229,9 @@ is not only a viable idea but a working one.
 
 In this chapter, the context and main problem of this research are outlined and the main
 objectives are defined. It starts with the problem statement and the motivation, emphasizing the
-need for a continuous assessment of the process in automotive software development, which is
-aligned with ASPICE. It then introduces the research questions, contribution of this work, scope
-of the work and concludes by providing an overview of the thesis structure.
+need for a continuous assessment of the process in automotive software development. It then
+introduces the research questions, contribution of this work, scope of the work and concludes by
+providing an overview of the thesis structure.
 
 \section{Problem Statement}
 
@@ -241,22 +244,24 @@ Engineering process group -- SWE.1 to SWE.6 -- this involves looking at each sta
 process, from analysis of the requirements through to the final verification of the software.
 
 This evaluation is done on a structured manner in practice, which is known as an audit. At
-specific points in the project, a certified assessor comes in and evaluates available evidence and
-assigns a score to each process on a predetermined scale of NOT achieved to FULLY
+specific points in the project, an assessment team led by a certified assessor comes in and
+evaluates available evidence and assigns a score to each process on a predetermined scale of NOT achieved to FULLY
 achieved~\cite{vdaqmc2023pam,murphy_aspice_0to60}. This method is good for evaluating process
-capability at a given time, but does not give much information about what is happening in between
-audits.
+capability at a given time, but it leaves gaps that this thesis tackles: it gives no visibility
+into what happens between audits, it relies on a long, fixed questionnaire that is worked through
+in full regardless of what is actually relevant to a given session, and it depends on a human
+assessor's judgement to turn the evidence collected into a weakness rating.
 
-Here is the heart of the issue of this thesis. After a project has been evaluated, there is no
+The most immediate of these is the gap between audits. After a project has been evaluated, there is no
 ongoing method to check if the project process is continuing to be implemented properly. A
 weakness can be introduced just after an audit, like a poorly thought out requirement or a design
 decision that is not checked at any point after it's made, and go unnoticed for months. It might
 only be seen at the next audit or even at a later audit when it is presented as a
 defect~\cite{datsogiannis2024early}. At that time, solving the problem might be quite expensive,
 compared to if it had been solved earlier~\cite{schauffele2016automotive,jiang2013earlylifecycle}.
-When used as it's intended, it's not really a solution for this: ASPICE doesn't give a signal for
-a development team to respond to between audits, it just gives a rating when the audit is
-performed.
+Even when applied exactly as intended, ASPICE cannot close this gap: by design, it produces a
+rating only at the time of the audit and gives a development team no signal to act on in
+between.
 
 This thesis begins by exploring this gap -- can the SWE.1 -- SWE.6 base practices be translated to
 something that stakeholders can refer to continuously as part of their daily development
@@ -265,25 +270,25 @@ activities, not just when an assessor is present?
 \section{Motivation}
 
 This thesis is motivated by a problem faced in modern car software development. Car software is
-becoming more and more complex and software from one generation to the next must be compatible
-with in-vehicle software systems, cloud services, and vehicles~\cite{zhang2021canbus,furst2010challenges}.
+becoming more and more complex, and each new generation must remain compatible with in-vehicle
+systems, cloud services, and other vehicles~\cite{zhang2021canbus,furst2010challenges}.
 The more complex it becomes the more challenging it is to identify weaknesses in the process and
 to remediate them, if they are discovered at the end of the process. The importance of regular and
 effective process assessment is growing, as a result of this.
 
-Automotive SPICE (ASPICE) has established a good framework for Software Development Process
+ASPICE has established a good framework for Software Development Process
 Assessment. In the past, however, the assessment is predominantly carried out by regularly
 scheduled and structured audits. While not all questions are equally useful in all situations, in
 most cases stakeholders are asked a large number of pre-determined questions. There might be a few
 questions that don't give you much information, and another question, at just the right moment,
-could give you a clue to a weakness. An important question here is whether this can be done, using
-fewer questions, but more relevant questions?
+could give you a clue to a weakness. This raises an important question: can fewer, more relevant
+questions achieve the same insight?
 
-This idea is further supported by research on reinforcement learning recommender systems, which
+This idea is further supported by research on reinforcement learning (RL) recommender systems, which
 have been shown to be able to adapt to a specific situation by learning to choose more useful
 questions rather than strictly playing a pre-defined sequence~\cite{datsogiannis2024early}. This
 is the same principle that can be used for an ASPICE assessment. The utility of a question may
-vary from one ask to another and relate to what has already been addressed, the process areas
+vary each time it is asked, depending on what has already been addressed, the process areas
 that are perceived as being not strong enough, the capability being explored, and the stakeholder
 who is answering the question. A contextual multi-armed bandit (CMAB) is thus an appropriate
 solution as it can leverage on this evolving context to determine the next question to ask.
@@ -304,18 +309,18 @@ In the end, the motivation for this research is for the possibility to reduce re
 static questionnaires in process assessment, and make it more responsive to the situation being
 assessed. This thesis seeks to demonstrate that adaptive question selection can make ASPICE
 assessment not only practical to use, but also continuous over time, as it is implemented as a
-working Web application and tested using actual audit sessions, instead of simulated data.
+working web application and tested using actual audit sessions, instead of simulated data.
 
 \section{Research Questions}
 
 The thesis has four research questions:
 
 \begin{itemize}
-  \item \textbf{RQ1.} What are the steps needed to convert the base practices of ASPICE SWE.1-6
-  into a question bank of auditor-style questions, aligned with SWE processes and stakeholder
-  roles, which is structured and weighted?
-  \item \textbf{RQ2.} How can a web-based recommendation system narrow down the question bank
-  down to a few questions that are well-targeted in the evaluation cycle?
+  \item \textbf{RQ1.} How can the base practices of ASPICE SWE.1--SWE.6 be systematically
+  converted into a structured, weighted question bank of auditor-style questions, aligned with
+  SWE processes and stakeholder roles?
+  \item \textbf{RQ2.} How can a web-based recommendation system narrow the question bank down
+  to a few questions that are well-targeted in the evaluation cycle?
   \item \textbf{RQ3.} How do the stakeholder answers get automatically classified to a process
   weakness rating for each of the SWE processes without a human assessor's judgement?
   \item \textbf{RQ4.} How can these results be communicated in such a way that process
@@ -394,8 +399,8 @@ behind each of these topics, since Chapter~\ref{chap:architecture} assumes you a
 
 \section{Automotive SPICE (ASPICE)}
 
-The automotive OEMs and suppliers have adopted a process assessment model called automotive
-SPICE (ASPICE) to assess the capability of automotive suppliers in software and systems
+The automotive OEMs and suppliers have adopted a process assessment model called ASPICE to
+assess the capability of automotive suppliers in software and systems
 development~\cite{vdaqmc2023pam}. Does not evaluate the product itself. Rather, it evaluates the
 process that is followed to create that product. That is, a supplier is not only judged on the
 software's functionality, but also on whether requirements were captured against, designed against,
@@ -525,8 +530,8 @@ unlikely to be able to provide in a single session~\cite{vdaqmc2023pam}.
 
 \subsection{The Traditional (Manual) Assessment Procedure}
 
-An ASPICE assessment is conducted by a certified assessor that evaluates work products
-(documents, models, test records, etc.) and interviews project staff to identify if each base
+An ASPICE assessment is conducted by an assessment team, led by a certified assessor, that
+evaluates work products (documents, models, test records, etc.) and interviews project staff to identify if each base
 practice and generic practice has been met. The percentage of evidence found is then used to
 assign scores to each of the process attributes on an ordinal scale from Not achieved to Fully
 achieved~\cite{vdaqmc2023pam}. The outcome is a capability profile which gives a rating for each
@@ -549,12 +554,11 @@ so a sample of evidence must be examined instead of all evidence; thus, the exte
 of evidence examined during a particular audit is dependent on the questions the assessor decides
 to ask.
 
-Dimitrios recognizes the same gap first, which is that once a supplier is certified,
-there is no way to directly monitor the supplier's process to ensure that it continues to meet
-the requirements, and therefore organizations often use generic project management or
-defect-tracking systems, which were not designed to perform process
-assessment~\cite{datsogiannis2024early}. This is the particular issue that will be tackled in the
-rest of this thesis.
+Datsogiannis~\cite{datsogiannis2024early} recognizes the same gap first, which is that once a
+supplier is certified, there is no way to directly monitor the supplier's process to ensure that
+it continues to meet the requirements, and therefore organizations often use generic project
+management or defect-tracking systems, which were not designed to perform process assessment.
+This is the particular issue that will be tackled in the rest of this thesis.
 
 \section{Recommender Systems}
 
@@ -585,9 +589,10 @@ Chapter~\ref{chap:sota} will discuss the previous work which led to this in more
 
 Multi-armed bandit is a repeated decision problem where an agent has to select one of several
 options on each round which gives him a reward, and maximizes his cumulative reward over the
-rounds~\cite{naeem2020gentleintro,sutton2018reinforcement}. The name is based on a string of slot
-machines, that are sometimes referred to as ``one-armed bandits'', and have an unknown and
-possibly different payout rate.
+rounds~\cite{naeem2020gentleintro,sutton2018reinforcement}. Each of these selectable options is
+called an arm. The name is based on a string of slot machines, that are sometimes referred to as
+``one-armed bandits'', and have an unknown and possibly different payout rate: pulling one of
+these machines' single arms is one round, and choosing which machine to pull is choosing an arm.
 
 \subsection{The Exploration--Exploitation Trade-off}
 
@@ -638,9 +643,12 @@ users~\cite{gutowski2018contextenhancement}.
 
 In this thesis, a contextual bandit algorithm called LinUCB has been assumed in which the
 expected reward for each arm can be modeled as a linear function of the context
-vector~\cite{li2010contextual,huang2016linucb}. Each arm $a$ has two learned quantities, a
-$d \times d$ matrix $A_a$ and a $d$-dimensional vector $b_a$, with $d$ the number of context
-features. These quantities are used to estimate a weight vector from,
+vector~\cite{li2010contextual,huang2016linucb}, written throughout as $x$: a $d$-dimensional
+vector of features describing the current situation (Section~\ref{sec:cmab-engine} defines the
+20 features this thesis actually uses). Each arm $a$ has two learned quantities, a $d \times d$
+matrix $A_a$ and a $d$-dimensional vector $b_a$, with $d$ the number of context features. These
+quantities are used to estimate a weight vector $\theta_a$ (one per arm, describing how much each
+context feature drives that arm's reward) from,
 
 \[
 \theta_a = A_a^{-1} b_a ,
@@ -652,7 +660,9 @@ and scores arm $a$ for the current context as
 \mathrm{UCB}_a(x) = \theta_a^\top x \; + \; \alpha \sqrt{x^\top A_a^{-1} x} .
 \]
 
-The first term, $\theta_a^\top x$, is the best guess the algorithm has for the reward that it
+Here, the superscript $\top$ denotes the transpose, so $\theta_a^\top x$ is an ordinary dot
+product between the weight vector and the context vector, reducing them to a single number. This
+first term is the best guess the algorithm has for the reward that it
 would receive if it pulled arm $a$ in this context. The second term is larger if $A_a$ has little
 information about contexts like $x$, thus adding value to arms in which the algorithm is not
 sure. This uncertainty bonus is given a greater or lesser degree of influence through the
@@ -695,23 +705,24 @@ ideas are integrated into the real system.
 
 In this chapter, this research is placed in its relation to the most similar work already been
 done. It starts with a short introduction to ASPICE and the assessment in practice. It then
-explains the two papers by Dimitrios which this thesis relies on most directly, along with the
+explains the two papers by Datsogiannis~\cite{datsogiannis2024early,datsogiannis2025recommender}
+which this thesis relies on most directly, along with the
 diagrams which explain their approach. Lastly, it connects the various approaches in a comparison
 table and describes the research gap that this thesis will fill.
 
 \section{ASPICE and Current Assessment Practice}
 
 The typical ASPICE assessment process was described in Chapter~\ref{chap:background}. In
-practice, the process is conducted as a periodic audit where a certified assessor visits a
-project at specific intervals, collects evidence of base practices in accordance with the
+practice, the process is conducted as a periodic audit where an assessment team, led by a
+certified assessor, visits a project at specific intervals, collects evidence of base practices in accordance with the
 SWE.1--SWE.6 and rates the capability of the project until the next
 audit~\cite{vdaqmc2023pam,murphy_aspice_0to60}. This is the standard to which the rest of this
-chapter is contrasted. The biggest drawback is pointed out by Dimitrios, which is that the
-certification under ASPICE does not offer an inbuilt mechanism to track the compliance of the
-process once it has been certified. Consequently, organisations tend to rely on project
-management tools or defect tracking systems which were not intended to be used to identify if a
-particular base practice is being observed or not~\cite{datsogiannis2024early}. The following
-section thus examines the way in which Dimitrios suggests to fill this gap.
+chapter is contrasted. Datsogiannis~\cite{datsogiannis2024early} points out that the biggest
+drawback is that the certification under ASPICE does not offer an inbuilt mechanism to track the
+compliance of the process once it has been certified. Consequently, organisations tend to rely on
+project management tools or defect tracking systems which were not intended to be used to
+identify if a particular base practice is being observed or not. The following section thus
+examines the way in which Datsogiannis suggests to fill this gap.
 
 The structure of the indicators that underlie that rating are shown in
 Figure~\ref{fig:soa-aspice-indicators}. The purpose and outcomes of a process are derived from
@@ -741,8 +752,8 @@ Chapter~\ref{chap:architecture} is a development of those two papers.
 
 \subsection{2024: A Dynamic Survey Model for Automotive Process Evaluation}
 
-Dimitrios recommends a system that handles a dynamic questionnaire, instead of a fixed
-one~\cite{datsogiannis2024early}. The questions are based on the literature search on automotive
+Datsogiannis~\cite{datsogiannis2024early} recommends a system that handles a dynamic
+questionnaire, instead of a fixed one. The questions are based on the literature search on automotive
 software development metrics, automotive specific studies, ASPICE (SYS.1--SYS.5, SWE.1--SWE.6,
 VAL.1, PIM.3), ISTQB~\cite{istqb_website} and documented OEM electrical/electronic processes.
 Answers are given a value and each question has a weight representing its importance. The higher
@@ -780,7 +791,7 @@ complete implementation. The conclusion of its own paper confirms that the conce
 under development at the time of writing and training and evaluation outcomes would be published
 later~\cite{datsogiannis2024early}.
 
-\textbf{Relevance to this thesis.} There are two design aspects from this paper that are carried
+Relevance to this thesis: there are two design aspects from this paper that are carried
 over directly. First, each question carries a weight and each answer a value, so that the answers
 obtained in a session can be translated into a number without further interpretation. Second, the
 reward payoff for the CMAB agent is such that the worst response to the most important question
@@ -791,9 +802,9 @@ three-band classifier is extended to a four-band classifier
 
 \subsection{2025: Algorithm Benchmarking on Simulated Data}
 
-In a similar fashion, Dimitrios extends the concept with a pool of 137 questions and compares
-three bandit algorithms directly: $\epsilon$-greedy, LinUCB and Thompson
-Sampling~\cite{datsogiannis2025recommender}. As there was no real deployment at that point, the
+In a similar fashion, Datsogiannis~\cite{datsogiannis2025recommender} extends the concept with a
+pool of 137 questions and compares three bandit algorithms directly: $\epsilon$-greedy, LinUCB
+and Thompson Sampling. As there was no real deployment at that point, the
 comparison is based on a simulated environment that mimics the behavior of real software
 releases. There are four different scenarios that alter the degree of variation in the underlying
 set of process deficiencies between rounds: 0\%, 10\%, 30\%, and 50\% of the process deficiencies
@@ -853,7 +864,7 @@ different scenarios, with the value of $0.1$ in most of the scenarios and $\alph
 real automotive development environment would be reported in another paper, according to the
 paper itself.
 
-\textbf{Relevance to this thesis.} This is the most similar available comparison of the
+Relevance to this thesis: this is the most similar available comparison of the
 performance of LinUCB (the algorithm used in this thesis) compared to other methods. It is thus
 not a standard that can be disregarded just because LinUCB did not perform the best in the
 simulation. In Section~\ref{sec:cross-comparison}, that result is taken into account, but the
@@ -904,11 +915,16 @@ There are three conscious decisions made in regards to the previous work in this
 it reduces the scope of ASPICE from four process groups to just one, SWE.1--SWE.6, thereby
 allowing the question bank in Chapter~\ref{chap:implementation} to be constructed directly from
 the base practices of this group, instead of a more general literature review. Second, it uses
-LinUCB in particular, instead of comparing several algorithms, as it is easier to reproduce and
-reason about a single algorithm in a single thesis evaluation, although
-Table~\ref{tab:recommender-results} indicates that $\epsilon$-greedy works better in simulation.
-This trade-off is again discussed in Chapter~\ref{chap:results}. Thirdly, it tests the system
-with actual (non-simulated) pilot sessions, while neither of the previous papers does.
+LinUCB in particular, instead of comparing several algorithms: LinUCB's score is a deterministic
+function of the session context, so a given session's question choices can always be recomputed
+and explained after the fact, and it is natively context-aware, scoring each question directly
+from the session-state vector rather than bolting context on separately, unlike $\epsilon$-greedy
+or Thompson Sampling. This is a deliberate trade-off, not an oversight:
+Table~\ref{tab:recommender-results} shows $\epsilon$-greedy scoring higher on raw reward in
+simulation, and the full reasoning behind choosing LinUCB regardless, together with how that gap
+holds up on real pilot data, is given in Chapter~\ref{chap:architecture} and revisited
+empirically in Chapter~\ref{chap:results}. Thirdly, it tests the system with actual
+(non-simulated) pilot sessions, while neither of the previous papers does.
 
 The literature is otherwise sparse on the use of recommender systems in the automotive
 processes. The nearest non-supervisor prior work is Bader's dissertation on proactive
@@ -931,11 +947,16 @@ on real assessment sessions. This is the space this thesis aims to fill.
 
 Manual ASPICE assessment gives clear ratings, they are awarded at audit time only. The previous
 studies that were reviewed in this chapter have demonstrated the feasibility of a questionnaire
-driven by the CMAB concept, both conceptually and in a simulation, but have not yet been
-implemented in a real setting. This thesis focuses on this space in particular for
-SWE.1--SWE.6: it takes the same concept, restricts the scope of the ASPICE, makes a single
-choice of algorithm, and tests the system with real sessions instead of simulated sessions. The
-way that that system is constructed is explained in Chapter~\ref{chap:architecture}.
+driven by the CMAB concept, both conceptually and in a synthetic simulation that mimics software
+releases, but have not yet been implemented in a working deployment. This thesis focuses on this
+space in particular for SWE.1--SWE.6: it takes the same concept, restricts the scope of the
+ASPICE, makes a single choice of algorithm, and tests the system itself end to end, on sessions
+actually run through the live application, rather than on a simulated environment. ``Real'' here
+means exactly that: an actual working system exercised by actual sessions, not an independent
+field deployment -- the pilot was self-administered by the author across all seven stakeholder
+roles, and Chapter~\ref{chap:results}'s Threats to Validity section examines what that does and
+does not prove. The way that that system is constructed is explained in
+Chapter~\ref{chap:architecture}.
 
 \chapter{System Architecture and Design}
 \label{chap:architecture}
@@ -956,10 +977,10 @@ interface design, and concludes with the key design decisions and trade-offs.
   \item \textbf{FR1.} The system shall replace the manual, periodic ASPICE assessment procedure
   with a continuous and automated assessment procedure that is aligned with the ASPICE
   SWE.1--SWE.6 standard.
-  \item \textbf{FR2.} Stakeholders shall be able to register, log in, and participate in an
+  \item \textbf{FR2.} Stakeholders shall be able to register, log-in, and participate in an
   evaluation session.
   \item \textbf{FR3.} The system shall have a structured question bank on ASPICE SWE.1--SWE.6.
-  \item \textbf{FR4.} Stakeholders shall only be asked questions that are relevant to their stake
+  \item \textbf{FR4.} Stakeholders shall only be asked questions that are relevant to their role
   in the system.
   \item \textbf{FR5.} The system shall automatically identify the gaps in the processes.
   \item \textbf{FR6.} The system shall present the assessment results to the stakeholder in a
@@ -1029,14 +1050,13 @@ result, and everything is persistently stored in a Database.
   \includegraphics[width=0.85\textwidth]{src/Arch_1.png}
   \caption{Overall system architecture: stakeholders interact through the GUI, the Model
   Controller coordinates the Recommendation System (CMAB agent) and the Evaluation Model, and
-  all state is persisted in the database. Adapted from the concept architecture
+  all state is persisted in the Database. Adapted from the concept architecture
   proposed in~\cite{datsogiannis2024early}.}
   \label{fig:overall-architecture}
 \end{figure}
 
-If this architecture is mapped onto what was actually developed for this thesis, each box
-represents a concrete component. The GUI is built with the React frontend. The Model Controller
-is the business logic of the FastAPI backend, specifically the audit session service that carries
+The GUI is built with the React frontend. The Model Controller
+is the application logic of the FastAPI backend, specifically the audit session service that carries
 an audit session from its inception to its completion. The Recommendation System is the CMAB
 engine described in Section~\ref{sec:cmab-engine}, using LinUCB to select questions. The
 Evaluation Model is the weakness classifier given in Section~\ref{sec:weakness-classification}.
@@ -1053,9 +1073,14 @@ release.
 
 \subsection{System Components and Responsibilities}
 
-Figure~\ref{fig:component-responsibilities} shows the same architecture once more, but from a
-different perspective: responsibilities. It does not indicate the flow of requests through the
-system, but rather what each component is responsible for.
+Figure~\ref{fig:component-responsibilities} shows the same architecture as
+Figure~\ref{fig:overall-architecture}, but relabelled with the concrete implementation names
+introduced above and organised by responsibility instead of by request flow: the GUI becomes
+Presentation, the Model Controller is split into API and Audit Session Service (routing and
+authentication versus orchestrating the session lifecycle), the Recommendation System is the CMAB
+Engine, the Evaluation Model is the Weakness Classifier, and the Database becomes the Data Layer.
+Rather than showing how a request moves through these components, as
+Figure~\ref{fig:overall-architecture} does, this diagram states what each one is responsible for.
 
 \begin{figure}[h]
   \centering
@@ -1118,10 +1143,15 @@ question's justification against the ASPICE standard is one lookup away.
 
 Each question comes with five predefined answer options, A through E, going from the strongest
 practice down to the weakest, each carrying a weight from 0 (practice fully in place) up to 5
-(practice effectively absent). Table~\ref{tab:example-question} contains the full set of options
-for \texttt{SWE1\_L1\_01}. This weight is what gets translated into a reward once an option is
-chosen by the CMAB engine, and the same value is later used as a weakness value when calculating
-the process score (Sections~\ref{sec:cmab-engine} and~\ref{sec:weakness-classification}).
+(practice effectively absent). One weight is assigned per option so that each of the five
+severity levels a stakeholder can pick between has its own distinct value, with 0 corresponding
+to the fully-achieved end of the manual ASPICE rating scale (Chapter~\ref{chap:background}) and
+higher weights signalling a more serious gap; this higher-is-worse convention is carried over
+directly from the prior work this thesis builds on~\cite{datsogiannis2024early}. Table~\ref{tab:example-question}
+contains the full set of options for \texttt{SWE1\_L1\_01}. This weight $w$ is what gets
+translated into a reward once an option is chosen by the CMAB engine, using $r = w / 4$ capped at
+$1.0$, and the same normalized value is later averaged into the process score used by the
+weakness classifier (Sections~\ref{sec:cmab-engine} and~\ref{sec:weakness-classification}).
 
 \begin{table}[h]
 \centering
@@ -1277,9 +1307,10 @@ the engine notice, mid-session, that a process has been under-covered, and adjus
 
 \subsection{Arm Eligibility}
 
-Before scoring begins, the engine narrows the active question bank down to admissible arms: the
-question's stakeholder-role list must include the current user's role, and the question must not
-already be in the list of questions asked during the current session. Both are hard constraints,
+Before scoring begins, the engine narrows the active question bank down to admissible arms, recall from earlier in this section that every eligible \texttt{AuditQuestion} is an arm, so this
+step decides which questions LinUCB is even allowed to consider next. A question is
+admissible only if the question's stakeholder-role list includes the current user's role, and the
+question is not already in the list of questions asked during the current session. Both are hard constraints,
 enforced directly rather than left for LinUCB to learn to avoid on its own. Filtering first also
 means the UCB calculation only has to run over the small number of questions that could
 plausibly be asked next.
@@ -1287,7 +1318,8 @@ plausibly be asked next.
 \subsection{LinUCB Question Selection}
 
 Selection follows the rule introduced in Chapter~\ref{chap:background}: for each eligible arm
-$a$, the engine computes
+$a$, the engine computes its weight vector $\theta_a$ from the two quantities learned for that
+arm, a matrix $A_a$ and a vector $b_a$,
 
 \[
 \theta_a = A_a^{-1} b_a ,
@@ -1299,7 +1331,9 @@ and scores it as
 \mathrm{UCB}_a(x) = \theta_a^\top x + \alpha \sqrt{x^\top A_a^{-1} x}
 \]
 
-against the context vector built for the current request. The exploration coefficient $\alpha$
+where $x$ is the 20-feature context vector defined earlier in this section,
+$\theta_a^\top x$ is the dot product giving the algorithm's best guess at this arm's reward, and
+the square-root term is an uncertainty bonus. The exploration coefficient $\alpha$
 starts at $1.0$ -- a single, easy-to-explain hyperparameter that Chapter~\ref{chap:results} comes
 back to later. The engine returns the arm with the highest score. Because that score is a
 function of $A_a$, $b_a$, and $x$ alone, the same session history always produces the same next
@@ -1353,14 +1387,19 @@ of the system takes over: aggregating the answers into a final result.
 \subsection{Response Scoring}
 
 Each answered question contributes one number: the weight of the selected answer, normalized
-between $0.0$ and $1.0$ the same way as the reward in Section~\ref{sec:cmab-engine}. Because the
-seeded question bank's weights actually run $0, 2, 3, 4, 5$ rather than stopping at $4$, a
-handful of individual answers normalize to just above $1.0$. This is not a problem downstream,
-since the classification step in Section~\ref{sec:classification-thresholds} treats any value
-past its highest threshold the same way regardless -- but it is worth stating clearly rather
-than quietly rounding it away.
+between $0.0$ and $1.0$ the same way as the reward in Section~\ref{sec:cmab-engine}. The seeded
+question bank's weights actually run $0, 2, 3, 4, 5$ rather than $0, 1, 2, 3, 4$: the step from 0
+is deliberately larger than the steps afterward, so that the single option representing full
+compliance (weight 0) stays clearly separated from every other option, all of which already
+represent some degree of weakness, rather than sitting only one point away from the mildest of
+them. This is a design choice made when the question bank was authored, not an independently
+calibrated scale (Chapter~\ref{chap:conclusion} lists the weights as unvalidated), and one
+consequence of it is that a handful of individual answers normalize to just above $1.0$ instead
+of stopping exactly at it. This is not a problem downstream, since the classification step in
+Section~\ref{sec:classification-thresholds} treats any value past its highest threshold the same
+way regardless -- but it is worth stating clearly rather than quietly rounding it away.
 
-\subsection{Process $\times$ Capability-Level Scoring}
+\subsection{Process and Capability-Level Scoring}
 
 Each response is associated with exactly one (process, level) pair, taken from the question it
 answers. The classifier groups all of a session's responses by that pair and averages the
@@ -1552,7 +1591,7 @@ ultimately uses the contextual member of that group, LinUCB. This subsection put
 on record, and confronts the one piece of evidence that argues against it.
 
 That evidence is not hidden. Table~\ref{tab:recommender-results} in Chapter~\ref{chap:sota},
-reproduced from the closest prior work, shows $\epsilon$-greedy beating LinUCB on raw reward in
+reproduced from the closest prior work, shows $\epsilon$-greedy outperforming LinUCB on raw reward in
 every simulated scenario tested -- by roughly 13 percentage points at a 0\% deficiency-change
 rate, narrowing to about 1 point at a 50\% deficiency-change
 rate~\cite{datsogiannis2025recommender}. So this is not a choice made because LinUCB is known to
@@ -1584,7 +1623,7 @@ LinUCB~\cite{li2010contextual,huang2016linucb} & $\theta_a^\top x + \alpha
 \label{tab:algorithm-comparison}
 \end{table}
 
-Three reasons, all visible in that table, drove the final choice. First, \textbf{determinism}.
+Three reasons, all visible in that table, drove the final choice. First, determinism.
 Both $\epsilon$-greedy and Thompson Sampling rely on randomness every single round, either to
 choose between exploring and exploiting, or to sample directly from a posterior. That is a
 reasonable design for a production system averaging behaviour over millions of rounds, but it is
@@ -1594,7 +1633,7 @@ afterward. LinUCB's score, by contrast, is a deterministic function of $A_a$, $b
 alone, so a specific session's specific history can always be recomputed and explained, not just
 observed.
 
-Second, \textbf{native context-awareness}. Plain $\epsilon$-greedy and plain UCB score an arm
+Second, native context-awareness. Plain $\epsilon$-greedy and plain UCB score an arm
 only from its own past average reward -- they have no way to express that a question matters more
 to a QA Engineer than to a Project Manager, or that it matters more three questions into a
 session than at the start, without bolting on a separate mechanism. LinUCB's scoring rule is
@@ -1603,7 +1642,7 @@ $\theta_a^\top x$ term is not an addition to the algorithm, it is the algorithm.
 does have contextual variants, but the version benchmarked in Table~\ref{tab:recommender-results}
 was not one of them.
 
-Third, \textbf{one explainable hyperparameter}. LinUCB's exploration coefficient $\alpha$ has a
+Third, one explainable hyperparameter. LinUCB's exploration coefficient $\alpha$ has a
 clear, statable meaning: how much weight the uncertainty bonus gets relative to the plain reward
 estimate. By comparison, $\epsilon$-greedy's exploration is cruder -- just a fixed or decaying
 probability of ignoring the current estimate and exploring randomly -- and Thompson Sampling's
@@ -1639,11 +1678,17 @@ deployment and runtime configuration, and concludes with the implementation issu
 and how they were addressed.
 
 \section{Development Environment and Tooling}
+
+This section covers the tools the system was actually built with, before the rest of the chapter
+turns to the implementation itself. It starts with how development and production are kept in
+sync through containerization, then covers the backend stack built around FastAPI and SQLModel,
+and finally the frontend stack built around React and a generated API client.
+
 \subsection{Containerized Development Environment}
 
-All the system is deployed in Docker containers, both in development and production. That means,
-if it works on one machine, it works on any other. There is no ``it works on my machine'' disconnect
-between whoever is developing and Anything that is eventually deployed. This is done locally
+The entire system is deployed in Docker containers, in both development and production, so that
+a configuration verified on one machine behaves identically on any other, eliminating the common
+discrepancy between a developer's machine and the deployed environment. This is done locally
 using \texttt{compose.yml} and a For development, create a \texttt{compose.override.yml} file to
 replace a few of the above: The ports of database and admin GUI are exposed directly to the
 host. The backend and the frontend are running with a live-reloading, of course, and sitting
@@ -2472,14 +2517,24 @@ pilot, which involved real sessions across all the stakeholder roles the system 
 rather than just one.
 
 \subsection{Participants and Stakeholder Roles Represented}
+\label{sec:pilot-participants}
 
 The pilot was conducted by the author in seven different stakeholder roles, as defined in
 Chapter~\ref{chap:architecture}: Software Developer, Software Architect, Project Manager,
 ASPICE Assessor, QA Engineer, Test Engineer, and Team Lead. This is not an independent external
 participant pilot, but one of self-administration, and this is clearly stated in
-Chapter~\ref{chap:conclusion}. It does offer, however, something the single-account walkthrough
-in Section~\ref{sec:functional-verification} could not: real usage data, broken out by role,
-which is exactly what the CMAB engine's context vector is geared to respond to.
+Chapter~\ref{chap:conclusion}. Answers were not given against one fixed, consistent real
+project; the author answered each question from general domain knowledge of how a stakeholder in
+that role would typically respond, rather than by consulting one specific system's actual
+requirements, architecture, or test records. Consequently, this pilot is a feasibility test of
+the mechanism -- whether question selection, weakness scoring, and the results dashboard behave
+sensibly end to end on real, human-entered answers -- and not a validity study of any single
+project's actual ASPICE compliance; the latter would require independent stakeholders answering
+against one shared, real codebase, and is left to future work
+(Section~\ref{sec:threats-to-validity} returns to this distinction). What it does offer, that the
+single-account walkthrough in Section~\ref{sec:functional-verification} could not, is real usage
+data broken out by role, which is exactly what the CMAB engine's context vector is geared to
+respond to.
 
 \begin{figure}[h]
   \centering
@@ -2691,29 +2746,30 @@ contextual bandit, and the rule-based classifier -- behaves sensibly at all when
 answer real questions, rather than only in a simulated environment designed to resemble one. On
 the evidence gathered here, it does.
 
-Again, the numbers above are trustworthy only because of the quality-assurance and
-functional-verification work earlier in this chapter: the engine was unit-tested against known
-inputs, and was observed completing a real session end to end in
-Section~\ref{sec:functional-verification}, rather than being taken on faith.
-
 \section{Threats to Validity}
+\label{sec:threats-to-validity}
 
 Four threats can be named explicitly, rather than as a generic checklist.
 
-The first is internal validity: the same person built this system and then answered as each of
-its seven stakeholder roles. A self-administered pilot carries a real risk of confirmation bias
+The first is internal validity: the author, who built the system, also carried out the pilot,
+answering as each of its seven stakeholder roles. A self-administered pilot carries a real risk
+of confirmation bias
 -- answering the way one thinks a QA Engineer would answer, rather than the way an actual QA
 Engineer, with their own specific project and their own specific blind spots, would answer it.
 Chapter~\ref{chap:conclusion} already names the pilot's self-administered scope as a limitation;
 this is the more precise mechanism behind why that limitation matters.
 
-The second concerns what the sessions were actually assessing. ASPICE questions are meaningful
-against a specific, real piece of software -- a real requirements document, a real architecture,
-real test records. The pilot's answers may have been given against one consistent real project,
-or answered more generically, so that the resulting scores reflect not necessarily that
-project's actual process maturity, but something closer to the author's own perception of what
-each role typically struggles with. This thesis does not draw a sharp line between the two, and
-a reader should weigh the pilot's findings accordingly.
+The second is construct and external validity, and it is the more serious of the two: the
+sessions were not run against one fixed, consistent real project. ASPICE questions are only
+meaningful against a specific, real piece of software -- a real requirements document, a real
+architecture, real test records -- and answering them from general role knowledge instead, as
+this pilot did, means the resulting scores measure the author's own perception of what each role
+typically struggles with, not the process maturity of any actual project. This is precisely why
+Section~\ref{sec:pilot-participants} frames the pilot as a feasibility test of the mechanism
+(does question selection, scoring, and reporting behave sensibly end to end) rather than as
+evidence about real-world ASPICE compliance: only a study run against one shared, real codebase,
+ideally with independent stakeholders, could support the latter claim, and this thesis does not
+attempt to.
 
 The third is sample size. After fifteen completed sessions across seven roles, a pattern can be
 seen -- the SWE.3/SWE.4 correlation discussed above -- but there is not enough data to trust any
@@ -2738,12 +2794,16 @@ This chapter tested the system against real usage rather than simulation, across
 the backend's own test suite and static analysis, a manual walkthrough confirming the
 application works end to end, a self-administered pilot spanning every stakeholder role, what
 the CMAB engine actually selected once real answers came back, and what the weakness classifier
-reported from those same sessions. Taken together, the evidence gathered here answers each of
-the four research questions with a working result rather than a proposal for one: a real
-question bank actually seeded and served, a recommendation engine whose selection pattern agrees
-with an independently-computed weakness score, a classifier that produced a result from real
-answers to real questions, and a dashboard that displayed that result to a real stakeholder the
-moment a real session finished.
+reported from those same sessions. Taken together, this evidence demonstrates that the system
+works as a proof of concept: a real question bank was actually seeded and served, a
+recommendation engine selected questions in a pattern that agrees with an
+independently-computed weakness score, a classifier produced a result from real answers to real
+questions, and a dashboard displayed that result to a real stakeholder the moment a real session
+finished. This is evidence that the mechanism functions end to end on real data, not evidence
+that its output is an accurate ASPICE rating: as the threats above make explicit, the agreement
+between engine and classifier is correlational rather than proven causal, and the pilot's
+self-administered, project-agnostic design means the four research questions are answered at
+the level of technical feasibility, not of validated real-world assessment accuracy.
 
 None of this is presented as final. The pilot is real but modest, the algorithm comparison
 remains to be done, and the threats named above are stated rather than resolved.
@@ -2946,8 +3006,11 @@ actually reflect real-world severity.
 This thesis deals only with the Software Engineering process group. The same technique, base
 practices turned into weighted questions, selection by a CMAB engine, and scoring by a
 rule-based classifier, can be applied directly to System Engineering, Management, and Supporting
-processes. Extending the question bank to these groups would let the same system give a fuller
-picture of a project's ASPICE capability than a software engineering slice alone.
+processes. This is not only a hypothetical extension: a concurrent thesis in the same department
+applies the same approach to the System Engineering process group,
+SYS.1--SYS.6~\cite{zargham2026sys}. Combining that work with this one would let a single system
+give a fuller picture of a project's ASPICE capability than either a software engineering or a
+system engineering slice alone.
 
 \subsection{Extending to Capability Levels L4 and L5}
 
@@ -3001,6 +3064,7 @@ actually sign into and use. It is a narrower space than it might sound, too: a m
 question bank not yet reviewed by a certified assessor, and a few implementation gaps, all named
 clearly earlier in this chapter.
 
+\newpage
 None of that narrowness takes away from what was built. The system answers each of its four
 research questions with working code and a real result, rather than simply proposing how one
 might be achieved, and the limitations recorded here are the kind that come from actually
